@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Scan Barcode" %} — Smart Library TJ{% endblock %}
+{% block page_title %}{% trans "Barcode Scanner & Search" %}{% endblock %}
+{% block page_subtitle %}<p>{% trans "Search by title, barcode, or inventory number to see custody status instantly" %}</p>{% endblock %}
+
+{% block extra_css %}
+<style>
+    #reader {
+        width: 100%;
+        max-width: 480px;
+        margin: 20px auto 0 auto;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    #reader video {
+        border-radius: 12px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+    <div class="col-lg-6">
+        <!-- Big Find-a-Book Panel -->
+        <div class="find-book-panel">
+            <h5><i class="bi bi-upc-scan me-1"></i> {% trans "Scan or Enter Code" %}</h5>
+            <p>{% trans "Scan a barcode with your device camera or enter the number manually to inspect textbook details." %}</p>
+            <form method="get" id="scan-form" class="find-book-search-row">
+                <input type="text" id="code-input" name="code" placeholder="{% trans "Barcode or Inventory Number..." %}" value="{{ search }}" autofocus autocomplete="off">
+                <button type="submit" class="btn-pro btn-pro-primary" style="background:#ffffff; color: var(--primary-700); height:48px; padding: 0 22px;">
+                    <i class="bi bi-search"></i> {% trans "Find" %}
+                </button>
+            </form>
+        </div>
+
+        <div class="card-pro">
+            <div class="card-pro-header">
+                <h5><i class="bi bi-camera text-primary"></i> {% trans "Camera Scanner" %}</h5>
+            </div>
+            <div class="card-pro-body text-center">
+                <button type="button" id="start-cam-btn" class="btn-pro btn-pro-success">
+                    <i class="bi bi-camera"></i> {% trans "Turn On Camera Scanner" %}
+                </button>
+                <button type="button" id="stop-cam-btn" class="btn-pro btn-pro-danger d-none">
+                    <i class="bi bi-camera-video-off"></i> {% trans "Turn Off Camera" %}
+                </button>
+
+                <div id="reader" class="d-none"></div>
+                <div id="cam-status" class="text-center text-muted small mt-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        {% if copy %}
+        <div class="card-pro">
+            <div class="card-pro-header">
+                <h5><i class="bi bi-book text-primary"></i> {{ copy.book.title }}</h5>
+                {% include "components/status_badge.html" with status_code=copy.status status_display=copy.get_status_display %}
+            </div>
+            <div class="card-pro-body p-0">
+                <table class="table-pro" style="width:100%;">
+                    <tbody>
+                        <tr><td class="text-muted" style="width: 40%;">{% trans "Author" %}</td><td class="fw-bold">{{ copy.book.author }}</td></tr>
+                        <tr><td class="text-muted">{% trans "Subject & Grade" %}</td><td>{{ copy.book.subject }} ({{ copy.book.grade }} {% trans "grade" %})</td></tr>
+                        <tr><td class="text-muted">{% trans "Inventory #" %}</td><td><code>{{ copy.inventory_number }}</code></td></tr>
+                        <tr><td class="text-muted">{% trans "Barcode" %}</td><td><code>{{ copy.barcode }}</code></td></tr>
+                        <tr><td class="text-muted">{% trans "School" %}</td><td>{{ copy.school.name }}</td></tr>
+                    </tbody>
+                </table>
+                <div class="d-flex gap-2 flex-wrap p-4 pt-3">
+                    <a href="{% url 'library:copy_detail' copy.pk %}" class="btn-pro btn-pro-outline">
+                        <i class="bi bi-clock-history"></i> {% trans "View Movement History" %}
+                    </a>
+                    {% if user.role == 'LIBRARIAN' and copy.status in 'AVAILABLE,AT_LIBRARY' %}
+                    <a href="{% url 'transactions:issue_to_teacher' %}" class="btn-pro btn-pro-success">
+                        <i class="bi bi-arrow-right-circle"></i> {% trans "Issue to Teacher" %}
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% elif search %}
+        {% blocktrans asvar not_found_desc %}No book matching barcode or inventory number «{{ search }}».{% endblocktrans %}
+        {% trans "Copy not found" as cs_et_title %}
+        {% include "components/empty_state.html" with icon="bi bi-exclamation-triangle" title=cs_et_title description=not_found_desc %}
+        {% else %}
+        {% trans "Ready to Scan" as cs_et2_title %}
+        {% trans "Scan a barcode with your device camera or enter the number manually to see textbook details." as cs_et2_desc %}
+        {% include "components/empty_state.html" with icon="bi bi-upc-scan" title=cs_et2_title description=cs_et2_desc %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let html5QrCode = null;
+    const startBtn = document.getElementById('start-cam-btn');
+    const stopBtn = document.getElementById('stop-cam-btn');
+    const readerDiv = document.getElementById('reader');
+    const codeInput = document.getElementById('code-input');
+    const scanForm = document.getElementById('scan-form');
+    const statusText = document.getElementById('cam-status');
+
+    if (startBtn) {
+        startBtn.addEventListener('click', function() {
+            readerDiv.classList.remove('d-none');
+            startBtn.classList.add('d-none');
+            stopBtn.classList.remove('d-none');
+            statusText.innerText = "{% trans 'Starting camera scanner...' %}";
+
+            html5QrCode = new Html5Qrcode("reader");
+            const config = { fps: 10, qrbox: { width: 280, height: 180 } };
+
+            html5QrCode.start(
+                { facingMode: "environment" },
+                config,
+                function(decodedText) {
+                    codeInput.value = decodedText;
+                    statusText.innerText = "{% trans 'Code recognized!' %} " + decodedText;
+                    html5QrCode.stop().then(() => {
+                        scanForm.submit();
+                    });
+                },
+                function(errorMessage) {
+                    // scanning in progress
+                }
+            ).catch(err => {
+                statusText.innerText = "{% trans 'Camera access error or unsupported device.' %}";
+                startBtn.classList.remove('d-none');
+                stopBtn.classList.add('d-none');
+                readerDiv.classList.add('d-none');
+            });
+        });
+    }
+
+    if (stopBtn) {
+        stopBtn.addEventListener('click', function() {
+            if (html5QrCode) {
+                html5QrCode.stop().then(() => {
+                    readerDiv.classList.add('d-none');
+                    startBtn.classList.remove('d-none');
+                    stopBtn.classList.add('d-none');
+                    statusText.innerText = '';
+                });
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

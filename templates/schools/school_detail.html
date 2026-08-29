@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{{ school.name }} - Smart Library TJ{% endblock %}
+{% block page_title %}<i class="bi bi-building text-primary"></i> {{ school.name }}{% endblock %}
+{% block page_subtitle %}<p>№{{ school.school_number }} &middot; {{ school.district.name }}, {{ school.jamoat.name }}</p>{% endblock %}
+{% block page_actions %}
+{% trans "Active" as trans_active %}
+{% trans "Inactive" as trans_inactive %}
+{% if school.is_active %}
+{% include "components/status_badge.html" with status_code="AVAILABLE" status_display=trans_active %}
+{% else %}
+{% include "components/status_badge.html" with status_code="WRITTEN_OFF" status_display=trans_inactive %}
+{% endif %}
+{% if user.role == 'SUPER_ADMIN' %}
+<a href="{% url 'schools:school_edit' school.pk %}" class="btn-pro btn-pro-outline">
+    <i class="bi bi-pencil"></i> {% trans "Edit" %}
+</a>
+{% endif %}
+<a href="{% url 'schools:school_list' %}" class="btn-pro btn-pro-outline">
+    <i class="bi bi-arrow-left"></i> {% trans "Back to Schools" %}
+</a>
+{% endblock %}
+
+{% block content %}
+{% trans "Students" as trans_students %}
+{% trans "Active enrollment" as trans_active_enrollment %}
+{% trans "Teachers" as trans_teachers %}
+{% trans "Class teachers" as trans_class_teachers %}
+{% trans "Library Fund" as trans_library_fund %}
+{% trans "Total book copies" as trans_total_book_copies %}
+{% trans "Lost" as trans_lost %}
+{% blocktrans with count=damaged_books asvar trans_damaged_subtitle %}{{ count }} damaged{% endblocktrans %}
+
+<div class="row g-3 mb-4">
+    <div class="col-xl-3 col-md-6">
+        {% include "components/stat_card.html" with title=trans_students value=students_count icon="bi bi-people" color_class="icon-cyan" subtitle=trans_active_enrollment %}
+    </div>
+    <div class="col-xl-3 col-md-6">
+        {% include "components/stat_card.html" with title=trans_teachers value=teachers_count icon="bi bi-person-workspace" color_class="icon-blue" subtitle=trans_class_teachers %}
+    </div>
+    <div class="col-xl-3 col-md-6">
+        {% include "components/stat_card.html" with title=trans_library_fund value=total_books icon="bi bi-book" color_class="icon-emerald" subtitle=trans_total_book_copies %}
+    </div>
+    <div class="col-xl-3 col-md-6">
+        {% include "components/stat_card.html" with title=trans_lost value=lost_books icon="bi bi-exclamation-triangle" color_class="icon-rose" subtitle=trans_damaged_subtitle %}
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-lg-6">
+        <div class="card-pro h-100">
+            <div class="card-pro-header">
+                <h5><i class="bi bi-info-circle text-primary"></i> {% trans "School Information" %}</h5>
+            </div>
+            <div class="card-pro-body p-0">
+                <table class="table table-borderless mb-0">
+                    <tbody>
+                        <tr><td class="text-muted ps-4" style="width:40%;">{% trans "Region" %}</td><td class="pe-4">{{ school.region.name }}</td></tr>
+                        <tr><td class="text-muted ps-4">{% trans "District" %}</td><td class="pe-4">{{ school.district.name }}</td></tr>
+                        <tr><td class="text-muted ps-4">{% trans "Jamoat" %}</td><td class="pe-4">{{ school.jamoat.name }}</td></tr>
+                        <tr><td class="text-muted ps-4">{% trans "Address" %}</td><td class="pe-4">{{ school.address|default:"—" }}</td></tr>
+                        <tr><td class="text-muted ps-4">{% trans "Phone" %}</td><td class="pe-4">{{ school.phone|default:"—" }}</td></tr>
+                        <tr><td class="text-muted ps-4">{% trans "Email" %}</td><td class="pe-4">{{ school.email|default:"—" }}</td></tr>
+                        <tr><td class="text-muted ps-4">{% trans "Student Capacity" %}</td><td class="pe-4">{{ school.student_capacity }}</td></tr>
+                        <tr>
+                            <td class="text-muted ps-4">{% trans "Director" %}</td>
+                            <td class="pe-4">{% if director %}{{ director.get_full_name|default:director.username }}{% else %}<span class="text-muted">{% trans "Not assigned" %}</span>{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted ps-4">{% trans "Librarians" %}</td>
+                            <td class="pe-4">
+                                {% for l in librarians %}
+                                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill me-1">{{ l.get_full_name|default:l.username }}</span>
+                                {% empty %}
+                                <span class="text-muted">{% trans "Not assigned" %}</span>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card-pro h-100">
+            <div class="card-pro-header">
+                <h5><i class="bi bi-graph-up text-primary"></i> {% trans "Book Fund Status" %}</h5>
+            </div>
+            <div class="card-pro-body">
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted small"><i class="bi bi-circle-fill text-success me-1" style="font-size:8px;"></i>{% trans "Available in library" %}</span>
+                    <strong>{{ available_books }}</strong>
+                </div>
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted small"><i class="bi bi-circle-fill text-primary me-1" style="font-size:8px;"></i>{% trans "Issued to teachers & students" %}</span>
+                    <strong>{{ issued_books }}</strong>
+                </div>
+                <div class="d-flex justify-content-between py-2 border-bottom">
+                    <span class="text-muted small"><i class="bi bi-circle-fill text-danger me-1" style="font-size:8px;"></i>{% trans "Lost" %}</span>
+                    <strong class="text-danger">{{ lost_books }}</strong>
+                </div>
+                <div class="d-flex justify-content-between py-2">
+                    <span class="text-muted small"><i class="bi bi-circle-fill me-1" style="font-size:8px; color: var(--damaged-dot);"></i>{% trans "Damaged" %}</span>
+                    <strong style="color: var(--damaged-text);">{{ damaged_books }}</strong>
+                </div>
+                {% if total_books %}
+                <div class="coverage-track mt-3" style="height:10px;">
+                    {% widthratio available_books total_books 100 as available_pct %}
+                    <div class="coverage-fill level-high" style="width: {{ available_pct }}%;"></div>
+                </div>
+                <div class="text-end small text-muted mt-1">{{ available_pct }}% {% trans "available" %}</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card-pro">
+    <div class="card-pro-header">
+        <h5><i class="bi bi-collection text-primary"></i> {% trans "Classrooms" %} ({{ classrooms.count }})</h5>
+    </div>
+    <div class="card-pro-body p-0">
+        <div class="table-responsive">
+            <table class="table-pro">
+                <thead>
+                    <tr>
+                        <th>{% trans "Grade" %}</th>
+                        <th>{% trans "Class" %}</th>
+                        <th>{% trans "Academic Year" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for classroom in classrooms %}
+                    <tr>
+                        <td><span class="fw-bold text-muted">{{ classroom.grade }}</span></td>
+                        <td class="fw-bold">{{ classroom.name }}</td>
+                        <td>{{ classroom.academic_year.name }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="3" class="p-0"></td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if not classrooms %}
+            {% trans "No classrooms found" as empty_title %}
+            {% trans "This school has no classrooms registered yet." as empty_desc %}
+            {% include "components/empty_state.html" with icon="bi bi-collection" title=empty_title description=empty_desc %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

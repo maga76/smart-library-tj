@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Director Dashboard" %} — Smart Library TJ{% endblock %}
+{% block page_title %}{% trans "School Control Center" %}{% endblock %}
+{% block page_subtitle %}<p>{{ school.name }}{% if current_year %} &middot; {{ current_year.name }}{% endif %}</p>{% endblock %}
+{% block page_actions %}
+<a href="{% url 'library:book_request_create' %}" class="btn-pro btn-pro-primary">
+    <i class="bi bi-envelope-paper"></i> {% trans "New Book Request" %}
+</a>
+{% endblock %}
+
+{% block content %}
+{% url 'library:book_request_create' as book_request_create_url %}
+{% url 'library:classroom_create' as classroom_create_url %}
+{% if not school %}
+{% trans "No school assigned" as et_title %}
+{% trans "Your director account has not been linked to a school. Please contact the system administrator." as et_desc %}
+{% include "components/empty_state.html" with icon="bi bi-building" title=et_title description=et_desc %}
+{% else %}
+
+{% trans "Students" as st_title1 %}
+{% trans "Teachers" as st_title2 %}
+{% trans "Classrooms" as st_title3 %}
+{% trans "Textbooks" as st_title4 %}
+{% blocktrans asvar st_sub4 %}{{ total_available }} available{% endblocktrans %}
+{% trans "Lost / Damaged" as st_title5 %}
+{% trans "Pending Requests" as st_title6 %}
+<div class="row g-3 mb-4">
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        {% include "components/stat_card.html" with title=st_title1 value=total_students icon="bi bi-people" color_class="icon-cyan" %}
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        {% include "components/stat_card.html" with title=st_title2 value=total_teachers icon="bi bi-person-badge" color_class="icon-purple" %}
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        {% include "components/stat_card.html" with title=st_title3 value=total_classrooms icon="bi bi-door-open" color_class="icon-blue" %}
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        {% include "components/stat_card.html" with title=st_title4 value=total_books icon="bi bi-book" color_class="icon-emerald" subtitle=st_sub4 %}
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        {% include "components/stat_card.html" with title=st_title5 value=total_lost|add:total_damaged icon="bi bi-exclamation-triangle" color_class="icon-rose" %}
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        {% include "components/stat_card.html" with title=st_title6 value=pending_requests icon="bi bi-envelope" color_class="icon-amber" %}
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-lg-7">
+        <div class="card-pro h-100">
+            <div class="card-pro-header">
+                <h5><i class="bi bi-journal-check text-primary"></i> {% trans "School Book Coverage" %}</h5>
+                <span class="badge bg-light text-muted">{% trans "By subject" %}</span>
+            </div>
+            <div class="card-pro-body">
+                {% for row in subject_coverage %}
+                <div class="coverage-row">
+                    <div class="coverage-label" style="width: 190px;">
+                        <div class="name">{{ row.subject }}</div>
+                        <div class="meta">{{ row.copies }} {% trans "copies" %}</div>
+                    </div>
+                    <div class="coverage-track">
+                        <div class="coverage-fill {% if row.pct >= 85 %}level-high{% elif row.pct >= 50 %}level-mid{% else %}level-low{% endif %}" style="width: {{ row.pct }}%;"></div>
+                    </div>
+                    <div class="coverage-pct">{{ row.pct }}%</div>
+                </div>
+                {% empty %}
+                {% trans "No data" as et2_title %}
+                {% trans "The school library has no textbooks yet to calculate coverage." as et2_desc %}
+                {% include "components/empty_state.html" with icon="bi bi-journal-x" title=et2_title description=et2_desc %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="card-pro h-100">
+            <div class="card-pro-header">
+                <h5><i class="bi bi-envelope-paper text-primary"></i> {% trans "Pending Requests" %}</h5>
+                <a href="{% url 'library:book_request_list' %}" class="btn-pro btn-pro-outline">{% trans "All" %}</a>
+            </div>
+            <div class="card-pro-body">
+                {% for req in recent_requests %}
+                <div class="d-flex justify-content-between align-items-start py-2 {% if not forloop.last %}border-bottom{% endif %}">
+                    <div>
+                        <div class="fw-bold" style="font-size: 13.5px;">{{ req.book.title }}</div>
+                        <div class="small text-muted">{% trans "Requested" %}: {{ req.requested_quantity }} {% trans "copies" %} &middot; {{ req.created_at|date:"d.m.Y" }}</div>
+                    </div>
+                    {% include "components/status_badge.html" with status_code=req.status status_display=req.get_status_display %}
+                </div>
+                {% empty %}
+                {% trans "No requests" as et3_title %}
+                {% trans "You haven't submitted any textbook restocking requests yet." as et3_desc %}
+                {% trans "New Request" as et3_action %}
+                {% include "components/empty_state.html" with icon="bi bi-envelope" title=et3_title description=et3_desc action_url=book_request_create_url action_text=et3_action action_icon="bi bi-plus-lg" %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card-pro">
+    <div class="card-pro-header">
+        <h5><i class="bi bi-door-open text-primary"></i> {% trans "Classrooms & Student Count" %}</h5>
+        <a href="{% url 'library:classroom_list' %}" class="btn-pro btn-pro-outline">{% trans "Manage Classes" %}</a>
+    </div>
+    <div class="card-pro-body p-0">
+        <div class="table-responsive">
+            <table class="table-pro">
+                <thead>
+                    <tr>
+                        <th>{% trans "Class Name" %}</th>
+                        <th>{% trans "Grade" %}</th>
+                        <th>{% trans "Academic Year" %}</th>
+                        <th>{% trans "Enrolled Students" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in classrooms %}
+                    <tr>
+                        <td class="fw-bold">{{ c.name }}</td>
+                        <td>{{ c.grade }}</td>
+                        <td>{{ c.academic_year.name }}</td>
+                        <td><span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3">{{ c.student_count }}</span></td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="4" class="p-0"></td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if not classrooms %}
+            {% trans "No classrooms yet" as et4_title %}
+            {% trans "Create your first classroom to start enrolling students." as et4_desc %}
+            {% trans "Add Classroom" as et4_action %}
+            {% include "components/empty_state.html" with icon="bi bi-door-open" title=et4_title description=et4_desc action_url=classroom_create_url action_text=et4_action action_icon="bi bi-plus-lg" %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

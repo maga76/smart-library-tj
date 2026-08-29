@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Book Copies" %} — Smart Library TJ{% endblock %}
+{% block page_title %}{% trans "Book Copies" %}{% endblock %}
+{% block page_subtitle %}<p>{% trans "Every physical textbook copy, tracked by inventory number and barcode" %}</p>{% endblock %}
+{% block page_actions %}
+<a href="{% url 'library:copy_create' %}" class="btn-pro btn-pro-primary"><i class="bi bi-plus-lg"></i> {% trans "Add Copies" %}</a>
+<a href="{% url 'library:copy_scan' %}" class="btn-pro btn-pro-outline"><i class="bi bi-upc-scan"></i> {% trans "Scan" %}</a>
+{% endblock %}
+{% block content %}
+{% url 'library:copy_create' as copy_create_url %}
+
+<div class="filter-bar-pro">
+    <form method="get" class="d-flex flex-wrap gap-2 w-100 align-items-center">
+        <div class="search-field">
+            <i class="bi bi-search"></i>
+            <input type="text" name="search" placeholder="{% trans "Search by inventory #, barcode, title..." %}" value="{{ search }}">
+        </div>
+        <select name="status" class="filter-select" onchange="this.form.submit()">
+            <option value="">{% trans "All Statuses" %}</option>
+            {% for code, label in statuses %}
+            <option value="{{ code }}" {% if status_filter == code %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+        {% if user.role in 'SUPER_ADMIN,DISTRICT_CHAIRMAN,JAMOAT_CHAIRMAN' %}
+        <select name="school" class="filter-select" onchange="this.form.submit()">
+            <option value="">{% trans "All Schools" %}</option>
+            {% for school in schools %}
+            <option value="{{ school.pk }}" {% if school_filter == school.pk|stringformat:"s" %}selected{% endif %}>{{ school.name }}</option>
+            {% endfor %}
+        </select>
+        {% endif %}
+        <select name="grade" class="filter-select" onchange="this.form.submit()">
+            <option value="">{% trans "All Grades" %}</option>
+            {% for g in grades %}
+            <option value="{{ g }}" {% if grade_filter == g|stringformat:"s" %}selected{% endif %}>{% trans "Grade" %} {{ g }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn-pro btn-pro-primary"><i class="bi bi-search"></i> {% trans "Search" %}</button>
+        {% if search or status_filter or school_filter or grade_filter %}
+        <a href="{% url 'library:copy_list' %}" class="btn-pro btn-pro-outline"><i class="bi bi-x-lg"></i> {% trans "Reset" %}</a>
+        {% endif %}
+    </form>
+</div>
+
+<div class="card-pro">
+    <div class="card-pro-header">
+        <h5><i class="bi bi-upc-scan text-primary"></i> {% trans "Copies" %}</h5>
+        <span class="badge bg-light text-muted">{{ page_obj.paginator.count }} {% trans "copies" %}</span>
+    </div>
+    <div class="card-pro-body p-0">
+        <div class="table-responsive">
+            <table class="table-pro">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>{% trans "Inventory #" %}</th>
+                        <th>{% trans "Barcode" %}</th>
+                        <th>{% trans "Book Title" %}</th>
+                        <th>{% trans "Status" %}</th>
+                        <th>{% trans "School" %}</th>
+                        <th>{% trans "Actions" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for copy in copies %}
+                    <tr>
+                        <td class="text-muted">{{ forloop.counter0|add:page_obj.start_index }}</td>
+                        <td><code>{{ copy.inventory_number }}</code></td>
+                        <td class="text-muted"><code>{{ copy.barcode }}</code></td>
+                        <td class="fw-bold"><a href="{% url 'library:book_detail' copy.book.pk %}">{{ copy.book.title }}</a></td>
+                        <td>{% include "components/status_badge.html" with status_code=copy.status status_display=copy.get_status_display %}</td>
+                        <td class="text-muted">{{ copy.school }}</td>
+                        <td><a href="{% url 'library:copy_detail' copy.pk %}" class="btn-pro btn-pro-outline" style="padding: 6px 10px;"><i class="bi bi-eye"></i></a></td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="7" class="p-0"></td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if not copies %}
+            {% trans "No copies found" as col_et_title %}
+            {% trans "Try changing your search filters, or register a new batch of copies." as col_et_desc %}
+            {% trans "Add Copies" as col_et_action %}
+            {% include "components/empty_state.html" with icon="bi bi-upc-scan" title=col_et_title description=col_et_desc action_url=copy_create_url action_text=col_et_action action_icon="bi bi-plus-lg" %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% include "components/pagination.html" %}
+{% endblock %}

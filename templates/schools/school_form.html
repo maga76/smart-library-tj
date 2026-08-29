@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{{ title }} - Smart Library TJ{% endblock %}
+{% block page_title %}<i class="bi bi-building text-primary"></i> {{ title }}{% endblock %}
+{% block page_subtitle %}<p>{% trans "Register or update a school's core details" %}</p>{% endblock %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+
+    <div class="card-pro">
+        <div class="card-pro-header">
+            <h5><i class="bi bi-info-circle text-primary"></i> {% trans "Basic Information" %}</h5>
+        </div>
+        <div class="card-pro-body">
+            <div class="row g-3">
+                <div class="col-md-8">
+                    <label class="form-label">{% trans "School Name" %}</label>
+                    <input type="text" name="name" class="form-control" value="{{ school.name|default:'' }}" required>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">{% trans "School Number" %}</label>
+                    <input type="text" name="school_number" class="form-control" value="{{ school.school_number|default:'' }}" required>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">{% trans "Student Capacity" %}</label>
+                    <input type="number" name="student_capacity" class="form-control" value="{{ school.student_capacity|default:'0' }}">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-pro">
+        <div class="card-pro-header">
+            <h5><i class="bi bi-geo-alt text-primary"></i> {% trans "Location" %}</h5>
+        </div>
+        <div class="card-pro-body">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">{% trans "Region" %}</label>
+                    <select name="region" class="form-select" required>
+                        {% for r in regions %}
+                        <option value="{{ r.pk }}" {% if school.region_id == r.pk %}selected{% endif %}>{{ r }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">{% trans "District" %}</label>
+                    <select name="district" class="form-select" required>
+                        {% for d in districts %}
+                        <option value="{{ d.pk }}" {% if school.district_id == d.pk %}selected{% endif %}>{{ d }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">{% trans "Jamoat" %}</label>
+                    <select name="jamoat" class="form-select" required>
+                        {% for j in jamoats %}
+                        <option value="{{ j.pk }}" {% if school.jamoat_id == j.pk %}selected{% endif %}>{{ j }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-12">
+                    <label class="form-label">{% trans "Address" %}</label>
+                    <input type="text" name="address" class="form-control" value="{{ school.address|default:'' }}">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-pro">
+        <div class="card-pro-header">
+            <h5><i class="bi bi-telephone text-primary"></i> {% trans "Contact" %}</h5>
+        </div>
+        <div class="card-pro-body">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">{% trans "Phone" %}</label>
+                    <input type="text" name="phone" class="form-control" value="{{ school.phone|default:'' }}">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">{% trans "Email" %}</label>
+                    <input type="email" name="email" class="form-control" value="{{ school.email|default:'' }}">
+                </div>
+                {% if school %}
+                <div class="col-12">
+                    <div class="form-check">
+                        <input type="checkbox" name="is_active" class="form-check-input" id="id_is_active" {% if school.is_active %}checked{% endif %}>
+                        <label class="form-check-label" for="id_is_active">{% trans "Active" %}</label>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn-pro btn-pro-primary"><i class="bi bi-check-circle"></i> {% trans "Save" %}</button>
+        <a href="{% url 'schools:school_list' %}" class="btn-pro btn-pro-outline">{% trans "Cancel" %}</a>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Academic Years" %} — Smart Library TJ{% endblock %}
+{% block page_title %}{% trans "Academic Years" %}{% endblock %}
+{% block page_subtitle %}<p>{% trans "Manage the school system's academic year calendar" %}</p>{% endblock %}
+{% block page_actions %}
+{% if user.role == 'SUPER_ADMIN' %}
+<a href="{% url 'library:academic_year_create' %}" class="btn-pro btn-pro-primary"><i class="bi bi-plus-lg"></i> {% trans "Add Year" %}</a>
+{% endif %}
+{% endblock %}
+{% block content %}
+{% url 'library:academic_year_create' as year_create_url %}
+<div class="card-pro">
+    <div class="card-pro-header">
+        <h5><i class="bi bi-calendar3 text-primary"></i> {% trans "Academic Years" %}</h5>
+        <span class="badge bg-light text-muted">{{ years|length }} {% trans "years" %}</span>
+    </div>
+    <div class="card-pro-body p-0">
+        <div class="table-responsive">
+            <table class="table-pro">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>{% trans "Name" %}</th>
+                        <th>{% trans "Start" %}</th>
+                        <th>{% trans "End" %}</th>
+                        <th>{% trans "Current" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for y in years %}
+                    <tr>
+                        <td class="text-muted">{{ forloop.counter }}</td>
+                        <td class="fw-bold">{{ y.name }}</td>
+                        <td>{{ y.start_date }}</td>
+                        <td>{{ y.end_date }}</td>
+                        <td>
+                            {% if y.is_current %}
+                            <span class="status-badge status-AVAILABLE"><span class="dot"></span> {% trans "Current" %}</span>
+                            {% else %}
+                            <span class="text-muted">—</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="5" class="p-0"></td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if not years %}
+            {% trans "No academic years found" as ay_et_title %}
+            {% trans "Create the first academic year for this system." as ay_et_desc %}
+            {% trans "Add Academic Year" as ay_et_action %}
+            {% include "components/empty_state.html" with icon="bi bi-calendar3" title=ay_et_title description=ay_et_desc action_url=year_create_url action_text=ay_et_action action_icon="bi bi-plus-lg" %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

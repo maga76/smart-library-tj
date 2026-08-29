@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Issue to Student" %} - Smart Library TJ{% endblock %}
+{% block page_title %}<i class="bi bi-arrow-right-circle text-primary"></i> {% trans "Issue Textbook to Student" %}{% endblock %}
+{% block page_subtitle %}<p>{% trans "Class Teacher → Student Handover" %}</p>{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card-pro">
+            <div class="card-pro-header">
+                <h5><span class="qa-icon icon-blue" style="width: 34px; height: 34px; font-size: 16px;"><i class="bi bi-arrow-right-circle"></i></span> {% trans "Give Book" %}</h5>
+            </div>
+            <div class="card-pro-body">
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">{% trans "Student" %} <span class="text-danger">*</span></label>
+                        <select name="student" class="form-select form-select-lg" required>
+                            <option value="">-- {% trans "Choose Student from Your Class" %} --</option>
+                            {% for student in students %}
+                            <option value="{{ student.pk }}">
+                                {{ student.get_full_name }}
+                                {% with enr=student.enrollments.all.0 %}
+                                    {% if enr %}({{ enr.classroom.name }}){% endif %}
+                                {% endwith %}
+                            </option>
+                            {% empty %}
+                            <option value="" disabled>{% trans "No students found in your assigned classes" %}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">{% trans "Textbook from Your Custody" %} <span class="text-danger">*</span></label>
+                        <select name="book_copy" class="form-select form-select-lg" required>
+                            <option value="">-- {% trans "Select Book Copy" %} --</option>
+                            {% for copy in copies %}
+                            <option value="{{ copy.pk }}">
+                                [{{ copy.inventory_number }}] {{ copy.book.title }} ({{ copy.book.grade }} {% trans "grade" %}, {{ copy.book.subject }})
+                            </option>
+                            {% empty %}
+                            <option value="" disabled>{% trans "You have no available books in your custody. Request books from librarian first." %}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">{% trans "Note (Optional)" %}</label>
+                        <textarea name="note" class="form-control" rows="2" placeholder="{% trans "Condition note, term, or comments..." %}"></textarea>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn-pro btn-pro-primary">
+                            <i class="bi bi-check2-circle"></i> {% trans "Hand Over Book to Student" %}
+                        </button>
+                        <a href="{% url 'transactions:transaction_list' %}" class="btn-pro btn-pro-outline">
+                            {% trans "Cancel" %}
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

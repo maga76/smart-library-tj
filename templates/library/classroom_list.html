@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Classrooms" %} — Smart Library TJ{% endblock %}
+{% block page_title %}{% trans "Classrooms" %}{% endblock %}
+{% block page_subtitle %}<p>{% trans "Manage classes and their enrolled student counts" %}</p>{% endblock %}
+{% block page_actions %}
+<a href="{% url 'library:classroom_create' %}" class="btn-pro btn-pro-primary"><i class="bi bi-plus-lg"></i> {% trans "Add Classroom" %}</a>
+{% endblock %}
+{% block content %}
+{% url 'library:classroom_create' as classroom_create_url %}
+
+<div class="card-pro">
+    <div class="card-pro-header">
+        <h5><i class="bi bi-door-open text-primary"></i> {% trans "Classrooms" %}</h5>
+        <span class="badge bg-light text-muted">{{ classrooms|length }} {% trans "classrooms" %}</span>
+    </div>
+    <div class="card-pro-body p-0">
+        <div class="table-responsive">
+            <table class="table-pro">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>{% trans "Name" %}</th>
+                        <th>{% trans "Grade" %}</th>
+                        <th>{% trans "School" %}</th>
+                        <th>{% trans "Academic Year" %}</th>
+                        <th>{% trans "Enrolled Students" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in classrooms %}
+                    <tr>
+                        <td class="text-muted">{{ forloop.counter }}</td>
+                        <td class="fw-bold">{{ c.name }}</td>
+                        <td>{{ c.grade }}</td>
+                        <td>{{ c.school }}</td>
+                        <td>{{ c.academic_year }}</td>
+                        <td><span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3">{{ c.students_count }}</span></td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="6" class="p-0"></td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if not classrooms %}
+            {% trans "No classrooms yet" as cl_et_title %}
+            {% trans "Create your first classroom to start enrolling students." as cl_et_desc %}
+            {% trans "Add Classroom" as cl_et_action %}
+            {% include "components/empty_state.html" with icon="bi bi-door-open" title=cl_et_title description=cl_et_desc action_url=classroom_create_url action_text=cl_et_action action_icon="bi bi-plus-lg" %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

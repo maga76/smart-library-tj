@@ -1,0 +1,1909 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Smart Library TJ 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-27 20:00+0500\n"
+"PO-Revision-Date: 2026-08-27 20:00+0500\n"
+"Last-Translator: Smart Library TJ Team\n"
+"Language-Team: Tajik\n"
+"Language: tg\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Access denied."
+msgstr "Дастрасӣ рад карда шуд."
+
+msgid "activated"
+msgstr "фаъол карда шуд"
+
+msgid "deactivated"
+msgstr "ғайрифаъол карда шуд"
+
+msgid "Dashboard"
+msgstr "Панели идоракунӣ"
+
+msgid "Main"
+msgstr "Асосӣ"
+
+msgid "Library Stock"
+msgstr "Фонди китобхона"
+
+msgid "Catalog"
+msgstr "Каталог"
+
+msgid "Book Copies"
+msgstr "Нусхаҳои китоб"
+
+msgid "Transactions"
+msgstr "Ҳаракатҳо"
+
+msgid "Structure & Management"
+msgstr "Таркиб ва идоракунӣ"
+
+msgid "Schools"
+msgstr "Мактабҳо"
+
+msgid "Users"
+msgstr "Истифодабарандагон"
+
+msgid "Geography"
+msgstr "Ҷуғрофиё"
+
+msgid "School Requests"
+msgstr "Дархостҳои мактаб"
+
+msgid "Analytics & Logs"
+msgstr "Таҳлил ва журналҳо"
+
+msgid "Analytics"
+msgstr "Таҳлил"
+
+msgid "Audit Log"
+msgstr "Журнал аудит"
+
+msgid "District Oversight"
+msgstr "Назорати ноҳия"
+
+msgid "District Schools"
+msgstr "Мактабҳои ноҳия"
+
+msgid "District Stock"
+msgstr "Фонди ноҳия"
+
+msgid "Lost & Damaged"
+msgstr "Гумшуда ва вайроншуда"
+
+msgid "Jamoat Monitoring"
+msgstr "Мониторинги ҷамоат"
+
+msgid "Jamoat Schools"
+msgstr "Мактабҳои ҷамоат"
+
+msgid "Textbook Stock"
+msgstr "Фонди китобҳои дарсӣ"
+
+msgid "Loss Tracking"
+msgstr "Ҳисоби зиён"
+
+msgid "School Management"
+msgstr "Идоракунии мактаб"
+
+msgid "Classrooms"
+msgstr "Синфҳо"
+
+msgid "Students"
+msgstr "Хонандагон"
+
+msgid "Teachers"
+msgstr "Омӯзгорон"
+
+msgid "School Library"
+msgstr "Китобхонаи мактаб"
+
+msgid "Book Requests"
+msgstr "Дархостҳои китоб"
+
+msgid "Defects & Losses"
+msgstr "Камбудиҳо ва зиёнҳо"
+
+msgid "Library Operations"
+msgstr "Амалиётҳои китобхона"
+
+msgid "Barcode Scanner"
+msgstr "Сканкунии штрихкод"
+
+msgid "Movement & Handover"
+msgstr "Ҳаракат ва супориш"
+
+msgid "Issue to Teacher"
+msgstr "Додан ба омӯзгор"
+
+msgid "Receive Return"
+msgstr "Қабули баргардонидан"
+
+msgid "Verify Issues"
+msgstr "Санҷидани масъалаҳо"
+
+msgid "History Log"
+msgstr "Журнали таърих"
+
+msgid "My Classroom"
+msgstr "Синфи ман"
+
+msgid "My Students"
+msgstr "Хонандагони ман"
+
+msgid "Books in Custody"
+msgstr "Китобҳо дар нигоҳдорӣ"
+
+msgid "Daily Actions"
+msgstr "Амалиётҳои ҳаррӯза"
+
+msgid "Issue to Student"
+msgstr "Додан ба хонанда"
+
+msgid "Return from Student"
+msgstr "Қабул аз хонанда"
+
+msgid "Report Issue"
+msgstr "Гузориш дар бораи масъала"
+
+msgid "My Issuances"
+msgstr "Супоришҳои ман"
+
+msgid "My Education"
+msgstr "Таҳсили ман"
+
+msgid "My Textbooks"
+msgstr "Китобҳои дарсии ман"
+
+msgid "Return History"
+msgstr "Таърихи баргардонидан"
+
+msgid "AI Assistant"
+msgstr "Ёвари зеҳнӣ"
+
+msgid "Dono"
+msgstr "Доно"
+
+msgid "Logout"
+msgstr "Баромадан"
+
+msgid "Toggle Sidebar"
+msgstr "Гузариш ба навбати лавҳа"
+
+msgid "Toggle theme"
+msgstr "Гузариш ба мавзӯъ"
+
+msgid "Change Language"
+msgstr "Иваз кардани забон"
+
+msgid "Sign In"
+msgstr "Ворид шудан"
+
+msgid "Sign Out"
+msgstr "Баромадан"
+
+msgid "Profile"
+msgstr "Профил"
+
+msgid "Profile Settings"
+msgstr "Танзимоти профил"
+
+msgid "Username / Login"
+msgstr "Номи корбар / Логин"
+
+msgid "Enter username"
+msgstr "Номи корбарро ворид кунед"
+
+msgid "Password"
+msgstr "Рамз"
+
+msgid "Enter password"
+msgstr "Рамзро ворид кунед"
+
+msgid "Welcome to Smart Library"
+msgstr "Хуш омадед ба Smart Library"
+
+msgid "Sign in to access your personal dashboard and school library records."
+msgstr ""
+"Барои дастрасӣ ба панели шахсӣ ва сабтҳои китобхонаи мактаб ворид шавед."
+
+msgid "Invalid username or password. Please try again."
+msgstr "Номи корбар ё рамз нодуруст аст. Лутфан, аз нав кӯшиш кунед."
+
+msgid "Digital Education System"
+msgstr "Системаи таҳсили рақамӣ"
+
+msgid "Unified digital ecosystem of school libraries in Tajikistan"
+msgstr "Экосистемаи ягонаи рақамии китобхонаҳои мактабҳои Ҷумҳурии Тоҷикистон"
+
+msgid ""
+"Centralized piece-by-piece tracking of textbooks from national warehouse and"
+" schools to individual students."
+msgstr ""
+"Ҳисоби марказонидашудаи китобҳои дарсӣ аз анбори миллӣ ва мактабҳо то "
+"хонандагони алоҳида."
+
+msgid "Transparent chain of issuing and returning textbooks"
+msgstr "Занҷири шаффофи додан ва баргардонидани китобҳои дарсӣ"
+
+msgid "Unique barcodes and camera scanner for schools"
+msgstr "Штрихкодҳои ягона ва сканери камера барои мактабҳо"
+
+msgid "Smart assistant \"Dono\" in two languages"
+msgstr "Ёвари зеҳнӣ «Доно» ба ду забон"
+
+msgid "Quick login for testing (click to auto-fill):"
+msgstr "Воридшавии зуд барои санҷиш (барои пур кардани худкор клик кунед):"
+
+msgid "Super Admin"
+msgstr "Сармудир"
+
+msgid "District"
+msgstr "Ноҳия"
+
+msgid "Director"
+msgstr "Директор"
+
+msgid "Librarian"
+msgstr "Китобдор"
+
+msgid "Teacher"
+msgstr "Омӯзгор"
+
+msgid "Student"
+msgstr "Хонанда"
+
+msgid "Republic of Tajikistan"
+msgstr "Ҷумҳурии Тоҷикистон"
+
+msgid "Scan barcode / search..."
+msgstr "Сканкунии штрихкод / ҷустуҷӯ..."
+
+msgid "Open AI Assistant Dono"
+msgstr "Кушодани ёвари зеҳнӣ Доно"
+
+msgid "Smart Library TJ Copilot"
+msgstr "Ёвари Smart Library TJ"
+
+msgid "Role"
+msgstr "Вазифа"
+
+msgid "Regions"
+msgstr "Вилоятҳо"
+
+msgid "Districts"
+msgstr "Ноҳияҳо"
+
+msgid "Jamoats"
+msgstr "Ҷамоатҳо"
+
+msgid "Super Admin Dashboard"
+msgstr "Ҳуҷраи шахсии Сармудир"
+
+msgid "District Dashboard"
+msgstr "Ҳуҷраи шахсии Раиси ноҳия"
+
+msgid "Jamoat Dashboard"
+msgstr "Ҳуҷраи шахсии Раиси ҷамоат"
+
+msgid "Director Dashboard"
+msgstr "Ҳуҷраи шахсии Директори мактаб"
+
+msgid "Librarian Dashboard"
+msgstr "Ҳуҷраи шахсии Китобдор"
+
+msgid "Teacher Dashboard"
+msgstr "Ҳуҷраи шахсии Роҳбари синф"
+
+msgid "Student Dashboard"
+msgstr "Ҳуҷраи шахсии Хонанда"
+
+msgid "National Overview"
+msgstr "Назари миллӣ"
+
+msgid "Good day"
+msgstr "Рӯзи хуб"
+
+msgid ""
+"Here is the real-time operational status across all school libraries "
+"nationwide."
+msgstr ""
+"Ин вазъияти амалиётии ҳамаи китобхонаҳои мактабҳо дар тамоми кишвар аст."
+
+msgid "Add Book"
+msgstr "Илова кардани китоб"
+
+msgid "Total Textbooks"
+msgstr "Ҳамагӣ китобҳои дарсӣ"
+
+msgid "In the national fund"
+msgstr "Дар фонди миллӣ"
+
+msgid "In Libraries"
+msgstr "Дар китобхонаҳо"
+
+msgid "Available for issue"
+msgstr "Барои супориш дастрас"
+
+msgid "With Students"
+msgstr "Ҳамроҳи хонандагон"
+
+msgid "In active use"
+msgstr "Дар истифодаи фаъол"
+
+msgid "With Teachers"
+msgstr "Ҳамроҳи омӯзгорон"
+
+msgid "In classroom custody"
+msgstr "Дар нигоҳдории синфҳо"
+
+msgid "Schools in System"
+msgstr "Мактабҳо дар система"
+
+msgid "Require write-off"
+msgstr "Ниёз ба навиштан"
+
+msgid "Book Distribution"
+msgstr "Тақсими китобҳо"
+
+msgid "Live Data"
+msgstr "Маълумоти зинда"
+
+msgid "Regional School Statistics"
+msgstr "Омори мактабҳои минтақавӣ"
+
+msgid "Manage Regions"
+msgstr "Идоракунии вилоятҳо"
+
+msgid "Region"
+msgstr "Вилоят"
+
+msgid "Book Fund"
+msgstr "Фонди китоб"
+
+msgid "books"
+msgstr "китобҳо"
+
+msgid "No regions found"
+msgstr "Вилоятҳо ёфт нашуданд"
+
+msgid "Recent Custody Movements"
+msgstr "Ҳаракатҳои охирин"
+
+msgid "Full Ledger"
+msgstr "Журнали пурра"
+
+msgid "Inventory #"
+msgstr "Рақами инвентарӣ"
+
+msgid "Operation"
+msgstr "Амалиёт"
+
+msgid "Parties"
+msgstr "Тарафҳо"
+
+msgid "Time"
+msgstr "Вақт"
+
+msgid "Warehouse"
+msgstr "Анбор"
+
+msgid "No recent transactions recorded."
+msgstr "Ҳаракатҳои охирин сабт нашудаанд."
+
+msgid "System Audit Log"
+msgstr "Журнали аудити система"
+
+msgid "View all"
+msgstr "Ҳамаро дидан"
+
+msgid "No recent audit events"
+msgstr "Рӯйдодҳои охирини аудит нестанд"
+
+msgid "Textbook coverage overview for"
+msgstr "Назари пӯшиши китобҳои дарсӣ барои"
+
+msgid "All Schools"
+msgstr "Ҳамаи мактабҳо"
+
+msgid "Full Analytics"
+msgstr "Таҳлили пурра"
+
+msgid "Schools in District"
+msgstr "Мактабҳо дар ноҳия"
+
+msgid "Active institutions"
+msgstr "Муассисаҳои фаъол"
+
+msgid "Across all district schools"
+msgstr "Дар тамоми мактабҳои ноҳия"
+
+msgid "Textbooks in Fund"
+msgstr "Китобҳои дарсӣ дар фонд"
+
+msgid "available"
+msgstr "дастрас"
+
+msgid "Estimated Deficit"
+msgstr "Камбудии тахминӣ"
+
+msgid "Based on 10 books / student"
+msgstr "Дар асоси 10 китоб / хонанда"
+
+msgid "Book Fund Status"
+msgstr "Вазъияти фонди китоб"
+
+msgid "Available in libraries"
+msgstr "Дар китобхонаҳо дастрас"
+
+msgid "Issued to teachers & students"
+msgstr "Ба омӯзгорон ва хонандагон супорида шуд"
+
+msgid "School Coverage Ranking"
+msgstr "Рейтинги пӯшиши мактаб"
+
+msgid "Books vs. 10/student target"
+msgstr "Китобҳо vs. ҳадафи 10/хонанда"
+
+msgid "No schools"
+msgstr "Мактабҳо нестанд"
+
+msgid "No schools have been registered in this district yet."
+msgstr "Дар ин ноҳия ягон мактаб ҳоло ثبت нашудааст."
+
+msgid "students"
+msgstr "хонандагон"
+
+msgid "Full School List"
+msgstr "Рӯйхати пурраи мактабҳо"
+
+msgid "No schools registered"
+msgstr "Мактабҳо ثبت нашудаанд"
+
+msgid "School library monitoring for"
+msgstr "Мониторинги китобхонаи мактаб барои"
+
+msgid "Schools in Jamoat"
+msgstr "Мактабҳо дар ҷамоат"
+
+msgid "Across all schools"
+msgstr "Дар тамоми мактабҳо"
+
+msgid "Total fund"
+msgstr "Фонди умумӣ"
+
+msgid "lost"
+msgstr "гумшуда"
+
+msgid "damaged"
+msgstr "вайроншуда"
+
+msgid "Problem Schools & Coverage"
+msgstr "Мактабҳои проблемнок ва пӯшеш"
+
+msgid "No schools have been registered in this jamoat yet."
+msgstr "Дар ин ҷамоат ягон мактаб ҳоло ثبت нашудааст."
+
+msgid "School Control Center"
+msgstr "Маркази идоракунии мактаб"
+
+msgid "New Book Request"
+msgstr "Дархости нави китоб"
+
+msgid "Textbooks"
+msgstr "Китобҳои дарсӣ"
+
+msgid "Pending Requests"
+msgstr "Дархостҳои интизорӣ"
+
+msgid "School Book Coverage"
+msgstr "Пӯшиши китобҳои мактаб"
+
+msgid "By subject"
+msgstr "Аз рӯи фан"
+
+msgid "copies"
+msgstr "нусхаҳо"
+
+msgid "No data"
+msgstr "Маълумот нест"
+
+msgid "The school library has no textbooks yet to calculate coverage."
+msgstr ""
+"Китобхонаи мактаб ҳоло китобҳои дарсӣ надорад барои ҳисоб кардани пӯшеш."
+
+msgid "Requested"
+msgstr "Дархост карда шуд"
+
+msgid "You haven't submitted any textbook restocking requests yet."
+msgstr "Шумо ҳоло ягон дархости навсозии китобҳои дарсӣ навишта навед."
+
+msgid "Manage Classes"
+msgstr "Идоракунии синфҳо"
+
+msgid "Class Name"
+msgstr "Номи синф"
+
+msgid "Enrolled Students"
+msgstr "Хонандагони қайдшуда"
+
+msgid "No classrooms yet"
+msgstr "Ҳоло синфҳо нестанд"
+
+msgid "Create your first classroom to start enrolling students."
+msgstr "Синфи аввалини худро созед то ба навиштани хонандагон шурӯъ кунед."
+
+msgid "Add Classroom"
+msgstr "Илова кардани синф"
+
+msgid "Librarian Workspace"
+msgstr "Ҷои кории китобдор"
+
+msgid "Find a Book"
+msgstr "Ҷустуҷӯи китоб"
+
+msgid "Search"
+msgstr "Ҷустуҷӯ"
+
+msgid "Receive Books"
+msgstr "Қабули китобҳо"
+
+msgid "Register new copies"
+msgstr "Қайд кардани нусхаҳои нав"
+
+msgid "Give to Teacher"
+msgstr "Додан ба омӯзгор"
+
+msgid "Issue to a class teacher"
+msgstr "Додан ба роҳбари синф"
+
+msgid "Return Books"
+msgstr "Баргардонидани китобҳо"
+
+msgid "Receive back from teacher"
+msgstr "Қабул аз омӯзгор"
+
+msgid "pending confirmation"
+msgstr "интизори тасдиқ"
+
+msgid "At Library"
+msgstr "Дар китобхона"
+
+msgid "Written Off"
+msgstr "Навишта шуд"
+
+msgid "Recent School Transactions"
+msgstr "Ҳаракатҳои охирини мактаб"
+
+msgid "Full History"
+msgstr "Таърихи пурра"
+
+msgid "Date & Time"
+msgstr "Сана ва вақт"
+
+msgid "No transactions yet"
+msgstr "Ҳоло ҳаракатҳо нестанд"
+
+msgid "No custody movements have been recorded for this school."
+msgstr "Барои ин мактаб ягон ҳаракат сабт нашудааст."
+
+msgid "Here is what needs your attention today."
+msgstr "Ин чизҳоеанд, ки имрӯз ба диққати шумо ниёз доранд."
+
+msgid "Give Book"
+msgstr "Додани китоб"
+
+msgid "Return Book"
+msgstr "Баргардонидани китоб"
+
+msgid "Report Lost"
+msgstr "Гузориш дар бораи гумшуда"
+
+msgid "Flag a missing textbook"
+msgstr "Нишон додани китоби гумшуда"
+
+msgid "Report Damaged"
+msgstr "Гузориш дар бораи вайроншуда"
+
+msgid "Flag a damaged textbook"
+msgstr "Нишон додани китоби вайроншуда"
+
+msgid "My Classes"
+msgstr "Синфҳои ман"
+
+msgid "Ready to Issue"
+msgstr "Омода барои супориш"
+
+msgid "Issued to Students"
+msgstr "Ба хонандагон супорида шуд"
+
+msgid "Returned"
+msgstr "Баргардонида шуд"
+
+msgid "Books in My Possession"
+msgstr "Китобҳо дар нигоҳдории ман"
+
+msgid "Student Roster"
+msgstr "Рӯйхати хонандагон"
+
+msgid "No books on hand"
+msgstr "Китобҳо дар даст нестанд"
+
+msgid ""
+"You have not received any textbooks from the librarian to issue to students "
+"yet."
+msgstr ""
+"Шумо ҳоло ягон китоби дарсӣ аз китобдор нагирифтаед барои супоридан ба "
+"хонандагон."
+
+msgid "No books with students"
+msgstr "Китобҳо бо хонандагон нестанд"
+
+msgid "You haven't issued any textbooks to your students yet."
+msgstr "Шумо ҳоло ягон китоби дарсӣ ба хонандагонашон супорида навед."
+
+msgid "My Assigned Classrooms"
+msgstr "Синфҳои вобастаи ман"
+
+msgid "Class Teacher"
+msgstr "Роҳбари синф"
+
+msgid "Subject Teacher"
+msgstr "Омӯзгори фан"
+
+msgid "No assignments"
+msgstr "Вобастагиҳо нестанд"
+
+msgid ""
+"You have not been assigned any classrooms for the current academic year yet."
+msgstr "Шумо ҳоло барои соли таҳсили ҷорӣ ягон синф вобаста нашудаед."
+
+msgid "Hi"
+msgstr "Салом"
+
+msgid "Here are the textbooks currently registered under your name."
+msgstr "Ин китобҳои дарсӣ ҳоло ба номи шумо қайд шудаанд."
+
+msgid "Books on Hand"
+msgstr "Китобҳо дар даст"
+
+msgid "No textbooks yet"
+msgstr "Ҳоло китобҳои дарсӣ нестанд"
+
+msgid ""
+"You do not have any textbooks registered under your name at the moment."
+msgstr "Дар ҳоли ҳозир ба номи шумо ягон китоби дарсӣ қайд нашудааст."
+
+msgid "Recently Returned Books"
+msgstr "Китобҳои охирин баргардонидашуда"
+
+msgid "Return Date"
+msgstr "Санаи баргардонидан"
+
+msgid "No returns"
+msgstr "Баргардонидаҳо нестанд"
+
+msgid "You haven't returned any textbooks yet."
+msgstr "Шумо ҳоло ягон китоби дарсӣ баргардонида навед."
+
+msgid "My Reports"
+msgstr "Гузоришҳои ман"
+
+msgid "No reports"
+msgstr "Гузоришҳо нестанд"
+
+msgid "You haven't reported any lost or damaged textbooks."
+msgstr ""
+"Шумо ҳоло ягон гузориш дар бораи китоби гумшуда ё вайроншуда навишта навед."
+
+msgid ""
+"Hello! I am Dono, your smart library assistant. How can I help you today?"
+msgstr ""
+"Салом! Ман Доно, ёвари зеҳнии шумо дар китобхона. Имрӯз чӣ тавр ба шумо "
+"кӯмак карда метавонам?"
+
+msgid "Ask Dono a question..."
+msgstr "Ба Доно савол диҳед..."
+
+msgid "No answer."
+msgstr "Ҷавоб нест."
+
+msgid "Connection error."
+msgstr "Хатои пайвастшавӣ."
+
+msgid "Ask Dono a question in Tajik or Russian..."
+msgstr "Ба Доно савол ба забони тоҷикӣ ё русӣ диҳед..."
+
+msgid "User Management"
+msgstr "Идоракунии истифодабарандагон"
+
+msgid ""
+"Manage all system accounts, roles and access across the national library "
+"network."
+msgstr ""
+"Идоракунии ҳамаи ҳисобҳо, вазифаҳо ва дастрасӣ дар шабакаи миллии китобхона."
+
+msgid "Create User"
+msgstr "Сохтани истифодабаранда"
+
+msgid "Edit User"
+msgstr "Таҳрири истифодабаранда"
+
+msgid "Search by name, username, phone, email..."
+msgstr "Ҷустуҷӯ аз рӯи ном, логин, телефон, email..."
+
+msgid "All Roles"
+msgstr "Ҳамаи вазифаҳо"
+
+msgid "Status"
+msgstr "Вазъият"
+
+msgid "Active"
+msgstr "Фаъол"
+
+msgid "Inactive"
+msgstr "Ғайрифаъол"
+
+msgid "Filter"
+msgstr "Филтр"
+
+msgid "Reset"
+msgstr "Барқарор кардан"
+
+msgid "User"
+msgstr "Истифодабаранда"
+
+msgid "Territory / School"
+msgstr "Худуд / Мактаб"
+
+msgid "National level"
+msgstr "Сатҳи миллӣ"
+
+msgid "Actions"
+msgstr "Амалиётҳо"
+
+msgid "Are you sure you want to change user status?"
+msgstr "Шумо мутмаинед, ки мехоҳед вазъияти истифодабарандаро тағйир диҳед?"
+
+msgid "Deactivate"
+msgstr "Ғайрифаъол кардан"
+
+msgid "Activate"
+msgstr "Фаъол кардан"
+
+msgid "Fill in account credentials, role and territorial assignment."
+msgstr "Маълумоти ҳисоб, вазифа ва вобастагии худудро пур кунед."
+
+msgid "Account Credentials"
+msgstr "Маълумоти ҳисоб"
+
+msgid "Leave blank to keep current password"
+msgstr "Холӣ гузоред то рамзи ҷорӣ нигоҳ дошта шавад"
+
+msgid "First Name"
+msgstr "Ном"
+
+msgid "Last Name"
+msgstr "Насаб"
+
+msgid "Role & Territorial Assignment"
+msgstr "Вазифа ва вобастагии худуд"
+
+msgid "None"
+msgstr "Нест"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Phone"
+msgstr "Телефон"
+
+msgid "School"
+msgstr "Мактаб"
+
+msgid "Save"
+msgstr "Нигоҳ доштан"
+
+msgid "Cancel"
+msgstr "Бекор кардан"
+
+msgid "Your personal account details."
+msgstr "Маълумоти шахсии ҳисоби шумо."
+
+msgid "Personal Information"
+msgstr "Маълумоти шахсӣ"
+
+msgid "Full Name"
+msgstr "Номи пурра"
+
+msgid "Username"
+msgstr "Номи корбар"
+
+msgid "Territory"
+msgstr "Худуд"
+
+msgid "Address"
+msgstr "Суроға"
+
+msgid "Contact"
+msgstr "Тамос"
+
+msgid "Registry of all schools and their library status."
+msgstr "Рӯйхати ҳамаи мактабҳо ва вазъияти китобхонаи онҳо."
+
+msgid "Add School"
+msgstr "Илова кардани мактаб"
+
+msgid "Search by name or number..."
+msgstr "Ҷустуҷӯ аз рӯи ном ё рақам..."
+
+msgid "All Regions"
+msgstr "Ҳамаи вилоятҳо"
+
+msgid "All Districts"
+msgstr "Ҳамаи ноҳияҳо"
+
+msgid "School Registry"
+msgstr "Рӯйхати мактабҳо"
+
+msgid "View"
+msgstr "Дидан"
+
+msgid "School Name"
+msgstr "Номи мактаб"
+
+msgid "School Number"
+msgstr "Рақами мактаб"
+
+msgid "Student Capacity"
+msgstr "Иқтидори хонандагон"
+
+msgid "Location"
+msgstr "Ҷойгиршавӣ"
+
+msgid "Register or update a school's core details."
+msgstr "Қайд ё навсозии маълумоти асосии мактаб."
+
+msgid "School Information"
+msgstr "Маълумот дар бораи мактаб"
+
+msgid "Not assigned"
+msgstr "Вобаста нашудааст"
+
+msgid "Librarians"
+msgstr "Китобдорон"
+
+msgid "Available in library"
+msgstr "Дар китобхона дастрас"
+
+msgid "Damaged"
+msgstr "Вайроншуда"
+
+msgid "Grade"
+msgstr "Синф"
+
+msgid "Class"
+msgstr "Синф"
+
+msgid "Academic Year"
+msgstr "Соли таҳсил"
+
+msgid "No classrooms found"
+msgstr "Синфҳо ёфт нашуданд"
+
+msgid "This school has no classrooms registered yet."
+msgstr "Дар ин мактаб ҳоло ягон синф қайд нашудааст."
+
+msgid "Create School"
+msgstr "Сохтани мактаб"
+
+msgid "Edit School"
+msgstr "Таҳрири мактаб"
+
+msgid "Fill in all required fields (name, number, region, district, jamoat)."
+msgstr ""
+"Ҳамаи майдонҳои лозимиро пур кунед (ном, рақам, вилоят, ноҳия, ҷамоат)."
+
+msgid "A school with number %(number)s already exists."
+msgstr "Мактаб бо рақами %(number)s аллакай мавҷуд аст."
+
+msgid "School \"%(name)s\" (#%(number)s) has been successfully created."
+msgstr "Мактаби \"%(name)s\" (#%(number)s) бомуваффақият сохта шуд."
+
+msgid "School \"%(name)s\" has been successfully updated."
+msgstr "Мактаби \"%(name)s\" бомуваффақият навсозӣ шуд."
+
+msgid "School \"%(name)s\" %(status)s."
+msgstr "Мактаби \"%(name)s\" %(status)s."
+
+msgid "National geographic hierarchy — top level."
+msgstr "Тартиби географии миллӣ — сатҳи болоӣ."
+
+msgid "Add Region"
+msgstr "Илова кардани вилоят"
+
+msgid "Search by name or code..."
+msgstr "Ҷустуҷӯ аз рӯи ном ё код..."
+
+msgid "Name (RU)"
+msgstr "Ном (RU)"
+
+msgid "Name (TJ)"
+msgstr "Ном (TJ)"
+
+msgid "Code"
+msgstr "Код"
+
+msgid "Top-level administrative region."
+msgstr "Вилояти маъмурӣ аз сатҳи болоӣ."
+
+msgid "Administrative districts within each region."
+msgstr "Ноҳияҳои маъмурӣ дар ҳар як вилоят."
+
+msgid "Add District"
+msgstr "Илова кардани ноҳия"
+
+msgid "Administrative district within a region."
+msgstr "Ноҳияи маъмурӣ дар вилоят."
+
+msgid "Smallest administrative units within each district."
+msgstr "Воҳидҳои хурди маъмурӣ дар ҳар як ноҳия."
+
+msgid "Add Jamoat"
+msgstr "Илова кардани ҷамоат"
+
+msgid "Smallest administrative unit within a district."
+msgstr "Воҳиди хурди маъмурӣ дар ноҳия."
+
+msgid "Create Region"
+msgstr "Сохтани вилоят"
+
+msgid "Edit Region"
+msgstr "Таҳрири вилоят"
+
+msgid "Create District"
+msgstr "Сохтани ноҳия"
+
+msgid "Edit District"
+msgstr "Таҳрири ноҳия"
+
+msgid "Create Jamoat"
+msgstr "Сохтани ҷамоат"
+
+msgid "Edit Jamoat"
+msgstr "Таҳрири ҷамоат"
+
+msgid "All required fields must be filled in."
+msgstr "Ҳамаи майдонҳои лозимӣ бояд пур карда шаванд."
+
+msgid "Fill in all required fields."
+msgstr "Ҳамаи майдонҳои лозимиро пур кунед."
+
+msgid "Region \"%(name)s\" has been successfully created."
+msgstr "Вилояти \"%(name)s\" бомуваффақият сохта шуд."
+
+msgid "Region \"%(name)s\" has been successfully updated."
+msgstr "Вилояти \"%(name)s\" бомуваффақият навсозӣ шуд."
+
+msgid "Region \"%(name)s\" %(status)s."
+msgstr "Вилояти \"%(name)s\" %(status)s."
+
+msgid "District \"%(name)s\" has been successfully created."
+msgstr "Ноҳияи \"%(name)s\" бомуваффақият сохта шуд."
+
+msgid "District \"%(name)s\" has been successfully updated."
+msgstr "Ноҳияи \"%(name)s\" бомуваффақият навсозӣ шуд."
+
+msgid "District \"%(name)s\" %(status)s."
+msgstr "Ноҳияи \"%(name)s\" %(status)s."
+
+msgid "Jamoat \"%(name)s\" has been successfully created."
+msgstr "Ҷамоати \"%(name)s\" бомуваффақият сохта шуд."
+
+msgid "Jamoat \"%(name)s\" has been successfully updated."
+msgstr "Ҷамоати \"%(name)s\" бомуваффақият навсозӣ шуд."
+
+msgid "Jamoat \"%(name)s\" %(status)s."
+msgstr "Ҷамоати \"%(name)s\" %(status)s."
+
+msgid "Browse and manage the national textbook catalog."
+msgstr "Дидан ва идоракунии каталоги миллии китобҳои дарсӣ."
+
+msgid "Search by title, author, ISBN, publisher..."
+msgstr "Ҷустуҷӯ аз рӯи ном, муаллиф, ISBN, нашриёт..."
+
+msgid "All Grades"
+msgstr "Ҳамаи синфҳо"
+
+msgid "All Subjects"
+msgstr "Ҳамаи фанҳо"
+
+msgid "All Languages"
+msgstr "Ҳамаи забонҳо"
+
+msgid "Tajik"
+msgstr "Тоҷикӣ"
+
+msgid "Russian"
+msgstr "Русӣ"
+
+msgid "Title"
+msgstr "Ном"
+
+msgid "Author"
+msgstr "Муаллиф"
+
+msgid "Subject"
+msgstr "Фан"
+
+msgid "Language"
+msgstr "Забон"
+
+msgid "ISBN"
+msgstr "ISBN"
+
+msgid "Copies"
+msgstr "Нусхаҳо"
+
+msgid "Publisher"
+msgstr "Нашриёт"
+
+msgid "Publication Year"
+msgstr "Соли нашр"
+
+msgid "total"
+msgstr "ҳамагӣ"
+
+msgid "No textbooks found"
+msgstr "Китобҳои дарсӣ ёфт нашуданд"
+
+msgid ""
+"Try changing your search filters, or add a new textbook to the catalog."
+msgstr ""
+"Кӯшиш кунед филтрҳои ҷустуҷӯро тағйир диҳед, ё китоби дарсии нав ба каталог "
+"илова кунед."
+
+msgid "Back to Catalog"
+msgstr "Ба каталог баргаштан"
+
+msgid "Edit"
+msgstr "Таҳрир кардан"
+
+msgid "Total Copies"
+msgstr "Ҳамагӣ нусхаҳо"
+
+msgid "Available"
+msgstr "Дастрас"
+
+msgid "Lost / Damaged"
+msgstr "Гумшуда / Вайроншуда"
+
+msgid "Every physical textbook copy tracked by inventory number and barcode."
+msgstr ""
+"Ҳар як нусхаи китоби дарсӣ тавассути рақами инвентарӣ ва штрихкод пайгирӣ "
+"мешавад."
+
+msgid "Add Copies"
+msgstr "Илова кардани нусхаҳо"
+
+msgid "Scan"
+msgstr "Скан кардан"
+
+msgid "Search by inventory #, barcode, title..."
+msgstr "Ҷустуҷӯ аз рӯи рақами инвентарӣ, штрихкод, ном..."
+
+msgid "All Statuses"
+msgstr "Ҳамаи вазъиятҳо"
+
+msgid "Barcode"
+msgstr "Штрихкод"
+
+msgid "Book Title"
+msgstr "Номи китоб"
+
+msgid "No copies found"
+msgstr "Нусхаҳо ёфт нашуданд"
+
+msgid "Register a new batch of copies"
+msgstr "Қайд кардани партияи нави нусхаҳо"
+
+msgid "View Book"
+msgstr "Дидани китоб"
+
+msgid "Back to Copies"
+msgstr "Ба нусхаҳо баргаштан"
+
+msgid "Copy Information"
+msgstr "Маълумот дар бораи нусха"
+
+msgid "Reported Issues"
+msgstr "Масъалаҳои гузоришшуда"
+
+msgid "Reported"
+msgstr "Гузоришшуда"
+
+msgid "Custody Movement History"
+msgstr "Таърихи ҳаракати нигоҳдорӣ"
+
+msgid "records"
+msgstr "сабтҳо"
+
+msgid "No history"
+msgstr "Таърих нест"
+
+msgid "No movements have been recorded for this copy yet."
+msgstr "Барои ин нусха ҳоло ягон ҳаракат сабт нашудааст."
+
+msgid "Register a new batch of physical copies for a catalog title."
+msgstr "Қайд кардани партияи нави нусхаҳои ҷисмонӣ барои сарлавҳаи каталог."
+
+msgid "Book Selection"
+msgstr "Интихоби китоб"
+
+msgid "Select book"
+msgstr "Китобро интихоб кунед"
+
+msgid "Select school"
+msgstr "Мактабро интихоб кунед"
+
+msgid "Batch Details"
+msgstr "Маълумоти партия"
+
+msgid "Quantity"
+msgstr "Миқдор"
+
+msgid "Inventory Number Prefix"
+msgstr "Префикси рақами инвентарӣ"
+
+msgid "Barcode Prefix"
+msgstr "Префикси штрихкод"
+
+msgid "Create Copies"
+msgstr "Сохтани нусхаҳо"
+
+msgid "Create Textbook Copies"
+msgstr "Сохтани нусхаҳои китобҳои дарсӣ"
+
+msgid ""
+"Catalog entries describe a textbook title — physical copies are managed "
+"separately"
+msgstr ""
+"Сабтҳои каталог сарлавҳаи китоби дарсиро тавсиф медиҳанд — нусхаҳои ҷисмонӣ "
+"алоҳида идора мешаванд"
+
+msgid "Basic Information"
+msgstr "Маълумоти асосӣ"
+
+msgid "Publication Details"
+msgstr "Маълумоти нашр"
+
+msgid "Add Textbook to Catalog"
+msgstr "Илова кардани китоби дарсӣ ба каталог"
+
+msgid "Edit Textbook"
+msgstr "Таҳрири китоби дарсӣ"
+
+msgid "Fill in the required fields: title, author, subject."
+msgstr "Майдонҳои лозимиро пур кунед: ном, муаллиф, фан."
+
+msgid "Textbook \"%(title)s\" has been successfully added to the catalog."
+msgstr "Китоби дарсии \"%(title)s\" бомуваффақият ба каталог илова шуд."
+
+msgid "Textbook \"%(title)s\" has been successfully updated."
+msgstr "Китоби дарсии \"%(title)s\" бомуваффақият навсозӣ шуд."
+
+msgid "You must select a school."
+msgstr "Шумо бояд мактабро интихоб кунед."
+
+msgid "Quantity must be between 1 and 500 copies at a time."
+msgstr "Миқдор бояд аз 1 то 500 нусха дар як вақт бошад."
+
+msgid "Successfully registered %(count)s copies of textbook \"%(title)s\"."
+msgstr "Бомуваффақият %(count)s нусхаи китоби дарсии \"%(title)s\" қайд шуд."
+
+msgid "Central Warehouse / Intake"
+msgstr "Анбори марказӣ / Воридот"
+
+msgid "Library %(school)s"
+msgstr "Китобхонаи %(school)s"
+
+msgid "Initial intake of batch (%(quantity)s pcs.)"
+msgstr "Қабули аввалини партия (%(quantity)s дона)"
+
+msgid "Student %(name)s"
+msgstr "Хонандаи %(name)s"
+
+msgid "Confirmed act %(type)s: %(desc)s"
+msgstr "Санади тасдиқшуда %(type)s: %(desc)s"
+
+msgid ""
+"Report confirmed. Status of copy %(inv)s has been updated to \"%(status)s\"."
+msgstr ""
+"Гузориш тасдиқ шуд. Вазъияти нусхаи %(inv)s ба \"%(status)s\" навсозӣ шуд."
+
+msgid "Report has been rejected."
+msgstr "Гузориш рад карда шуд."
+
+msgid ""
+"Textbook issue report has been successfully created and submitted to the "
+"librarian for review."
+msgstr ""
+"Гузориши супориши китоби дарсӣ бомуваффақият сохта шуд ва ба китобдор барои "
+"баррасӣ фиристода шуд."
+
+msgid "Report Lost or Damaged"
+msgstr "Гузориш дар бораи гумшуда ё вайроншуда"
+
+msgid "Barcode Scanner & Search"
+msgstr "Сканери штрихкод ва ҷустуҷӯ"
+
+msgid ""
+"Search by title, barcode, or inventory number to see custody status "
+"instantly"
+msgstr ""
+"Аз рӯи ном, штрихкод ё рақами инвентарӣ ҷустуҷӯ кунед то вазъияти "
+"нигоҳдориро фавран бинед"
+
+msgid "Scan or Enter Code"
+msgstr "Скан кунед ё кодро ворид кунед"
+
+msgid "Scan a barcode with your device camera or enter the number manually"
+msgstr ""
+"Штрихкодро бо камераи дастгоҳатон скан кунед ё рақамро дастӣ ворид кунед"
+
+msgid "Barcode or Inventory Number..."
+msgstr "Штрихкод ё рақами инвентарӣ..."
+
+msgid "Find"
+msgstr "Ёфтан"
+
+msgid "Camera Scanner"
+msgstr "Скани камера"
+
+msgid "Turn On Camera Scanner"
+msgstr "Фаъол кардани скани камера"
+
+msgid "Turn Off Camera"
+msgstr "Хомӯш кардани камера"
+
+msgid "Subject & Grade"
+msgstr "Фан ва синф"
+
+msgid "grade"
+msgstr "синф"
+
+msgid "View Movement History"
+msgstr "Дидани таърихи ҳаракат"
+
+msgid "Copy not found"
+msgstr "Нусха ёфт нашуд"
+
+msgid "Ready to Scan"
+msgstr "Омода барои скан"
+
+msgid "Starting camera scanner..."
+msgstr "Оғози скани камера..."
+
+msgid "Code recognized!"
+msgstr "Код шинохта шуд!"
+
+msgid "Camera access error or unsupported device."
+msgstr "Хатои дастрасӣ ба камера ё дастгоҳи дастгириншуда."
+
+msgid "Reported lost and damaged textbooks awaiting verification."
+msgstr "Китобҳои дарсии гумшуда ва вайроншудаи гузоришшуда, интизори санҷиш."
+
+msgid "All Types"
+msgstr "Ҳамаи навъҳо"
+
+msgid "Lost"
+msgstr "Гумшуда"
+
+msgid "Pending"
+msgstr "Интизорӣ"
+
+msgid "Confirmed"
+msgstr "Тасдиқшуда"
+
+msgid "Rejected"
+msgstr "Радшуда"
+
+msgid "Apply"
+msgstr "Татбиқ кардан"
+
+msgid "issues"
+msgstr "масъалаҳо"
+
+msgid "Book"
+msgstr "Китоб"
+
+msgid "Issue Details"
+msgstr "Маълумоти масъала"
+
+msgid "Requested Quantity"
+msgstr "Миқдори дархостшуда"
+
+msgid "Reason"
+msgstr "Сабаб"
+
+msgid "Explain why additional copies are needed..."
+msgstr "Шарҳ диҳед чаро нусхаҳои иловагӣ лозиманд..."
+
+msgid "Submit Request"
+msgstr "Фиристодани дархост"
+
+msgid "No requests"
+msgstr "Дархостҳо нестанд"
+
+msgid "No requests for additional textbooks have been submitted yet."
+msgstr "Ҳоло ягон дархости китобҳои дарсии иловагӣ навишта нашудааст."
+
+msgid "Issue Type"
+msgstr "Навъи масъала"
+
+msgid "Description"
+msgstr "Тавсиф"
+
+msgid "Describe what happened..."
+msgstr "Шарҳ диҳед чӣ рӯй дод..."
+
+msgid "No lost or damaged textbook reports have been submitted yet."
+msgstr ""
+"Ҳоло ягон гузориш дар бораи китоби гумшуда ё вайроншуда навишта нашудааст."
+
+msgid "School requests for additional textbook copies."
+msgstr "Дархостҳои мактаб барои нусхаҳои иловагии китобҳои дарсӣ."
+
+msgid "New Request"
+msgstr "Дархости нав"
+
+msgid "requests"
+msgstr "дасткашҳо"
+
+msgid "Qty"
+msgstr "Миқдор"
+
+msgid "Created"
+msgstr "Сохта шуд"
+
+msgid "Request Details"
+msgstr "Маълумоти дархост"
+
+msgid ""
+"Request for %(quantity)s copies of textbook \"%(title)s\" has been "
+"successfully created."
+msgstr ""
+"Дархости %(quantity)s нусхаи китоби дарсии \"%(title)s\" бомуваффақият сохта"
+" шуд."
+
+msgid "Request has been successfully approved."
+msgstr "Дархост бомуваффақият тасдиқ шуд."
+
+msgid "Manage classes and their enrolled student counts."
+msgstr "Идоракунии синфҳо ва шумораи хонандагони қайдшуда."
+
+msgid "Name"
+msgstr "Ном"
+
+msgid "classrooms"
+msgstr "синфҳо"
+
+msgid "Create Classroom"
+msgstr "Сохтани синф"
+
+msgid "Set up a new class for the current academic year."
+msgstr "Синфи навро барои соли таҳсили ҷорӣ танзим кунед."
+
+msgid "Classroom Details"
+msgstr "Маълумоти синф"
+
+msgid "Create"
+msgstr "Сохтан"
+
+msgid "Enrollments"
+msgstr "Қайдҳо"
+
+msgid "Student Enrollments"
+msgstr "Қайдҳои хонандагон"
+
+msgid "Students currently enrolled across classrooms."
+msgstr "Хонандагони ҳоло қайдшуда дар синфҳо."
+
+msgid "Search by student name..."
+msgstr "Ҷустуҷӯ аз рӯи номи хонанда..."
+
+msgid "All Classes"
+msgstr "Ҳамаи синфҳо"
+
+msgid "No enrollments found"
+msgstr "Қайдҳо ёфт нашуданд"
+
+msgid "Try changing your search or classroom filter."
+msgstr "Кӯшиш кунед ҷустуҷӯ ё филтри синфро тағйир диҳед."
+
+msgid "Create Class"
+msgstr "Сохтани синф"
+
+msgid "Class %(name)s already exists in this academic year."
+msgstr "Синфи %(name)s аллакай дар ин соли таҳсил мавҷуд аст."
+
+msgid "Class \"%(name)s\" has been successfully created."
+msgstr "Синфи \"%(name)s\" бомуваффақият сохта шуд."
+
+msgid "Fill in all fields."
+msgstr "Ҳамаи майдонҳоро пур кунед."
+
+msgid "Teacher Class Assignments"
+msgstr "Вобастагиҳои омӯзгорон ба синфҳо"
+
+msgid "Which teachers are assigned to which classrooms"
+msgstr "Кадом омӯзгорон ба кадом синфҳо вобастаанд"
+
+msgid "assignments"
+msgstr "вобастагиҳо"
+
+msgid "No assignments found"
+msgstr "Вобастагиҳо ёфт нашуданд"
+
+msgid "No teachers have been assigned to classrooms at this school yet."
+msgstr "Дар ин мактаб ҳоло ягон омӯзгор ба синфҳо вобаста нашудааст."
+
+msgid "Manage the school system's academic year calendar."
+msgstr "Идоракунии тақвими солҳои таҳсили системаи мактаб."
+
+msgid "Add Year"
+msgstr "Илова кардани сол"
+
+msgid "years"
+msgstr "солҳо"
+
+msgid "Start"
+msgstr "Оғоз"
+
+msgid "End"
+msgstr "Охир"
+
+msgid "Current"
+msgstr "Ҷорӣ"
+
+msgid "No academic years found"
+msgstr "Солҳои таҳсил ёфт нашуданд"
+
+msgid "Create the first academic year for this system."
+msgstr "Соли аввалини таҳсилро барои ин система созед."
+
+msgid "Add Academic Year"
+msgstr "Илова кардани соли таҳсил"
+
+msgid "Create Academic Year"
+msgstr "Сохтани соли таҳсил"
+
+msgid "Define the start and end dates of a new academic year."
+msgstr "Санаҳои оғоз ва охири соли нави таҳсилро муайян кунед."
+
+msgid "Year Details"
+msgstr "Маълумоти сол"
+
+msgid "Start Date"
+msgstr "Санаи оғоз"
+
+msgid "End Date"
+msgstr "Санаи охир"
+
+msgid "Is Current"
+msgstr "Ҷорӣ аст"
+
+msgid "Academic year \"%(name)s\" has been successfully created."
+msgstr "Соли таҳсили \"%(name)s\" бомуваффақият сохта шуд."
+
+msgid "System Analytics"
+msgstr "Таҳлили система"
+
+msgid ""
+"Breakdown of the national textbook fund by status, grade, subject and "
+"region."
+msgstr ""
+"Тақсими фонди миллии китобҳои дарсӣ аз рӯи вазъият, синф, фан ва вилоят."
+
+msgid "In the registered fund"
+msgstr "Дар фонди қайдшуда"
+
+msgid "Books by Status"
+msgstr "Китобҳо аз рӯи вазъият"
+
+msgid "No data available"
+msgstr "Маълумот дастрас нест"
+
+msgid "Books by Grade"
+msgstr "Китобҳо аз рӯи синф"
+
+msgid "Top Subjects by Copies"
+msgstr "Фанҳои асосӣ аз рӯи нусхаҳо"
+
+msgid "Books by Region"
+msgstr "Китобҳо аз рӯи вилоят"
+
+msgid "No regional data"
+msgstr "Маълумоти минтақавӣ нест"
+
+msgid "No regional information is available."
+msgstr "Маълумоти минтақавӣ дастрас нест."
+
+msgid "System Audit & Action Log"
+msgstr "Журнали аудит ва амалиёти система"
+
+msgid ""
+"A read-only chronological record of every security-relevant action performed"
+" in the system."
+msgstr ""
+"Сабти хронологии танҳо барои хондан аз ҳар як амалиёт, ки ба амният "
+"алоқаманд аст."
+
+msgid "Search description, object ID, user..."
+msgstr "Ҷустуҷӯ аз рӯи тавсиф, IDи объект, истифодабаранда..."
+
+msgid "All Event Actions"
+msgstr "Ҳамаи амалиётҳо"
+
+msgid "Action Event"
+msgstr "Рӯйдоди амалиёт"
+
+msgid "Target Entity"
+msgstr "Объекти мақсад"
+
+msgid "Details & Description"
+msgstr "Маълумот ва тавсиф"
+
+msgid "Timestamp"
+msgstr "Вақт"
+
+msgid "System / Automated"
+msgstr "Система / Худкор"
+
+msgid "No records found"
+msgstr "Сабтҳо ёфт нашуданд"
+
+msgid "No audit event matches the given search criteria."
+msgstr "Ягон рӯйдоди аудит ба критерияҳои додашуда мувофиқат намекунад."
+
+msgid "AI Assistant \"Dono\""
+msgstr "Ёвари зеҳнӣ «Доно»"
+
+msgid "Online & ready to assist"
+msgstr "Онлайн ва омода ба кӯмак"
+
+msgid "Tajik & Russian supported"
+msgstr "Забонҳои тоҷикӣ ва русӣ дастгирӣ мешаванд"
+
+msgid "You"
+msgstr "Шумо"
+
+msgid "Frequently asked questions:"
+msgstr "Саволҳои зуд-зуд додашуда:"
+
+msgid "Sorry, could not process request."
+msgstr "Бубахшед, дархостро кор карда натавонистем."
+
+msgid "Connection error. Please try again."
+msgstr "Хатои пайвастшавӣ. Лутфан, аз нав кӯшиш кунед."
+
+msgid ""
+"Hello! I am Dono your smart library assistant. How can I help you today?"
+msgstr ""
+"Салом! Ман Доно, ёвари зеҳнии шумо дар китобхона. Имрӯз чӣ тавр ба шумо "
+"кӯмак карда метавонам?"
+
+msgid "Book Movement & Custody History"
+msgstr "Таърихи ҳаракат ва нигоҳдории китобҳо"
+
+msgid ""
+"Complete ledger of every textbook handover, return, loss and write-off."
+msgstr "Журнали пурраи ҳар як супориш, баргардонидан, гумшуда ва навиштан."
+
+msgid "Search by inventory #, barcode, book title, username..."
+msgstr "Ҷустуҷӯ аз рӯи рақами инвентарӣ, штрихкод, номи китоб, логин..."
+
+msgid "All Transaction Types"
+msgstr "Ҳамаи навъҳои ҳаракат"
+
+msgid "No transactions found"
+msgstr "Ҳаракатҳо ёфт нашуданд"
+
+msgid "No textbook movement record matches the given criteria."
+msgstr ""
+"Ягон сабти ҳаракати китоби дарсӣ ба критерияҳои додашуда мувофиқат "
+"намекунад."
+
+msgid "Issue Textbook to Student"
+msgstr "Супоридани китоби дарсӣ ба хонанда"
+
+msgid "Class Teacher → Student Handover"
+msgstr "Роҳбари синф → Супориш ба хонанда"
+
+msgid "Choose Student from Your Class"
+msgstr "Хонандаи синфи худро интихоб кунед"
+
+msgid "No students found in your assigned classes"
+msgstr "Дар синфҳои вобастаи шумо хонандагон ёфт нашуданд"
+
+msgid "Textbook from Your Custody"
+msgstr "Китоби дарсӣ аз нигоҳдории шумо"
+
+msgid "Select Book Copy"
+msgstr "Нусхаи китобро интихоб кунед"
+
+msgid ""
+"You have no available books in your custody. Request books from librarian "
+"first."
+msgstr ""
+"Шумо китобҳои дастрас дар нигоҳдорӣ надоред. Аввал аз китобдор китобҳоро "
+"дархост кунед."
+
+msgid "Note (Optional)"
+msgstr "Эзоҳ (Ихтиёри)"
+
+msgid "Condition note, term or comments..."
+msgstr "Эзоҳи вазъият, мӯҳлат ё шарҳҳо..."
+
+msgid "Hand Over Book to Student"
+msgstr "Супоридани китоб ба хонанда"
+
+msgid ""
+"Textbook \"%(title)s\" (%(inv)s) has been successfully issued to student "
+"%(student)s."
+msgstr ""
+"Китоби дарсии \"%(title)s\" (%(inv)s) бомуваффақият ба хонандаи %(student)s "
+"супорида шуд."
+
+msgid "Issue Books to Class Teacher"
+msgstr "Супоридани китобҳо ба роҳбари синф"
+
+msgid "Librarian → Class Teacher Handover"
+msgstr "Китобдор → Супориш ба роҳбари синф"
+
+msgid "Batch Transfer to Teacher"
+msgstr "Супориши дастаҷамъӣ ба омӯзгор"
+
+msgid "Choose Teacher"
+msgstr "Омӯзгорро интихоб кунед"
+
+msgid "Select Available Book Copies"
+msgstr "Нусхаҳои китобҳои дастрасро интихоб кунед"
+
+msgid "No available books in library stock"
+msgstr "Китобҳои дастрас дар фонди китобхона нестанд"
+
+msgid ""
+"Tip: Hold Ctrl (or Cmd) to select multiple book copies for a batch transfer."
+msgstr ""
+"Маслиҳат: Ctrl (ё Cmd)-ро нигоҳ доред то якчанд нусхаи китоб барои супориши "
+"дастаҷамъӣ интихоб кунед."
+
+msgid "Note / Transfer Document Reference"
+msgstr "Эзоҳ / Ишора ба ҳуҷҷати интиқол"
+
+msgid "Optional notes, order number or handover comment..."
+msgstr "Эзоҳҳои ихтиёри, рақами фармоиш ё шарҳи супориш..."
+
+msgid "Confirm Transfer to Teacher"
+msgstr "Тасдиқи интиқол ба омӯзгор"
+
+msgid "Successfully issued %(count)s textbooks to teacher %(teacher)s."
+msgstr ""
+"Бомуваффақият %(count)s китоби дарсӣ ба омӯзгори %(teacher)s супорида шуд."
+
+msgid "Receive Textbook Return from Student"
+msgstr "Қабули баргардонидани китоби дарсӣ аз хонанда"
+
+msgid "Student → Class Teacher Return"
+msgstr "Хонанда → Баргардонидан ба роҳбари синф"
+
+msgid "Select Issued Textbook to Return"
+msgstr "Китоби дарсии супоришшударо барои баргардонидан интихоб кунед"
+
+msgid "Select textbook returned by student"
+msgstr "Китоби дарсии баргардонидашуда аз ҷониби хонандаро интихоб кунед"
+
+msgid "No issued textbooks found under your supervision"
+msgstr "Китобҳои дарсии супоришшуда дар назорати шумо ёфт нашуданд"
+
+msgid "Condition / Notes"
+msgstr "Вазъият / Эзоҳҳо"
+
+msgid "Check book physical condition before accepting..."
+msgstr "Вазъияти ҷисмонии китобро пеш аз қабул санҷед..."
+
+msgid "Accept Return into Custody"
+msgstr "Қабули баргардонидан ба нигоҳдорӣ"
+
+msgid ""
+"Textbook \"%(title)s\" (%(inv)s) has been successfully returned from the "
+"student."
+msgstr ""
+"Китоби дарсии \"%(title)s\" (%(inv)s) бомуваффақият аз хонанда баргардонида "
+"шуд."
+
+msgid "Receive Textbook Return from Teacher"
+msgstr "Қабули баргардонидани китоби дарсӣ аз омӯзгор"
+
+msgid "Class Teacher → Library Return"
+msgstr "Роҳбари синф → Баргардонидан ба китобхона"
+
+msgid "Batch Return to Library"
+msgstr "Супориши дастаҷамъӣ ба китобхона"
+
+msgid "Select Books Returned by Teachers"
+msgstr "Китобҳои баргардонидашуда аз ҷониби омӯзгоронро интихоб кунед"
+
+msgid "No books currently marked as issued to teachers"
+msgstr "Ҳоло ягон китоб ҳамчун супоришшуда ба омӯзгорон нишон дода нашудааст"
+
+msgid ""
+"Tip: Hold Ctrl (or Cmd) to select multiple book copies for a batch return."
+msgstr ""
+"Маслиҳат: Ctrl (ё Cmd)-ро нигоҳ доред то якчанд нусхаи китоб барои "
+"баргардонидани дастаҷамъӣ интихоб кунед."
+
+msgid "Accept into Library Stock"
+msgstr "Қабул ба фонди китобхона"
+
+msgid "Successfully accepted %(count)s textbooks back into the library."
+msgstr "Бомуваффақият %(count)s китоби дарсӣ ба китобхона баргардонида шуд."
+
+msgid "Report Lost Book"
+msgstr "Гузориш дар бораи китоби гумшуда"
+
+msgid "Flag a missing textbook as lost from the collection."
+msgstr "Китоби дарсии гумшударо ҳамчун гумшуда аз фонд нишон диҳед."
+
+msgid "Note"
+msgstr "Эзоҳ"
+
+msgid "Circumstances of loss..."
+msgstr "Шароити гум шудан..."
+
+msgid "Textbook \"%(title)s\" (%(inv)s) has been marked as lost."
+msgstr "Китоби дарсии \"%(title)s\" (%(inv)s) ҳамчун гумшуда нишон дода шуд."
+
+msgid "Report Damaged Book"
+msgstr "Гузориш дар бораи китоби вайроншуда"
+
+msgid "Flag a damaged textbook in the collection."
+msgstr "Китоби дарсии вайроншударо дар фонд нишон диҳед."
+
+msgid "Describe the damage..."
+msgstr "Зарарро тавсиф диҳед..."
+
+msgid "Textbook \"%(title)s\" (%(inv)s) has been marked as damaged."
+msgstr "Китоби дарсии \"%(title)s\" (%(inv)s) ҳамчун вайроншуда нишон дода шуд."
+
+msgid "Copy \"%(title)s\" (%(inv)s) has been written off from the library fund."
+msgstr "Нусхаи \"%(title)s\" (%(inv)s) аз фонди китобхона навишта шуд."
+
+msgid "Teacher %(name)s"
+msgstr "Омӯзгори %(name)s"
+
+msgid "Return batch to library fund"
+msgstr "Баргардонидани партия ба фонди китобхона"
+
+msgid "Lost / Гумшуда"
+msgstr "Гумшуда"
+
+msgid "Damaged / Зарардида"
+msgstr "Вайроншуда"
+
+msgid "Written off from fund / Аз ҳисоб бароварда шуд"
+msgstr "Аз ҳисоб бароварда шуд"
+
+msgid "Write-off of unfit or lost copy"
+msgstr "Навиштани нусхаи номувофиқ ё гумшуда"
+
+msgid "Class Teacher %(name)s"
+msgstr "Роҳбари синф %(name)s"
+
+msgid "Student %(name)s (%(class)s)"
+msgstr "Хонанда %(name)s (%(class)s)"
+
+msgid "Select at least one book and a class teacher."
+msgstr "Ҳадди ақал як китоб ва роҳбари синфро интихоб кунед."
+
+msgid "Select a book and a student."
+msgstr "Китоб ва хонандаро интихоб кунед."
+
+msgid "Select at least one book to return."
+msgstr "Ҳадди ақал як китобро барои баргардонидан интихоб кунед."
+
+msgid "Librarian is not assigned to a school."
+msgstr "Китобдор ба мактаб вобаста нашудааст."
+
+msgid "Teacher is not assigned to a school."
+msgstr "Омӯзгор ба мактаб вобаста нашудааст."
+
+msgid "District is not assigned."
+msgstr "Ноҳия вобаста нашудааст."
+
+msgid "Jamoat is not assigned."
+msgstr "Ҷамоат вобаста нашудааст."
+
+msgid "School is not assigned to the director."
+msgstr "Мактаб ба директор вобаста нашудааст."
+
+msgid "Invalid username or password."
+msgstr "Номи корбар ё рамз нодуруст аст."
+
+msgid "User %(username)s has been successfully created."
+msgstr "Истифодабарандаи %(username)s бомуваффақият сохта шуд."
+
+msgid "User %(username)s has been successfully updated."
+msgstr "Истифодабарандаи %(username)s бомуваффақият навсозӣ шуд."
+
+msgid "You cannot deactivate yourself."
+msgstr "Шумо худро ғайрифаъол карда наметавонед."
+
+msgid "User %(username)s %(status)s."
+msgstr "Истифодабарандаи %(username)s %(status)s."
+
+msgid "Nothing found"
+msgstr "Ҳеҷ чиз ёфт нашуд"
+
+msgid "There is no data in this section or it doesn't match your filter."
+msgstr "Дар ин бахш маълумот нест ё ба филтри шумо мувофиқат намекунад."
+
+msgid "Showing records"
+msgstr "Намоиши сабтҳо"
+
+msgid "Close"
+msgstr "Пӯшидан"
+
+msgid "Yes"
+msgstr "Ҳа"
+
+msgid "regions"
+msgstr "вилоятҳо"
+
+msgid "districts"
+msgstr "ноҳияҳо"
+
+msgid "jamoats"
+msgstr "ҷамоатҳо"
+
+msgid "schools"
+msgstr "мактабҳо"
+
+msgid "Language / Забон"
+msgstr "Забони барнома"
+
+msgid "Total Books"
+msgstr "Ҳамагӣ китобҳо"
+
+msgid "Available in Libraries"
+msgstr "Дар китобхонаҳо"
+
+msgid "Total Issued"
+msgstr "Супорида шуд"
+
+msgid "Reported Lost"
+msgstr "Гумшуда"
+
+msgid "Reported Damaged"
+msgstr "Вайроншуда"
+
+msgid "Scan Barcode"
+msgstr "Сканкунии штрихкод"
+
+msgid "Return from Teacher"
+msgstr "Қабул аз омӯзгор"
+
+msgid "Book Catalog"
+msgstr "Каталоги китобҳо"
+
+msgid "Transactions Log"
+msgstr "Таърихи ҳаракати китобҳо"
+
+msgid "Defect & Loss Acts"
+msgstr "Санадҳои камбудӣ ва гумшуда"

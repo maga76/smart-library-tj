@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "My Books" %} — Smart Library TJ{% endblock %}
+
+{% block page_header %}{% endblock %}
+
+{% block content %}
+<div class="greeting-banner">
+    <h2 class="text-white fw-bold mb-1">{% trans "Hi" %}, {{ user.first_name|default:user.username }} 👋</h2>
+    <p class="mb-0" style="color: rgba(255,255,255,0.8);">{% trans "Here are the textbooks currently registered under your name." %}</p>
+</div>
+
+{% trans "Books on Hand" as st_title1 %}
+{% trans "Returned" as st_title2 %}
+{% trans "Lost" as st_title3 %}
+{% trans "Damaged" as st_title4 %}
+<div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+        {% include "components/stat_card.html" with title=st_title1 value=total_books icon="bi bi-book" color_class="icon-blue" %}
+    </div>
+    <div class="col-6 col-md-3">
+        {% include "components/stat_card.html" with title=st_title2 value=total_returned icon="bi bi-arrow-counterclockwise" color_class="icon-emerald" %}
+    </div>
+    <div class="col-6 col-md-3">
+        {% include "components/stat_card.html" with title=st_title3 value=total_lost icon="bi bi-exclamation-circle" color_class="icon-rose" %}
+    </div>
+    <div class="col-6 col-md-3">
+        {% include "components/stat_card.html" with title=st_title4 value=total_damaged icon="bi bi-tools" color_class="icon-amber" %}
+    </div>
+</div>
+
+<h5 class="mb-3" style="font-size: 15px;"><i class="bi bi-journal-bookmark text-primary"></i> {% trans "My Textbooks" %}</h5>
+<div class="row g-3 mb-4">
+    {% for copy in my_books %}
+    <div class="col-md-6 col-lg-4">
+        <div class="mybook-card">
+            <div class="mybook-icon"><i class="bi bi-book-half"></i></div>
+            <div class="flex-grow-1">
+                <div class="mybook-title">{{ copy.book.title }}</div>
+                <div class="mybook-meta">{{ copy.book.subject }} &middot; {% trans "Grade" %} {{ copy.book.grade }}</div>
+                <div class="mybook-meta"><code>{{ copy.inventory_number }}</code></div>
+                {% include "components/status_badge.html" with status_code=copy.status status_display=copy.get_status_display %}
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        {% trans "No textbooks yet" as et1_title %}
+        {% trans "You do not have any textbooks registered under your name at the moment." as et1_desc %}
+        {% include "components/empty_state.html" with icon="bi bi-journal-x" title=et1_title description=et1_desc %}
+    </div>
+    {% endfor %}
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="card-pro h-100">
+            <div class="card-pro-header">
+                <h5><i class="bi bi-clock-history text-muted"></i> {% trans "Recently Returned Books" %}</h5>
+            </div>
+            <div class="card-pro-body p-0">
+                <div class="table-responsive">
+                    <table class="table-pro">
+                        <thead>
+                            <tr>
+                                <th>{% trans "Book" %}</th>
+                                <th>{% trans "Inventory #" %}</th>
+                                <th>{% trans "Return Date" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for tx in returned_books %}
+                            <tr>
+                                <td class="fw-bold">{{ tx.book_copy.book.title }}</td>
+                                <td><code>{{ tx.book_copy.inventory_number }}</code></td>
+                                <td class="text-muted">{{ tx.created_at|date:"d.m.Y H:i" }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="3" class="p-0"></td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% if not returned_books %}
+                    {% trans "No returns" as et2_title %}
+                    {% trans "You haven't returned any textbooks yet." as et2_desc %}
+                    {% include "components/empty_state.html" with icon="bi bi-arrow-counterclockwise" title=et2_title description=et2_desc %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card-pro h-100">
+            <div class="card-pro-header">
+                <h5><i class="bi bi-flag text-muted"></i> {% trans "My Reports" %}</h5>
+            </div>
+            <div class="card-pro-body p-0">
+                <div class="table-responsive">
+                    <table class="table-pro">
+                        <thead>
+                            <tr>
+                                <th>{% trans "Book" %}</th>
+                                <th>{% trans "Type" %}</th>
+                                <th>{% trans "Status" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for issue in my_issues %}
+                            <tr>
+                                <td class="fw-bold">{{ issue.book_copy.book.title }}</td>
+                                <td>{{ issue.get_issue_type_display }}</td>
+                                <td>{% include "components/status_badge.html" with status_code=issue.status status_display=issue.get_status_display %}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="3" class="p-0"></td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% if not my_issues %}
+                    {% trans "No reports" as et3_title %}
+                    {% trans "You haven't reported any lost or damaged textbooks." as et3_desc %}
+                    {% include "components/empty_state.html" with icon="bi bi-flag" title=et3_title description=et3_desc %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

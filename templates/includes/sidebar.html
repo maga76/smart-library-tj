@@ -1,0 +1,258 @@
+{% load i18n %}
+<aside class="app-sidebar">
+    <!-- Sidebar Header -->
+    <div class="sidebar-header">
+        <a href="{% url 'analytics:dashboard' %}" class="sidebar-brand">
+            <div class="brand-icon">
+                <i class="bi bi-book-half"></i>
+            </div>
+            <div class="brand-text">
+                <span>Smart Library</span>
+                <span class="brand-subtitle">Tajikistan</span>
+            </div>
+        </a>
+        <button type="button" id="sidebar-toggle-btn" class="sidebar-toggle-btn d-none d-lg-flex" title="{% trans "Toggle Sidebar" %}">
+            <i class="bi bi-layout-sidebar-inset"></i>
+        </button>
+    </div>
+
+    <!-- User Role Pill -->
+    <div class="sidebar-user-pill">
+        <div class="avatar-circle">
+            {{ user.first_name|first|default:user.username|first|upper }}
+        </div>
+        <div class="sidebar-user-info">
+            <div class="sidebar-user-name text-truncate" title="{{ user.get_full_name|default:user.username }}">
+                {{ user.get_full_name|default:user.username }}
+            </div>
+            <div class="sidebar-user-role">
+                {{ user.get_role_display }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Menu Body -->
+    <div class="sidebar-body">
+        
+        <!-- SECTION: MAIN -->
+        <div class="nav-section-title">{% trans "Main" %}</div>
+        <a href="{% url 'analytics:dashboard' %}" class="nav-item-link {% if request.resolver_match.url_name == 'dashboard' or 'dashboard' in request.resolver_match.url_name %}active{% endif %}">
+            <i class="bi bi-speedometer2"></i>
+            <span class="nav-item-label">{% trans "Dashboard" %}</span>
+        </a>
+
+        <!-- ROLE: SUPER ADMIN -->
+        {% if user.role == 'SUPER_ADMIN' %}
+        <div class="nav-section-title">{% trans "Library Stock" %}</div>
+        <a href="{% url 'library:book_list' %}" class="nav-item-link {% if 'book' in request.path and 'request' not in request.path and 'issue' not in request.path %}active{% endif %}">
+            <i class="bi bi-journal-bookmark"></i>
+            <span class="nav-item-label">{% trans "Catalog" %}</span>
+        </a>
+        <a href="{% url 'library:copy_list' %}" class="nav-item-link {% if 'copies' in request.path %}active{% endif %}">
+            <i class="bi bi-collection"></i>
+            <span class="nav-item-label">{% trans "Book Copies" %}</span>
+        </a>
+        <a href="{% url 'transactions:transaction_list' %}" class="nav-item-link {% if 'transactions' in request.path %}active{% endif %}">
+            <i class="bi bi-arrow-left-right"></i>
+            <span class="nav-item-label">{% trans "Transactions" %}</span>
+        </a>
+
+        <div class="nav-section-title">{% trans "Structure & Management" %}</div>
+        <a href="{% url 'schools:school_list' %}" class="nav-item-link {% if 'schools' in request.path %}active{% endif %}">
+            <i class="bi bi-building"></i>
+            <span class="nav-item-label">{% trans "Schools" %}</span>
+        </a>
+        <a href="{% url 'accounts:user_list' %}" class="nav-item-link {% if 'users' in request.path %}active{% endif %}">
+            <i class="bi bi-people"></i>
+            <span class="nav-item-label">{% trans "Users" %}</span>
+        </a>
+        <a href="{% url 'geography:region_list' %}" class="nav-item-link {% if 'geography' in request.path %}active{% endif %}">
+            <i class="bi bi-geo-alt"></i>
+            <span class="nav-item-label">{% trans "Geography" %}</span>
+        </a>
+        <a href="{% url 'library:book_request_list' %}" class="nav-item-link {% if 'requests' in request.path %}active{% endif %}">
+            <i class="bi bi-envelope-paper"></i>
+            <span class="nav-item-label">{% trans "School Requests" %}</span>
+        </a>
+
+        <div class="nav-section-title">{% trans "Analytics & Logs" %}</div>
+        <a href="{% url 'analytics:analytics_view' %}" class="nav-item-link {% if 'analytics/' in request.path %}active{% endif %}">
+            <i class="bi bi-pie-chart"></i>
+            <span class="nav-item-label">{% trans "Analytics" %}</span>
+        </a>
+        <a href="{% url 'audit:audit_log_list' %}" class="nav-item-link {% if 'audit' in request.path %}active{% endif %}">
+            <i class="bi bi-shield-check"></i>
+            <span class="nav-item-label">{% trans "Audit Log" %}</span>
+        </a>
+        {% endif %}
+
+        <!-- ROLE: DISTRICT CHAIRMAN -->
+        {% if user.role == 'DISTRICT_CHAIRMAN' %}
+        <div class="nav-section-title">{% trans "District Oversight" %}</div>
+        <a href="{% url 'schools:school_list' %}" class="nav-item-link {% if 'schools' in request.path %}active{% endif %}">
+            <i class="bi bi-building"></i>
+            <span class="nav-item-label">{% trans "District Schools" %}</span>
+        </a>
+        <a href="{% url 'library:copy_list' %}" class="nav-item-link {% if 'copies' in request.path %}active{% endif %}">
+            <i class="bi bi-collection"></i>
+            <span class="nav-item-label">{% trans "District Stock" %}</span>
+        </a>
+        <a href="{% url 'library:book_request_list' %}" class="nav-item-link {% if 'requests' in request.path %}active{% endif %}">
+            <i class="bi bi-envelope-paper"></i>
+            <span class="nav-item-label">{% trans "School Requests" %}</span>
+        </a>
+        <a href="{% url 'library:book_issue_list' %}" class="nav-item-link {% if 'issues' in request.path %}active{% endif %}">
+            <i class="bi bi-exclamation-triangle"></i>
+            <span class="nav-item-label">{% trans "Lost & Damaged" %}</span>
+        </a>
+        <a href="{% url 'analytics:analytics_view' %}" class="nav-item-link {% if 'analytics/' in request.path %}active{% endif %}">
+            <i class="bi bi-bar-chart-line"></i>
+            <span class="nav-item-label">{% trans "Analytics" %}</span>
+        </a>
+        {% endif %}
+
+        <!-- ROLE: JAMOAT CHAIRMAN -->
+        {% if user.role == 'JAMOAT_CHAIRMAN' %}
+        <div class="nav-section-title">{% trans "Jamoat Monitoring" %}</div>
+        <a href="{% url 'schools:school_list' %}" class="nav-item-link {% if 'schools' in request.path %}active{% endif %}">
+            <i class="bi bi-building"></i>
+            <span class="nav-item-label">{% trans "Jamoat Schools" %}</span>
+        </a>
+        <a href="{% url 'library:copy_list' %}" class="nav-item-link {% if 'copies' in request.path %}active{% endif %}">
+            <i class="bi bi-collection"></i>
+            <span class="nav-item-label">{% trans "Textbook Stock" %}</span>
+        </a>
+        <a href="{% url 'library:book_issue_list' %}" class="nav-item-link {% if 'issues' in request.path %}active{% endif %}">
+            <i class="bi bi-exclamation-triangle"></i>
+            <span class="nav-item-label">{% trans "Loss Tracking" %}</span>
+        </a>
+        {% endif %}
+
+        <!-- ROLE: SCHOOL DIRECTOR -->
+        {% if user.role == 'SCHOOL_DIRECTOR' %}
+        <div class="nav-section-title">{% trans "School Management" %}</div>
+        <a href="{% url 'library:classroom_list' %}" class="nav-item-link {% if 'classroom' in request.path %}active{% endif %}">
+            <i class="bi bi-door-open"></i>
+            <span class="nav-item-label">{% trans "Classrooms" %}</span>
+        </a>
+        <a href="{% url 'library:enrollment_list' %}" class="nav-item-link {% if 'enrollment' in request.path %}active{% endif %}">
+            <i class="bi bi-person-check"></i>
+            <span class="nav-item-label">{% trans "Students" %}</span>
+        </a>
+        <a href="{% url 'library:teacher_assignment_list' %}" class="nav-item-link {% if 'assignment' in request.path %}active{% endif %}">
+            <i class="bi bi-person-badge"></i>
+            <span class="nav-item-label">{% trans "Teachers" %}</span>
+        </a>
+        <a href="{% url 'library:book_list' %}" class="nav-item-link {% if 'book' in request.path and 'request' not in request.path %}active{% endif %}">
+            <i class="bi bi-journal-bookmark"></i>
+            <span class="nav-item-label">{% trans "School Library" %}</span>
+        </a>
+        <a href="{% url 'library:book_request_list' %}" class="nav-item-link {% if 'requests' in request.path %}active{% endif %}">
+            <i class="bi bi-envelope-paper"></i>
+            <span class="nav-item-label">{% trans "Book Requests" %}</span>
+        </a>
+        <a href="{% url 'library:book_issue_list' %}" class="nav-item-link {% if 'issues' in request.path %}active{% endif %}">
+            <i class="bi bi-exclamation-triangle"></i>
+            <span class="nav-item-label">{% trans "Defects & Losses" %}</span>
+        </a>
+        {% endif %}
+
+        <!-- ROLE: LIBRARIAN -->
+        {% if user.role == 'LIBRARIAN' %}
+        <div class="nav-section-title">{% trans "Library Operations" %}</div>
+        <a href="{% url 'library:book_list' %}" class="nav-item-link {% if 'book' in request.path and 'request' not in request.path and 'issue' not in request.path %}active{% endif %}">
+            <i class="bi bi-journal-bookmark"></i>
+            <span class="nav-item-label">{% trans "Catalog" %}</span>
+        </a>
+        <a href="{% url 'library:copy_list' %}" class="nav-item-link {% if 'copies' in request.path and 'scan' not in request.path %}active{% endif %}">
+            <i class="bi bi-collection"></i>
+            <span class="nav-item-label">{% trans "Book Copies" %}</span>
+        </a>
+        <a href="{% url 'library:copy_scan' %}" class="nav-item-link {% if 'scan' in request.path %}active{% endif %}">
+            <i class="bi bi-upc-scan"></i>
+            <span class="nav-item-label">{% trans "Barcode Scanner" %}</span>
+        </a>
+
+        <div class="nav-section-title">{% trans "Movement & Handover" %}</div>
+        <a href="{% url 'transactions:issue_to_teacher' %}" class="nav-item-link {% if 'issue-teacher' in request.path %}active{% endif %}">
+            <i class="bi bi-arrow-right-circle text-primary"></i>
+            <span class="nav-item-label">{% trans "Issue to Teacher" %}</span>
+        </a>
+        <a href="{% url 'transactions:return_from_teacher' %}" class="nav-item-link {% if 'return-teacher' in request.path %}active{% endif %}">
+            <i class="bi bi-arrow-left-circle text-success"></i>
+            <span class="nav-item-label">{% trans "Receive Return" %}</span>
+        </a>
+        <a href="{% url 'library:book_issue_list' %}" class="nav-item-link {% if 'issues' in request.path %}active{% endif %}">
+            <i class="bi bi-flag text-warning"></i>
+            <span class="nav-item-label">{% trans "Verify Issues" %}</span>
+        </a>
+        <a href="{% url 'transactions:transaction_list' %}" class="nav-item-link {% if 'transactions' in request.path and 'issue' not in request.path and 'return' not in request.path %}active{% endif %}">
+            <i class="bi bi-clock-history"></i>
+            <span class="nav-item-label">{% trans "History Log" %}</span>
+        </a>
+        {% endif %}
+
+        <!-- ROLE: CLASS TEACHER -->
+        {% if user.role == 'CLASS_TEACHER' %}
+        <div class="nav-section-title">{% trans "My Classroom" %}</div>
+        <a href="{% url 'library:enrollment_list' %}" class="nav-item-link {% if 'enrollment' in request.path %}active{% endif %}">
+            <i class="bi bi-people"></i>
+            <span class="nav-item-label">{% trans "My Students" %}</span>
+        </a>
+        <a href="{% url 'library:copy_list' %}" class="nav-item-link {% if 'copies' in request.path %}active{% endif %}">
+            <i class="bi bi-book"></i>
+            <span class="nav-item-label">{% trans "Books in Custody" %}</span>
+        </a>
+
+        <div class="nav-section-title">{% trans "Daily Actions" %}</div>
+        <a href="{% url 'transactions:issue_to_student' %}" class="nav-item-link {% if 'issue-student' in request.path %}active{% endif %}">
+            <i class="bi bi-arrow-right-circle text-primary"></i>
+            <span class="nav-item-label">{% trans "Issue to Student" %}</span>
+        </a>
+        <a href="{% url 'transactions:return_from_student' %}" class="nav-item-link {% if 'return-student' in request.path %}active{% endif %}">
+            <i class="bi bi-arrow-left-circle text-success"></i>
+            <span class="nav-item-label">{% trans "Return from Student" %}</span>
+        </a>
+        <a href="{% url 'library:book_issue_create' %}" class="nav-item-link {% if 'issues/create' in request.path %}active{% endif %}">
+            <i class="bi bi-exclamation-triangle text-danger"></i>
+            <span class="nav-item-label">{% trans "Report Issue" %}</span>
+        </a>
+        <a href="{% url 'transactions:transaction_list' %}" class="nav-item-link {% if 'transactions' in request.path and 'issue' not in request.path and 'return' not in request.path %}active{% endif %}">
+            <i class="bi bi-clock-history"></i>
+            <span class="nav-item-label">{% trans "My Issuances" %}</span>
+        </a>
+        {% endif %}
+
+        <!-- ROLE: STUDENT -->
+        {% if user.role == 'STUDENT' %}
+        <div class="nav-section-title">{% trans "My Education" %}</div>
+        <a href="{% url 'library:copy_list' %}" class="nav-item-link {% if 'copies' in request.path %}active{% endif %}">
+            <i class="bi bi-book"></i>
+            <span class="nav-item-label">{% trans "My Textbooks" %}</span>
+        </a>
+        <a href="{% url 'transactions:transaction_list' %}" class="nav-item-link {% if 'transactions' in request.path %}active{% endif %}">
+            <i class="bi bi-clock-history"></i>
+            <span class="nav-item-label">{% trans "Return History" %}</span>
+        </a>
+        {% endif %}
+
+        <!-- AI Assistant Direct Link -->
+        <div class="nav-section-title">{% trans "AI Assistant" %}</div>
+        <a href="{% url 'ai_assistant:chat' %}" class="nav-item-link {% if 'ai' in request.path %}active{% endif %}" style="color: var(--ai-purple);">
+            <i class="bi bi-robot text-purple"></i>
+            <span class="nav-item-label fw-bold">{% trans "Доно" %}</span>
+            <span class="nav-item-badge bg-primary text-white">AI</span>
+        </a>
+
+    </div>
+
+    <!-- Sidebar Footer -->
+    <div class="sidebar-footer">
+        <div class="sidebar-footer-content d-flex justify-content-between align-items-center">
+            <small class="text-muted" style="font-size: 11px;">Smart Library TJ v2.0</small>
+            <a href="{% url 'accounts:logout' %}" class="text-danger small fw-bold" title="{% trans "Logout" %}">
+                <i class="bi bi-box-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</aside>

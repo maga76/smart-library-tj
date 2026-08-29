@@ -1,0 +1,101 @@
+{% load i18n %}
+{# Floating FAB Trigger Button #}
+<button type="button" id="dono-fab-trigger" class="dono-fab-trigger" title="{% trans "Open AI Assistant Dono" %}">
+    <i class="bi bi-robot fs-5"></i>
+    <span>{% trans "Доно" %}</span>
+</button>
+
+{# Floating Drawer Panel #}
+<div id="dono-drawer" class="dono-drawer">
+    <div class="dono-drawer-header">
+        <div class="d-flex align-items-center gap-2">
+            <div class="bg-white bg-opacity-20 p-2 rounded-circle d-flex align-items-center justify-content-center" style="width: 34px; height: 34px;">
+                <i class="bi bi-robot text-white"></i>
+            </div>
+            <div>
+                <h6 class="mb-0 fw-bold text-white">{% trans "AI Assistant" %} «Доно»</h6>
+                <small class="text-white-50" style="font-size: 11px;">{% trans "Smart Library TJ Copilot" %}</small>
+            </div>
+        </div>
+        <button type="button" id="dono-close-btn" class="btn-close btn-close-white" aria-label="Close"></button>
+    </div>
+
+    <div class="dono-drawer-body" id="dono-widget-messages">
+        <div class="d-flex align-items-start gap-2 mb-3">
+            <div class="bg-primary text-white rounded-circle p-1 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 28px; height: 28px;">
+                <i class="bi bi-robot" style="font-size: 13px;"></i>
+            </div>
+            <div class="dono-widget-msg border shadow-xs small" style="max-width: 85%; line-height: 1.5;">
+                <strong>{% trans "Dono" %}:</strong><br>
+                {% trans "Hello! I am Dono, your smart library assistant. How can I help you today?" %}
+            </div>
+        </div>
+    </div>
+
+    <div class="dono-drawer-footer">
+        <form id="dono-widget-form" class="d-flex gap-2">
+            {% csrf_token %}
+            <input type="text" id="dono-widget-input" class="form-control form-control-sm" placeholder="{% trans "Ask Dono a question..." %}" autocomplete="off" required>
+            <button type="submit" class="btn btn-sm btn-primary px-3">
+                <i class="bi bi-send-fill"></i>
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const donoForm = document.getElementById('dono-widget-form');
+    const donoInput = document.getElementById('dono-widget-input');
+    const donoMessages = document.getElementById('dono-widget-messages');
+
+    if (donoForm && donoInput && donoMessages) {
+        donoForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const text = donoInput.value.trim();
+            if (!text) return;
+
+            // Append User Msg
+            donoMessages.innerHTML += `
+                <div class="d-flex justify-content-end mb-3">
+                    <div class="bg-primary text-white p-3 rounded-4 shadow-xs small" style="max-width: 85%;">
+                        ${text}
+                    </div>
+                </div>
+            `;
+            donoInput.value = '';
+            donoMessages.scrollTop = donoMessages.scrollHeight;
+
+            // Fetch
+            fetch('{% url "ai_assistant:chat_send" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: JSON.stringify({ message: text })
+            })
+            .then(r => r.json())
+            .then(data => {
+                const reply = data.response ? data.response.replace(/\n/g, '<br>') : "{% trans 'No answer.' %}";
+                donoMessages.innerHTML += `
+                    <div class="d-flex align-items-start gap-2 mb-3">
+                        <div class="bg-primary text-white rounded-circle p-1 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 28px; height: 28px;">
+                            <i class="bi bi-robot" style="font-size: 13px;"></i>
+                        </div>
+                        <div class="dono-widget-msg border shadow-xs small" style="max-width: 85%; line-height: 1.5;">
+                            ${reply}
+                        </div>
+                    </div>
+                `;
+                donoMessages.scrollTop = donoMessages.scrollHeight;
+            })
+            .catch(() => {
+                donoMessages.innerHTML += `
+                    <div class="small text-danger text-center mb-2">{% trans "Connection error." %}</div>
+                `;
+            });
+        });
+    }
+});
+</script>

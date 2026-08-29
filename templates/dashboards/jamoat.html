@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Jamoat Dashboard" %} — Smart Library TJ{% endblock %}
+{% block page_title %}{% trans "Jamoat Chairman Dashboard" %}{% endblock %}
+{% block page_subtitle %}<p>{% trans "School library monitoring for" %} {{ jamoat.name }}</p>{% endblock %}
+{% block page_actions %}
+<a href="{% url 'schools:school_list' %}" class="btn-pro btn-pro-outline">
+    <i class="bi bi-building"></i> {% trans "All Schools" %}
+</a>
+{% endblock %}
+
+{% block content %}
+{% if not jamoat %}
+{% trans "No jamoat assigned" as et_title %}
+{% trans "Your account has not been assigned to a jamoat. Please contact the system administrator." as et_desc %}
+{% include "components/empty_state.html" with icon="bi bi-geo-alt" title=et_title description=et_desc %}
+{% else %}
+
+{% trans "Schools in Jamoat" as st_title1 %}
+{% trans "Active institutions" as st_sub1 %}
+{% trans "Students" as st_title2 %}
+{% trans "Across all schools" as st_sub2 %}
+{% trans "Textbooks in Fund" as st_title3 %}
+{% trans "Total fund" as st_sub3 %}
+{% trans "Lost Books" as st_title4 %}
+{% blocktrans asvar st_sub4 %}{{ total_damaged }} damaged{% endblocktrans %}
+<div class="row g-3 mb-4">
+    <div class="col-xl-3 col-md-6">
+        {% include "components/stat_card.html" with title=st_title1 value=total_schools icon="bi bi-building" color_class="icon-blue" subtitle=st_sub1 %}
+    </div>
+    <div class="col-xl-3 col-md-6">
+        {% include "components/stat_card.html" with title=st_title2 value=total_students icon="bi bi-people" color_class="icon-cyan" subtitle=st_sub2 %}
+    </div>
+    <div class="col-xl-3 col-md-6">
+        {% include "components/stat_card.html" with title=st_title3 value=total_books icon="bi bi-book" color_class="icon-emerald" subtitle=st_sub3 %}
+    </div>
+    <div class="col-xl-3 col-md-6">
+        {% include "components/stat_card.html" with title=st_title4 value=total_lost icon="bi bi-exclamation-triangle" color_class="icon-rose" subtitle=st_sub4 %}
+    </div>
+</div>
+
+<div class="card-pro mb-4">
+    <div class="card-pro-header">
+        <h5><i class="bi bi-bar-chart-steps text-primary"></i> {% trans "Problem Schools & Coverage" %}</h5>
+        <span class="badge bg-light text-muted">{% trans "Books vs. 10/student target" %}</span>
+    </div>
+    <div class="card-pro-body">
+        {% trans "No schools" as et2_title %}
+        {% trans "No schools have been registered in this jamoat yet." as et2_desc %}
+        {% trans "lost" as word_lost %}
+        {% trans "damaged" as word_damaged %}
+        {% for row in school_ranking %}
+        <div class="coverage-row">
+            <div class="coverage-rank">{{ forloop.counter }}</div>
+            <div class="coverage-label">
+                <div class="name">{{ row.school.name }}</div>
+                <div class="meta">№{{ row.school.school_number }} &middot; {{ row.school.lost_count }} {{ word_lost }}, {{ row.school.damaged_count }} {{ word_damaged }}</div>
+            </div>
+            <div class="coverage-track">
+                <div class="coverage-fill {% if row.coverage_pct >= 85 %}level-high{% elif row.coverage_pct >= 50 %}level-mid{% else %}level-low{% endif %}" style="width: {{ row.coverage_pct }}%;"></div>
+            </div>
+            <div class="coverage-pct">{{ row.coverage_pct }}%</div>
+        </div>
+        {% empty %}
+        {% include "components/empty_state.html" with icon="bi bi-building" title=et2_title description=et2_desc %}
+        {% endfor %}
+    </div>
+</div>
+
+<div class="card-pro">
+    <div class="card-pro-header">
+        <h5><i class="bi bi-building text-primary"></i> {% trans "Schools in Jamoat" %} ({{ schools.count }})</h5>
+        <a href="{% url 'schools:school_list' %}" class="btn-pro btn-pro-outline">{% trans "All Schools" %} &rarr;</a>
+    </div>
+    <div class="card-pro-body p-0">
+        <div class="table-responsive">
+            <table class="table-pro">
+                <thead>
+                    <tr>
+                        <th>№</th>
+                        <th>{% trans "School" %}</th>
+                        <th>{% trans "Students" %}</th>
+                        <th>{% trans "Books" %}</th>
+                        <th>{% trans "Available" %}</th>
+                        <th>{% trans "Issued" %}</th>
+                        <th>{% trans "Lost" %}</th>
+                        <th>{% trans "Damaged" %}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for school in schools %}
+                    <tr>
+                        <td><span class="fw-bold text-muted">#{{ school.school_number }}</span></td>
+                        <td><a href="{% url 'schools:school_detail' school.pk %}" class="fw-bold text-decoration-none">{{ school.name }}</a></td>
+                        <td>{{ school.student_count }}</td>
+                        <td><strong>{{ school.book_count }}</strong></td>
+                        <td><span class="text-success fw-bold">{{ school.available_count }}</span></td>
+                        <td><span class="text-primary fw-bold">{{ school.issued_count }}</span></td>
+                        <td><span class="text-danger fw-bold">{{ school.lost_count }}</span></td>
+                        <td><span class="fw-bold" style="color: var(--damaged-text);">{{ school.damaged_count }}</span></td>
+                        <td>
+                            <a href="{% url 'schools:school_detail' school.pk %}" class="btn-pro btn-pro-outline" style="padding: 6px 12px;">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="9" class="p-0"></td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if not schools %}
+            {% trans "No schools registered" as et3_title %}
+            {% trans "No schools have been registered in this jamoat yet." as et3_desc %}
+            {% include "components/empty_state.html" with icon="bi bi-building" title=et3_title description=et3_desc %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

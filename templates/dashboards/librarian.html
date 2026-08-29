@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Librarian Dashboard" %} — Smart Library TJ{% endblock %}
+{% block page_title %}{% trans "Librarian Workspace" %}{% endblock %}
+{% block page_subtitle %}<p>{{ school.name }}</p>{% endblock %}
+
+{% block content %}
+{% if not school %}
+{% trans "No school assigned" as et_title %}
+{% trans "Your librarian account has not been linked to a school." as et_desc %}
+{% include "components/empty_state.html" with icon="bi bi-building" title=et_title description=et_desc %}
+{% else %}
+
+<!-- Big Find-a-Book Panel -->
+<div class="find-book-panel">
+    <h5><i class="bi bi-search me-1"></i> {% trans "Find a Book" %}</h5>
+    <p>{% trans "Search by title, barcode, or inventory number to see custody status instantly." %}</p>
+    <form method="get" action="{% url 'library:copy_scan' %}" class="find-book-search-row">
+        <input type="text" name="code" placeholder="{% trans "Search by title, barcode or inventory ID..." %}" autocomplete="off">
+        <button type="submit" class="btn-pro btn-pro-primary" style="background:#ffffff; color: var(--primary-700); height:48px; padding: 0 22px;">
+            <i class="bi bi-search"></i> {% trans "Search" %}
+        </button>
+        <a href="{% url 'library:copy_scan' %}" class="btn-pro" style="height:48px; padding: 0 22px; background: rgba(255,255,255,0.15); color:#fff; border:1px solid rgba(255,255,255,0.3);">
+            <i class="bi bi-upc-scan"></i> {% trans "Scan Barcode" %}
+        </a>
+    </form>
+</div>
+
+<!-- Primary Quick Actions -->
+<div class="row g-3 mb-4">
+    <div class="col-lg-3 col-sm-6">
+        <a href="{% url 'library:copy_create' %}" class="quick-action-tile">
+            <div class="qa-icon icon-blue"><i class="bi bi-box-seam"></i></div>
+            <div>
+                <div class="qa-title">{% trans "Receive Books" %}</div>
+                <div class="qa-desc">{% trans "Register new copies" %}</div>
+            </div>
+        </a>
+    </div>
+    <div class="col-lg-3 col-sm-6">
+        <a href="{% url 'transactions:issue_to_teacher' %}" class="quick-action-tile">
+            <div class="qa-icon icon-purple"><i class="bi bi-person-workspace"></i></div>
+            <div>
+                <div class="qa-title">{% trans "Give to Teacher" %}</div>
+                <div class="qa-desc">{% trans "Issue to a class teacher" %}</div>
+            </div>
+        </a>
+    </div>
+    <div class="col-lg-3 col-sm-6">
+        <a href="{% url 'transactions:return_from_teacher' %}" class="quick-action-tile">
+            <div class="qa-icon icon-emerald"><i class="bi bi-arrow-left-circle"></i></div>
+            <div>
+                <div class="qa-title">{% trans "Return Books" %}</div>
+                <div class="qa-desc">{% trans "Receive back from teacher" %}</div>
+            </div>
+        </a>
+    </div>
+    <div class="col-lg-3 col-sm-6">
+        <a href="{% url 'library:book_issue_list' %}" class="quick-action-tile">
+            <div class="qa-icon icon-rose"><i class="bi bi-flag"></i></div>
+            <div>
+                <div class="qa-title">{% trans "Verify Issues" %}</div>
+                <div class="qa-desc">{{ pending_issues }} {% trans "pending confirmation" %}</div>
+            </div>
+        </a>
+    </div>
+</div>
+
+{% trans "Total Books" as st_title1 %}
+{% trans "At Library" as st_title2 %}
+{% trans "With Teachers" as st_title3 %}
+{% trans "With Students" as st_title4 %}
+{% trans "Lost" as st_title5 %}
+{% trans "Written Off" as st_title6 %}
+<div class="row g-3 mb-4">
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        {% include "components/stat_card.html" with title=st_title1 value=total_books icon="bi bi-book" color_class="icon-blue" %}
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        {% include "components/stat_card.html" with title=st_title2 value=total_at_library icon="bi bi-building-check" color_class="icon-emerald" %}
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        {% include "components/stat_card.html" with title=st_title3 value=total_issued_teacher icon="bi bi-person-badge" color_class="icon-cyan" %}
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        {% include "components/stat_card.html" with title=st_title4 value=total_issued_student icon="bi bi-mortarboard" color_class="icon-purple" %}
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        {% include "components/stat_card.html" with title=st_title5 value=total_lost icon="bi bi-exclamation-triangle" color_class="icon-rose" %}
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        {% include "components/stat_card.html" with title=st_title6 value=total_written_off icon="bi bi-x-circle" color_class="icon-blue" %}
+    </div>
+</div>
+
+<div class="card-pro">
+    <div class="card-pro-header">
+        <h5><i class="bi bi-clock-history text-primary"></i> {% trans "Recent School Transactions" %}</h5>
+        <a href="{% url 'transactions:transaction_list' %}" class="btn-pro btn-pro-outline">{% trans "Full History" %}</a>
+    </div>
+    <div class="card-pro-body p-0">
+        <div class="table-responsive">
+            <table class="table-pro">
+                <thead>
+                    <tr>
+                        <th>{% trans "Inventory #" %}</th>
+                        <th>{% trans "Book" %}</th>
+                        <th>{% trans "Operation" %}</th>
+                        <th>{% trans "From" %}</th>
+                        <th>{% trans "To" %}</th>
+                        <th>{% trans "Date & Time" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tx in recent_transactions %}
+                    <tr>
+                        <td><a href="{% url 'library:copy_detail' tx.book_copy.pk %}"><code>{{ tx.book_copy.inventory_number }}</code></a></td>
+                        <td class="fw-bold">{{ tx.book_copy.book.title }}</td>
+                        <td><span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3">{{ tx.get_transaction_type_display }}</span></td>
+                        <td class="text-muted">{{ tx.from_user.get_full_name|default:tx.from_location|default:"—" }}</td>
+                        <td class="text-muted">{{ tx.to_user.get_full_name|default:tx.to_location|default:"—" }}</td>
+                        <td class="text-muted">{{ tx.created_at|date:"d.m.Y H:i" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="6" class="p-0"></td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if not recent_transactions %}
+            {% trans "No transactions yet" as et2_title %}
+            {% trans "No custody movements have been recorded for this school." as et2_desc %}
+            {% include "components/empty_state.html" with icon="bi bi-clock-history" title=et2_title description=et2_desc %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

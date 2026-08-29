@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Transactions Log" %} - Smart Library TJ{% endblock %}
+{% block page_title %}<i class="bi bi-clock-history text-primary"></i> {% trans "Book Movement & Custody History" %}{% endblock %}
+{% block page_subtitle %}<p>{% trans "Complete ledger of every textbook handover, return, loss and write-off." %}</p>{% endblock %}
+
+{% block content %}
+<div class="filter-bar-pro">
+    <form method="get" class="d-flex flex-wrap gap-2 w-100 align-items-center">
+        <div class="search-field">
+            <i class="bi bi-search"></i>
+            <input type="text" name="search" placeholder="{% trans "Search by inventory #, barcode, book title, username..." %}" value="{{ search }}">
+        </div>
+        <select name="type" class="filter-select">
+            <option value="">-- {% trans "All Transaction Types" %} --</option>
+            {% for code, label in types %}
+            <option value="{{ code }}" {% if tx_type == code %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn-pro btn-pro-primary">
+            <i class="bi bi-funnel"></i> {% trans "Filter" %}
+        </button>
+        {% if search or tx_type %}
+        <a href="{% url 'transactions:transaction_list' %}" class="btn-pro btn-pro-outline">
+            <i class="bi bi-x-circle"></i> {% trans "Reset" %}
+        </a>
+        {% endif %}
+    </form>
+</div>
+
+<div class="card-pro">
+    <div class="card-pro-body p-0">
+        <div class="table-responsive">
+            <table class="table-pro">
+                <thead>
+                    <tr>
+                        <th>{% trans "Inventory #" %}</th>
+                        <th>{% trans "Book Title" %}</th>
+                        <th>{% trans "Operation" %}</th>
+                        <th>{% trans "From" %}</th>
+                        <th>{% trans "To" %}</th>
+                        <th>{% trans "Note" %}</th>
+                        <th>{% trans "Timestamp" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tx in transactions %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'library:copy_detail' tx.book_copy.pk %}" class="fw-bold font-monospace text-decoration-none">
+                                <code>{{ tx.book_copy.inventory_number }}</code>
+                            </a>
+                        </td>
+                        <td><strong>{{ tx.book_copy.book.title }}</strong></td>
+                        <td>
+                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1" style="font-size: 11px;">
+                                {{ tx.get_transaction_type_display }}
+                            </span>
+                        </td>
+                        <td><small class="text-muted">{{ tx.from_user.get_full_name|default:tx.from_location|default:"-" }}</small></td>
+                        <td><strong>{{ tx.to_user.get_full_name|default:tx.to_location|default:"-" }}</strong></td>
+                        <td><small class="text-muted text-truncate d-inline-block" style="max-width: 160px;">{{ tx.note|default:"-" }}</small></td>
+                        <td><small class="text-muted font-monospace">{{ tx.created_at|date:"d.m.Y H:i" }}</small></td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="7" class="p-0"></td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if not transactions %}
+            {% trans "No transactions found" as tl_empty_title %}
+            {% trans "No textbook movement record matches the given criteria." as tl_empty_desc %}
+            {% include "components/empty_state.html" with icon="bi bi-clock-history" title=tl_empty_title description=tl_empty_desc %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% include "components/pagination.html" %}
+{% endblock %}

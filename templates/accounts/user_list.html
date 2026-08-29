@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "User Management" %} - Smart Library TJ{% endblock %}
+{% block page_title %}<i class="bi bi-people text-primary"></i> {% trans "User Management" %}{% endblock %}
+{% block page_subtitle %}<p>{% trans "Manage all system accounts, roles and access across the national library network." %}</p>{% endblock %}
+
+{% block page_actions %}
+<a href="{% url 'accounts:user_create' %}" class="btn-pro btn-pro-primary">
+    <i class="bi bi-person-plus-fill"></i> {% trans "Create User" %}
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="filter-bar-pro">
+    <form method="get" class="d-flex flex-wrap gap-2 w-100 align-items-center">
+        <div class="search-field">
+            <i class="bi bi-search"></i>
+            <input type="text" name="search" placeholder="{% trans "Search by name, username, phone, email..." %}" value="{{ search }}">
+        </div>
+        <select name="role" class="filter-select">
+            <option value="">-- {% trans "All Roles" %} --</option>
+            {% for code, label in roles %}
+            <option value="{{ code }}" {% if role_filter == code %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+        <select name="status" class="filter-select">
+            <option value="">-- {% trans "Status" %} --</option>
+            <option value="active" {% if status_filter == 'active' %}selected{% endif %}>{% trans "Active" %}</option>
+            <option value="inactive" {% if status_filter == 'inactive' %}selected{% endif %}>{% trans "Inactive" %}</option>
+        </select>
+        <button type="submit" class="btn-pro btn-pro-primary">
+            <i class="bi bi-funnel"></i> {% trans "Filter" %}
+        </button>
+        {% if search or role_filter or status_filter %}
+        <a href="{% url 'accounts:user_list' %}" class="btn-pro btn-pro-outline">
+            <i class="bi bi-x-circle"></i> {% trans "Reset" %}
+        </a>
+        {% endif %}
+    </form>
+</div>
+
+<div class="card-pro">
+    <div class="card-pro-body p-0">
+        <div class="table-responsive">
+            <table class="table-pro">
+                <thead>
+                    <tr>
+                        <th>{% trans "User" %}</th>
+                        <th>{% trans "Role" %}</th>
+                        <th>{% trans "Territory / School" %}</th>
+                        <th>{% trans "Phone" %}</th>
+                        <th>{% trans "Status" %}</th>
+                        <th class="text-end">{% trans "Actions" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for u in users %}
+                    <tr>
+                        <td>
+                            <div class="fw-bold">{{ u.get_full_name|default:u.username }}</div>
+                            <small class="text-muted font-monospace">@{{ u.username }}</small>
+                        </td>
+                        <td>
+                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1">
+                                {{ u.get_role_display }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if u.school %}
+                                <i class="bi bi-building text-muted"></i> {{ u.school.name }}
+                            {% elif u.district %}
+                                <i class="bi bi-map text-muted"></i> {{ u.district.name }}
+                            {% elif u.jamoat %}
+                                <i class="bi bi-pin-map text-muted"></i> {{ u.jamoat.name }}
+                            {% elif u.region %}
+                                <i class="bi bi-geo-alt text-muted"></i> {{ u.region.name }}
+                            {% else %}
+                                <span class="text-muted">{% trans "National level" %}</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ u.phone|default:"-" }}</td>
+                        <td>
+                            {% if u.is_active %}
+                            <span class="status-badge status-AVAILABLE"><span class="dot"></span><span>{% trans "Active" %}</span></span>
+                            {% else %}
+                            <span class="status-badge status-LOST"><span class="dot"></span><span>{% trans "Inactive" %}</span></span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end">
+                            <div class="d-flex justify-content-end gap-2">
+                                <a href="{% url 'accounts:user_edit' u.pk %}" class="btn-pro btn-pro-outline" title="{% trans "Edit User" %}">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                {% if u != request.user %}
+                                <form method="post" action="{% url 'accounts:user_toggle_active' u.pk %}" class="d-inline" onsubmit="return confirm('{% trans "Are you sure you want to change user status?" %}');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn-pro {% if u.is_active %}btn-pro-danger{% else %}btn-pro-success{% endif %}" title="{% if u.is_active %}{% trans "Deactivate" %}{% else %}{% trans "Activate" %}{% endif %}">
+                                        <i class="bi bi-{% if u.is_active %}person-x{% else %}person-check{% endif %}"></i>
+                                    </button>
+                                </form>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="6" class="p-0"></td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if not users %}
+            {% trans "No users found" as ul_empty_title %}
+            {% trans "No user matches the given search criteria." as ul_empty_desc %}
+            {% include "components/empty_state.html" with icon="bi bi-people" title=ul_empty_title description=ul_empty_desc action_url=None %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% include "components/pagination.html" %}
+{% endblock %}

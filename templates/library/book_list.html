@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Books" %} — Smart Library TJ{% endblock %}
+{% block page_title %}{% trans "Book Catalog" %}{% endblock %}
+{% block page_subtitle %}<p>{% trans "Browse and manage the national textbook catalog" %}</p>{% endblock %}
+{% block page_actions %}
+<a href="{% url 'library:book_create' %}" class="btn-pro btn-pro-primary"><i class="bi bi-plus-lg"></i> {% trans "Add Book" %}</a>
+{% endblock %}
+{% block content %}
+{% url 'library:book_create' as book_create_url %}
+
+<div class="filter-bar-pro">
+    <form method="get" class="d-flex flex-wrap gap-2 w-100 align-items-center">
+        <div class="search-field">
+            <i class="bi bi-search"></i>
+            <input type="text" name="search" placeholder="{% trans "Search by title, author, ISBN, publisher..." %}" value="{{ search }}">
+        </div>
+        <select name="grade" class="filter-select" onchange="this.form.submit()">
+            <option value="">{% trans "All Grades" %}</option>
+            {% for g in grades %}
+            <option value="{{ g }}" {% if grade == g|stringformat:"s" %}selected{% endif %}>{% trans "Grade" %} {{ g }}</option>
+            {% endfor %}
+        </select>
+        <select name="subject" class="filter-select" onchange="this.form.submit()">
+            <option value="">{% trans "All Subjects" %}</option>
+            {% for s in subjects %}
+            <option value="{{ s }}" {% if subject == s %}selected{% endif %}>{{ s }}</option>
+            {% endfor %}
+        </select>
+        <select name="language" class="filter-select" onchange="this.form.submit()">
+            <option value="">{% trans "All Languages" %}</option>
+            <option value="tj" {% if language == 'tj' %}selected{% endif %}>{% trans "Tajik" %}</option>
+            <option value="ru" {% if language == 'ru' %}selected{% endif %}>{% trans "Russian" %}</option>
+        </select>
+        <button type="submit" class="btn-pro btn-pro-primary"><i class="bi bi-search"></i> {% trans "Search" %}</button>
+        {% if search or grade or subject or language %}
+        <a href="{% url 'library:book_list' %}" class="btn-pro btn-pro-outline"><i class="bi bi-x-lg"></i> {% trans "Reset" %}</a>
+        {% endif %}
+    </form>
+</div>
+
+<div class="card-pro">
+    <div class="card-pro-header">
+        <h5><i class="bi bi-journal-bookmark text-primary"></i> {% trans "Catalog" %}</h5>
+        <span class="badge bg-light text-muted">{{ page_obj.paginator.count }} {% trans "books" %}</span>
+    </div>
+    <div class="card-pro-body p-0">
+        <div class="table-responsive">
+            <table class="table-pro">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>{% trans "Title" %}</th>
+                        <th>{% trans "Author" %}</th>
+                        <th>{% trans "Subject" %}</th>
+                        <th>{% trans "Grade" %}</th>
+                        <th>{% trans "Language" %}</th>
+                        <th>{% trans "ISBN" %}</th>
+                        <th>{% trans "Copies" %}</th>
+                        <th>{% trans "Actions" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for book in books %}
+                    <tr>
+                        <td class="text-muted">{{ forloop.counter0|add:page_obj.start_index }}</td>
+                        <td class="fw-bold"><a href="{% url 'library:book_detail' book.pk %}">{{ book.title }}</a></td>
+                        <td>{{ book.author }}</td>
+                        <td>{{ book.subject }}</td>
+                        <td><span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3">{{ book.grade }}</span></td>
+                        <td>{{ book.get_language_display }}</td>
+                        <td class="text-muted"><code>{{ book.isbn|default:"—" }}</code></td>
+                        <td class="text-muted">{{ book.total_copies }}</td>
+                        <td>
+                            <a href="{% url 'library:book_detail' book.pk %}" class="btn-pro btn-pro-outline" style="padding: 6px 10px;"><i class="bi bi-eye"></i></a>
+                            <a href="{% url 'library:book_edit' book.pk %}" class="btn-pro btn-pro-outline" style="padding: 6px 10px;"><i class="bi bi-pencil"></i></a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="9" class="p-0"></td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if not books %}
+            {% trans "No textbooks found" as bl_et_title %}
+            {% trans "Try changing your search filters, or add a new textbook to the catalog." as bl_et_desc %}
+            {% trans "Add Book" as bl_et_action %}
+            {% include "components/empty_state.html" with icon="bi bi-journal-x" title=bl_et_title description=bl_et_desc action_url=book_create_url action_text=bl_et_action action_icon="bi bi-plus-lg" %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% include "components/pagination.html" %}
+{% endblock %}

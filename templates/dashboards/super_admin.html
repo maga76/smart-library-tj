@@ -1,0 +1,268 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Super Admin Dashboard" %} — Smart Library TJ{% endblock %}
+
+{% block page_header %}
+<div class="card-pro border-0 mb-4" style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: #ffffff;">
+    <div class="card-pro-body p-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <div>
+            <span class="badge bg-white bg-opacity-20 text-white rounded-pill px-3 py-1 mb-2 font-weight-bold" style="font-size: 11px;">
+                {% trans "National Overview" %} &bull; {% trans "Tajikistan" %}
+            </span>
+            <h2 class="text-white fw-bold mb-1">
+                {% trans "Good day" %}, {{ user.first_name|default:user.username }} 👋
+            </h2>
+            <p class="text-white-50 mb-0">
+                {% trans "Here is the real-time operational status across all school libraries nationwide." %}
+            </p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{% url 'schools:school_create' %}" class="btn btn-light fw-bold text-primary shadow-sm rounded-pill px-3">
+                <i class="bi bi-plus-lg me-1"></i> {% trans "Add School" %}
+            </a>
+            <a href="{% url 'accounts:user_create' %}" class="btn btn-outline-light rounded-pill px-3">
+                <i class="bi bi-person-plus me-1"></i> {% trans "Add User" %}
+            </a>
+            <a href="{% url 'library:book_create' %}" class="btn btn-outline-light rounded-pill px-3">
+                <i class="bi bi-book me-1"></i> {% trans "Add Book" %}
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+{% trans "Total Textbooks" as st_title1 %}
+{% trans "In the national fund" as st_sub1 %}
+{% trans "In Libraries" as st_title2 %}
+{% trans "Available for issue" as st_sub2 %}
+{% trans "With Students" as st_title3 %}
+{% trans "In active use" as st_sub3 %}
+{% trans "With Teachers" as st_title4 %}
+{% trans "In classroom custody" as st_sub4 %}
+{% trans "Schools in System" as st_title5 %}
+{% blocktrans asvar st_sub5 %}{{ total_regions }} regions, {{ total_districts }} districts{% endblocktrans %}
+{% trans "Lost & Damaged" as st_title6 %}
+{% trans "Require write-off" as st_sub6 %}
+<!-- Top KPI Cards Grid -->
+<div class="row g-3 mb-4">
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        {% include "components/stat_card.html" with title=st_title1 value=total_books icon="bi bi-book-half" color_class="icon-blue" subtitle=st_sub1 %}
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        {% include "components/stat_card.html" with title=st_title2 value=total_available icon="bi bi-building-check" color_class="icon-emerald" subtitle=st_sub2 %}
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        {% include "components/stat_card.html" with title=st_title3 value=total_issued_student icon="bi bi-mortarboard" color_class="icon-purple" subtitle=st_sub3 %}
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        {% include "components/stat_card.html" with title=st_title4 value=total_issued_teacher icon="bi bi-person-workspace" color_class="icon-cyan" subtitle=st_sub4 %}
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        {% include "components/stat_card.html" with title=st_title5 value=total_schools icon="bi bi-bank" color_class="icon-blue" subtitle=st_sub5 %}
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        {% include "components/stat_card.html" with title=st_title6 value=total_lost|add:total_damaged icon="bi bi-exclamation-triangle" color_class="icon-rose" subtitle=st_sub6 %}
+    </div>
+</div>
+
+<!-- Charts & Regional Overview Row -->
+<div class="row g-4 mb-4">
+    <!-- Chart: Book Distribution -->
+    <div class="col-lg-5">
+        <div class="card-pro h-100">
+            <div class="card-pro-header">
+                <h5><i class="bi bi-pie-chart text-primary"></i> {% trans "Book Distribution" %}</h5>
+                <span class="badge bg-light text-muted">{% trans "Live Data" %}</span>
+            </div>
+            <div class="card-pro-body d-flex flex-column align-items-center justify-content-center">
+                <div style="width: 250px; height: 250px; position: relative;">
+                    <canvas id="booksChart"></canvas>
+                </div>
+                <div class="mt-4 w-100">
+                    <div class="d-flex justify-content-between py-1 border-bottom small">
+                        <span><i class="bi bi-circle-fill text-success me-1" style="font-size: 8px;"></i> {% trans "In Libraries" %}</span>
+                        <strong>{{ total_available }}</strong>
+                    </div>
+                    <div class="d-flex justify-content-between py-1 border-bottom small">
+                        <span><i class="bi bi-circle-fill text-primary me-1" style="font-size: 8px;"></i> {% trans "With Students" %}</span>
+                        <strong>{{ total_issued_student }}</strong>
+                    </div>
+                    <div class="d-flex justify-content-between py-1 border-bottom small">
+                        <span><i class="bi bi-circle-fill text-info me-1" style="font-size: 8px;"></i> {% trans "With Teachers" %}</span>
+                        <strong>{{ total_issued_teacher }}</strong>
+                    </div>
+                    <div class="d-flex justify-content-between py-1 small">
+                        <span><i class="bi bi-circle-fill text-danger me-1" style="font-size: 8px;"></i> {% trans "Lost / Damaged" %}</span>
+                        <strong>{{ total_lost|add:total_damaged }}</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Regions Coverage Grid -->
+    <div class="col-lg-7">
+        <div class="card-pro h-100">
+            <div class="card-pro-header">
+                <h5><i class="bi bi-map text-primary"></i> {% trans "Regional School Statistics" %}</h5>
+                <a href="{% url 'geography:region_list' %}" class="btn btn-sm btn-outline-primary rounded-pill">
+                    {% trans "Manage Regions" %} &rarr;
+                </a>
+            </div>
+            <div class="card-pro-body p-0">
+                <div class="table-responsive">
+                    <table class="table-pro">
+                        <thead>
+                            <tr>
+                                <th>{% trans "Region" %}</th>
+                                <th>{% trans "Students" %}</th>
+                                <th>{% trans "Schools" %}</th>
+                                <th>{% trans "Book Fund" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for reg in regions_stats %}
+                            <tr>
+                                <td>
+                                    <div class="fw-bold">{{ reg.name }}</div>
+                                    <small class="text-muted">{{ reg.name_other }}</small>
+                                </td>
+                                <td><span class="badge bg-light text-dark font-monospace">{{ reg.student_count }}</span></td>
+                                <td><strong>{{ reg.school_count }}</strong></td>
+                                <td>
+                                    <span class="status-badge status-AVAILABLE">
+                                        <span class="dot"></span>
+                                        <span>{{ reg.book_count }} {% trans "books" %}</span>
+                                    </span>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center text-muted py-4">{% trans "No regions found" %}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Transactions & Pending Requests Row -->
+<div class="row g-4">
+    <!-- Transactions Log Preview -->
+    <div class="col-lg-8">
+        <div class="card-pro">
+            <div class="card-pro-header">
+                <h5><i class="bi bi-clock-history text-primary"></i> {% trans "Recent Custody Movements" %}</h5>
+                <a href="{% url 'transactions:transaction_list' %}" class="btn btn-sm btn-outline-secondary rounded-pill">
+                    {% trans "Full Ledger" %} &rarr;
+                </a>
+            </div>
+            <div class="card-pro-body p-0">
+                <div class="table-responsive">
+                    <table class="table-pro">
+                        <thead>
+                            <tr>
+                                <th>{% trans "Inventory #" %}</th>
+                                <th>{% trans "Operation" %}</th>
+                                <th>{% trans "Parties" %}</th>
+                                <th>{% trans "Time" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for tx in recent_transactions %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'library:copy_detail' tx.book_copy.pk %}" class="fw-bold font-monospace text-decoration-none">
+                                        <code>{{ tx.book_copy.inventory_number }}</code>
+                                    </a><br>
+                                    <small class="text-truncate d-inline-block text-muted" style="max-width: 180px;">{{ tx.book_copy.book.title }}</small>
+                                </td>
+                                <td>
+                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill font-weight-bold" style="font-size: 11px;">
+                                        {{ tx.get_transaction_type_display }}
+                                    </span>
+                                </td>
+                                {% trans "Warehouse" as tx_warehouse %}
+                                <td>
+                                    <small class="text-muted">{{ tx.from_user.get_full_name|default:tx.from_location|default:tx_warehouse }} &rarr;</small><br>
+                                    <strong>{{ tx.to_user.get_full_name|default:tx.to_location }}</strong>
+                                </td>
+                                <td><small class="text-muted">{{ tx.created_at|date:"d.m H:i" }}</small></td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center text-muted py-4">{% trans "No recent transactions recorded." %}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Shortcuts & System Audit -->
+    <div class="col-lg-4">
+        <div class="card-pro">
+            <div class="card-pro-header">
+                <h5><i class="bi bi-shield-check text-primary"></i> {% trans "System Audit Log" %}</h5>
+                <a href="{% url 'audit:audit_log_list' %}" class="btn btn-sm btn-outline-secondary rounded-pill">{% trans "View all" %}</a>
+            </div>
+            <div class="card-pro-body p-3">
+                <div class="list-group list-group-flush">
+                    {% for log in recent_audit %}
+                    <div class="list-group-item px-0 py-2 border-bottom">
+                        <div class="d-flex justify-content-between">
+                            <strong class="small text-dark">{{ log.action }}</strong>
+                            <small class="text-muted">{{ log.created_at|date:"H:i" }}</small>
+                        </div>
+                        <p class="small text-muted mb-0 text-truncate">{{ log.description }}</p>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted text-center py-3 mb-0 small">{% trans "No recent audit events" %}</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('booksChart');
+    if (ctx) {
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['{% trans "In Libraries" %}', '{% trans "With Students" %}', '{% trans "With Teachers" %}', '{% trans "Lost/Damaged" %}'],
+                datasets: [{
+                    data: [
+                        {{ total_available|default:0 }},
+                        {{ total_issued_student|default:0 }},
+                        {{ total_issued_teacher|default:0 }},
+                        {{ total_lost|add:total_damaged|default:0 }}
+                    ],
+                    backgroundColor: ['#10b981', '#2563eb', '#06b6d4', '#ef4444'],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                cutout: '70%'
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

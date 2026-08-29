@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Analytics" %} - Smart Library TJ{% endblock %}
+{% block page_title %}<i class="bi bi-graph-up text-primary"></i> {% trans "System Analytics" %}{% endblock %}
+{% block page_subtitle %}<p>{% trans "Breakdown of the national textbook fund by status, grade, subject and region." %}</p>{% endblock %}
+
+{% block content %}
+{% trans "Total Copies" as ad_st_title %}
+{% trans "In the registered fund" as ad_st_sub %}
+<div class="row g-3 mb-4">
+    <div class="col-xl-3 col-md-6">
+        {% include "components/stat_card.html" with title=ad_st_title value=total_books icon="bi bi-book-half" color_class="icon-blue" subtitle=ad_st_sub %}
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <!-- Books by Status -->
+    <div class="col-lg-5">
+        <div class="card-pro h-100">
+            <div class="card-pro-header">
+                <h5><i class="bi bi-pie-chart text-primary"></i> {% trans "Books by Status" %}</h5>
+            </div>
+            <div class="card-pro-body">
+                <div style="height: 260px; position: relative;">
+                    <canvas id="statusChart"></canvas>
+                </div>
+                <div class="mt-3">
+                    {% for item in by_status %}
+                    <div class="d-flex justify-content-between align-items-center py-1 border-bottom small">
+                        <span>{% include "components/status_badge.html" with status_code=item.status status_display=item.status %}</span>
+                        <strong>{{ item.count }}</strong>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted text-center py-3 mb-0 small">{% trans "No data available" %}</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Books by Grade -->
+    <div class="col-lg-7">
+        <div class="card-pro h-100">
+            <div class="card-pro-header">
+                <h5><i class="bi bi-bar-chart text-primary"></i> {% trans "Books by Grade" %}</h5>
+            </div>
+            <div class="card-pro-body">
+                <div style="height: 300px; position: relative;">
+                    <canvas id="gradeChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Books by Subject -->
+    <div class="col-lg-6">
+        <div class="card-pro h-100">
+            <div class="card-pro-header">
+                <h5><i class="bi bi-journal-bookmark text-primary"></i> {% trans "Top Subjects by Copies" %}</h5>
+            </div>
+            <div class="card-pro-body">
+                <div style="height: 320px; position: relative;">
+                    <canvas id="subjectChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Regions Table -->
+    <div class="col-lg-6">
+        <div class="card-pro h-100">
+            <div class="card-pro-header">
+                <h5><i class="bi bi-map text-primary"></i> {% trans "Books by Region" %}</h5>
+            </div>
+            <div class="card-pro-body p-0">
+                <div class="table-responsive">
+                    <table class="table-pro">
+                        <thead>
+                            <tr>
+                                <th>{% trans "Region" %}</th>
+                                <th>{% trans "Schools" %}</th>
+                                <th>{% trans "Students" %}</th>
+                                <th>{% trans "Books" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for r in regions_data %}
+                            <tr>
+                                <td>
+                                    <div class="fw-bold">{{ r.name }}</div>
+                                    <small class="text-muted">{{ r.name_other }}</small>
+                                </td>
+                                <td>{{ r.schools_count }}</td>
+                                <td><span class="badge bg-light text-dark font-monospace">{{ r.students_count }}</span></td>
+                                <td><strong>{{ r.books_count }}</strong></td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="4" class="p-0"></td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% if not regions_data %}
+                    {% trans "No regional data" as ad_empty_title %}
+                    {% trans "No regional information is available." as ad_empty_desc %}
+                    {% include "components/empty_state.html" with icon="bi bi-map" title=ad_empty_title description=ad_empty_desc %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Books by Status (doughnut)
+    const statusCtx = document.getElementById('statusChart');
+    if (statusCtx) {
+        new Chart(statusCtx, {
+            type: 'doughnut',
+            data: {
+                labels: [{% for item in by_status %}'{{ item.status|escapejs }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+                datasets: [{
+                    data: [{% for item in by_status %}{{ item.count }}{% if not forloop.last %}, {% endif %}{% endfor %}],
+                    backgroundColor: ['#10b981', '#2563eb', '#06b6d4', '#f59e0b', '#ef4444', '#7c3aed', '#ea580c', '#64748b'],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 11 } } } },
+                cutout: '65%'
+            }
+        });
+    }
+
+    // Books by Grade (bar)
+    const gradeCtx = document.getElementById('gradeChart');
+    if (gradeCtx) {
+        new Chart(gradeCtx, {
+            type: 'bar',
+            data: {
+                labels: [{% for item in by_grade %}'{% trans "Grade" %} {{ item.grade }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+                datasets: [{
+                    label: '{% trans "Copies" %}',
+                    data: [{% for item in by_grade %}{{ item.copies_count|default:0 }}{% if not forloop.last %}, {% endif %}{% endfor %}],
+                    backgroundColor: '#2563eb',
+                    borderRadius: 6,
+                    maxBarThickness: 36
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+            }
+        });
+    }
+
+    // Top Subjects (horizontal bar)
+    const subjectCtx = document.getElementById('subjectChart');
+    if (subjectCtx) {
+        new Chart(subjectCtx, {
+            type: 'bar',
+            data: {
+                labels: [{% for item in by_subject %}'{{ item.subject|escapejs }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+                datasets: [{
+                    label: '{% trans "Copies" %}',
+                    data: [{% for item in by_subject %}{{ item.copies_count|default:0 }}{% if not forloop.last %}, {% endif %}{% endfor %}],
+                    backgroundColor: '#7c3aed',
+                    borderRadius: 6,
+                    maxBarThickness: 22
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { x: { beginAtZero: true, ticks: { precision: 0 } } }
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

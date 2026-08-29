@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Profile" %} - Smart Library TJ{% endblock %}
+{% block page_title %}<i class="bi bi-person-circle text-primary"></i> {% trans "Profile" %}{% endblock %}
+{% block page_subtitle %}<p>{% trans "Your personal account details." %}</p>{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+    <div class="col-lg-4">
+        <div class="card-pro h-100">
+            <div class="card-pro-body text-center py-4">
+                <div class="user-avatar-sm mx-auto mb-3" style="width: 72px; height: 72px; font-size: 26px;">
+                    {{ user.first_name|slice:":1"|default:user.username|slice:":1"|upper }}
+                </div>
+                <h5 class="mb-1">{{ user.get_full_name|default:user.username }}</h5>
+                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1">
+                    {{ user.get_role_display }}
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="card-pro h-100">
+            <div class="card-pro-header">
+                <h5><i class="bi bi-info-circle text-primary"></i> {% trans "Personal Information" %}</h5>
+            </div>
+            <div class="card-pro-body p-0">
+                <div class="table-responsive">
+                    <table class="table-pro">
+                        <tbody>
+                            <tr><td class="fw-bold" style="width: 220px;">{% trans "Full Name" %}</td><td>{{ user.get_full_name|default:"-" }}</td></tr>
+                            <tr><td class="fw-bold">{% trans "Username" %}</td><td><code>{{ user.username }}</code></td></tr>
+                            <tr><td class="fw-bold">{% trans "Email" %}</td><td>{{ user.email|default:"-" }}</td></tr>
+                            <tr><td class="fw-bold">{% trans "Phone" %}</td><td>{{ user.phone|default:"-" }}</td></tr>
+                            <tr><td class="fw-bold">{% trans "Role" %}</td><td><span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1">{{ user.get_role_display }}</span></td></tr>
+                            <tr><td class="fw-bold">{% trans "School" %}</td><td>{{ user.school|default:"-" }}</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Teacher Assignments" %} — Smart Library TJ{% endblock %}
+{% block page_title %}{% trans "Teacher Class Assignments" %}{% endblock %}
+{% block page_subtitle %}<p>{% trans "Which teachers are assigned to which classrooms" %}</p>{% endblock %}
+{% block content %}
+<div class="card-pro">
+    <div class="card-pro-header">
+        <h5><i class="bi bi-person-badge text-primary"></i> {% trans "Assignments" %}</h5>
+        <span class="badge bg-light text-muted">{{ assignments|length }} {% trans "assignments" %}</span>
+    </div>
+    <div class="card-pro-body p-0">
+        <div class="table-responsive">
+            <table class="table-pro">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>{% trans "Teacher" %}</th>
+                        <th>{% trans "Classroom" %}</th>
+                        <th>{% trans "Academic Year" %}</th>
+                        <th>{% trans "Class Teacher" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for a in assignments %}
+                    <tr>
+                        <td class="text-muted">{{ forloop.counter }}</td>
+                        <td class="fw-bold">{{ a.teacher.get_full_name }}</td>
+                        <td>{{ a.classroom.name }}</td>
+                        <td>{{ a.academic_year }}</td>
+                        <td>
+                            {% if a.is_class_teacher %}
+                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3">{% trans "Yes" %}</span>
+                            {% else %}
+                            <span class="text-muted">—</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="5" class="p-0"></td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if not assignments %}
+            {% trans "No assignments found" as tal_et_title %}
+            {% trans "No teachers have been assigned to classrooms at this school yet." as tal_et_desc %}
+            {% include "components/empty_state.html" with icon="bi bi-person-badge" title=tal_et_title description=tal_et_desc %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

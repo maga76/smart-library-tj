@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{{ copy.inventory_number }} — Smart Library TJ{% endblock %}
+{% block page_title %}{% trans "Book Copy" %} — {{ copy.inventory_number }}{% endblock %}
+{% block page_subtitle %}<p>{{ copy.book.title }} &middot; {{ copy.school }}</p>{% endblock %}
+{% block page_actions %}
+<a href="{% url 'library:book_detail' copy.book.pk %}" class="btn-pro btn-pro-outline"><i class="bi bi-book"></i> {% trans "View Book" %}</a>
+<a href="{% url 'library:copy_list' %}" class="btn-pro btn-pro-outline"><i class="bi bi-arrow-left"></i> {% trans "Back to Copies" %}</a>
+{% endblock %}
+{% block content %}
+<div class="row g-4">
+    <div class="col-lg-5">
+        <div class="card-pro">
+            <div class="card-pro-header">
+                <h5><i class="bi bi-info-circle text-primary"></i> {% trans "Copy Information" %}</h5>
+                {% include "components/status_badge.html" with status_code=copy.status status_display=copy.get_status_display %}
+            </div>
+            <div class="card-pro-body p-0">
+                <table class="table-pro">
+                    <tbody>
+                        <tr><td class="text-muted" style="width: 45%;">{% trans "Inventory #" %}</td><td class="fw-bold"><code>{{ copy.inventory_number }}</code></td></tr>
+                        <tr><td class="text-muted">{% trans "Barcode" %}</td><td><code>{{ copy.barcode }}</code></td></tr>
+                        <tr><td class="text-muted">{% trans "Book" %}</td><td><a href="{% url 'library:book_detail' copy.book.pk %}">{{ copy.book.title }}</a></td></tr>
+                        <tr><td class="text-muted">{% trans "Author" %}</td><td>{{ copy.book.author }}</td></tr>
+                        <tr><td class="text-muted">{% trans "Subject" %}</td><td>{{ copy.book.subject }}</td></tr>
+                        <tr><td class="text-muted">{% trans "School" %}</td><td>{{ copy.school }}</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        {% if issues %}
+        <div class="card-pro">
+            <div class="card-pro-header">
+                <h5><i class="bi bi-exclamation-triangle text-primary"></i> {% trans "Reported Issues" %}</h5>
+            </div>
+            <div class="card-pro-body p-0">
+                <div class="table-responsive">
+                    <table class="table-pro">
+                        <thead>
+                            <tr>
+                                <th>{% trans "Type" %}</th>
+                                <th>{% trans "Status" %}</th>
+                                <th>{% trans "Reported" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for issue in issues %}
+                            <tr>
+                                <td>{% include "components/status_badge.html" with status_code=issue.issue_type status_display=issue.get_issue_type_display %}</td>
+                                <td>{% include "components/status_badge.html" with status_code=issue.status status_display=issue.get_status_display %}</td>
+                                <td class="text-muted">{{ issue.reported_at|date:"d.m.Y H:i" }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="col-lg-7">
+        <div class="card-pro">
+            <div class="card-pro-header">
+                <h5><i class="bi bi-clock-history text-primary"></i> {% trans "Custody Movement History" %}</h5>
+                <span class="badge bg-light text-muted">{{ transactions.count }} {% trans "records" %}</span>
+            </div>
+            <div class="card-pro-body">
+                {% if transactions %}
+                {% include "components/timeline.html" with transactions=transactions %}
+                {% else %}
+                {% trans "No history" as cd_et_title %}
+                {% trans "No movements have been recorded for this copy yet." as cd_et_desc %}
+                {% include "components/empty_state.html" with icon="bi bi-clock-history" title=cd_et_title description=cd_et_desc %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

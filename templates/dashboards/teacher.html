@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Teacher Dashboard" %} — Smart Library TJ{% endblock %}
+{% block page_title %}{% trans "Good day" %}, {{ user.first_name|default:user.username }} 👋{% endblock %}
+{% block page_subtitle %}<p>{% trans "Here is what needs your attention today." %}</p>{% endblock %}
+
+{% block content %}
+<!-- Primary Daily Actions -->
+<div class="row g-3 mb-4">
+    <div class="col-lg-3 col-sm-6">
+        <a href="{% url 'transactions:issue_to_student' %}" class="quick-action-tile">
+            <div class="qa-icon icon-blue"><i class="bi bi-arrow-right-circle"></i></div>
+            <div>
+                <div class="qa-title">{% trans "Give Book" %}</div>
+                <div class="qa-desc">{% trans "Issue to a student" %}</div>
+            </div>
+        </a>
+    </div>
+    <div class="col-lg-3 col-sm-6">
+        <a href="{% url 'transactions:return_from_student' %}" class="quick-action-tile">
+            <div class="qa-icon icon-emerald"><i class="bi bi-arrow-left-circle"></i></div>
+            <div>
+                <div class="qa-title">{% trans "Return Book" %}</div>
+                <div class="qa-desc">{% trans "Receive back from a student" %}</div>
+            </div>
+        </a>
+    </div>
+    <div class="col-lg-3 col-sm-6">
+        <a href="{% url 'transactions:report_lost' %}" class="quick-action-tile">
+            <div class="qa-icon icon-rose"><i class="bi bi-exclamation-triangle"></i></div>
+            <div>
+                <div class="qa-title">{% trans "Report Lost" %}</div>
+                <div class="qa-desc">{% trans "Flag a missing textbook" %}</div>
+            </div>
+        </a>
+    </div>
+    <div class="col-lg-3 col-sm-6">
+        <a href="{% url 'transactions:report_damaged' %}" class="quick-action-tile">
+            <div class="qa-icon icon-amber"><i class="bi bi-tools"></i></div>
+            <div>
+                <div class="qa-title">{% trans "Report Damaged" %}</div>
+                <div class="qa-desc">{% trans "Flag a damaged textbook" %}</div>
+            </div>
+        </a>
+    </div>
+</div>
+
+{% trans "My Classes" as st_title1 %}
+{% trans "Students" as st_title2 %}
+{% trans "Ready to Issue" as st_title3 %}
+{% trans "Issued to Students" as st_title4 %}
+{% trans "Returned" as st_title5 %}
+{% trans "Lost / Damaged" as st_title6 %}
+<div class="row g-3 mb-4">
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        {% include "components/stat_card.html" with title=st_title1 value=my_classes_count icon="bi bi-door-open" color_class="icon-cyan" %}
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        {% include "components/stat_card.html" with title=st_title2 value=students_count icon="bi bi-people" color_class="icon-blue" %}
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        {% include "components/stat_card.html" with title=st_title3 value=books_in_hand icon="bi bi-journal-check" color_class="icon-emerald" %}
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        {% include "components/stat_card.html" with title=st_title4 value=books_issued icon="bi bi-person-check" color_class="icon-purple" %}
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        {% include "components/stat_card.html" with title=st_title5 value=books_returned icon="bi bi-arrow-counterclockwise" color_class="icon-blue" %}
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        {% include "components/stat_card.html" with title=st_title6 value=reported_lost|add:reported_damaged icon="bi bi-exclamation-triangle" color_class="icon-rose" %}
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="card-pro h-100">
+            <div class="card-pro-header">
+                <h5><i class="bi bi-book text-primary"></i> {% trans "Books in My Possession" %} ({{ books_in_hand }})</h5>
+                <a href="{% url 'transactions:issue_to_student' %}" class="btn-pro btn-pro-primary">
+                    <i class="bi bi-arrow-right-circle"></i> {% trans "Give Book" %}
+                </a>
+            </div>
+            <div class="card-pro-body p-0">
+                <div class="table-responsive">
+                    <table class="table-pro">
+                        <thead>
+                            <tr>
+                                <th>{% trans "Inventory #" %}</th>
+                                <th>{% trans "Book" %}</th>
+                                <th>{% trans "Grade" %}</th>
+                                <th>{% trans "Status" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for copy in my_copies %}
+                            <tr>
+                                <td><code>{{ copy.inventory_number }}</code></td>
+                                <td class="fw-bold">{{ copy.book.title }}</td>
+                                <td>{{ copy.book.grade }}</td>
+                                <td>{% include "components/status_badge.html" with status_code=copy.status status_display=copy.get_status_display %}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="4" class="p-0"></td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% if not my_copies %}
+                    {% trans "No books on hand" as et1_title %}
+                    {% trans "You have not received any textbooks from the librarian to issue to students yet." as et1_desc %}
+                    {% include "components/empty_state.html" with icon="bi bi-journal-x" title=et1_title description=et1_desc %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card-pro h-100">
+            <div class="card-pro-header">
+                <h5><i class="bi bi-mortarboard text-primary"></i> {% trans "Issued to Students" %} ({{ books_issued }})</h5>
+                <a href="{% url 'library:enrollment_list' %}" class="btn-pro btn-pro-outline">{% trans "Student Roster" %}</a>
+            </div>
+            <div class="card-pro-body p-0">
+                <div class="table-responsive">
+                    <table class="table-pro">
+                        <thead>
+                            <tr>
+                                <th>{% trans "Inventory #" %}</th>
+                                <th>{% trans "Book" %}</th>
+                                <th>{% trans "Grade" %}</th>
+                                <th>{% trans "Status" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for copy in issued_to_students %}
+                            <tr>
+                                <td><code>{{ copy.inventory_number }}</code></td>
+                                <td class="fw-bold">{{ copy.book.title }}</td>
+                                <td>{{ copy.book.grade }}</td>
+                                <td>{% include "components/status_badge.html" with status_code=copy.status status_display=copy.get_status_display %}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="4" class="p-0"></td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% if not issued_to_students %}
+                    {% trans "No books with students" as et2_title %}
+                    {% trans "You haven't issued any textbooks to your students yet." as et2_desc %}
+                    {% include "components/empty_state.html" with icon="bi bi-mortarboard" title=et2_title description=et2_desc %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card-pro mt-4">
+    <div class="card-pro-header">
+        <h5><i class="bi bi-door-open text-primary"></i> {% trans "My Assigned Classrooms" %}</h5>
+    </div>
+    <div class="card-pro-body p-0">
+        <div class="table-responsive">
+            <table class="table-pro">
+                <thead>
+                    <tr>
+                        <th>{% trans "Classroom" %}</th>
+                        <th>{% trans "Grade" %}</th>
+                        <th>{% trans "Academic Year" %}</th>
+                        <th>{% trans "Role" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for a in assignments %}
+                    <tr>
+                        <td class="fw-bold">{{ a.classroom.name }}</td>
+                        <td>{{ a.classroom.grade }}</td>
+                        <td>{{ a.academic_year.name }}</td>
+                        <td>
+                            {% if a.is_class_teacher %}
+                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3">{% trans "Class Teacher" %}</span>
+                            {% else %}
+                            <span class="badge bg-light text-muted border rounded-pill px-3">{% trans "Subject Teacher" %}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="4" class="p-0"></td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if not assignments %}
+            {% trans "No assignments" as et3_title %}
+            {% trans "You have not been assigned any classrooms for the current academic year yet." as et3_desc %}
+            {% include "components/empty_state.html" with icon="bi bi-door-open" title=et3_title description=et3_desc %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

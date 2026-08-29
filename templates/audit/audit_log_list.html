@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Audit Log" %} - Smart Library TJ{% endblock %}
+{% block page_title %}<i class="bi bi-shield-check text-primary"></i> {% trans "System Audit & Action Log" %}{% endblock %}
+{% block page_subtitle %}<p>{% trans "A read-only, chronological record of every security-relevant action performed in the system." %}</p>{% endblock %}
+
+{% block content %}
+<div class="filter-bar-pro">
+    <form method="get" class="d-flex flex-wrap gap-2 w-100 align-items-center">
+        <div class="search-field">
+            <i class="bi bi-search"></i>
+            <input type="text" name="search" placeholder="{% trans "Search description, object ID, user..." %}" value="{{ search }}">
+        </div>
+        <select name="action" class="filter-select">
+            <option value="">-- {% trans "All Event Actions" %} --</option>
+            {% for act in actions %}
+            <option value="{{ act }}" {% if action_filter == act %}selected{% endif %}>{{ act }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn-pro btn-pro-primary">
+            <i class="bi bi-funnel"></i> {% trans "Filter" %}
+        </button>
+        {% if search or action_filter %}
+        <a href="{% url 'audit:audit_log_list' %}" class="btn-pro btn-pro-outline">
+            <i class="bi bi-x-circle"></i> {% trans "Reset" %}
+        </a>
+        {% endif %}
+    </form>
+</div>
+
+<div class="card-pro">
+    <div class="card-pro-body p-0">
+        <div class="table-responsive">
+            <table class="table-pro">
+                <thead>
+                    <tr>
+                        <th>{% trans "User" %}</th>
+                        <th>{% trans "Action Event" %}</th>
+                        <th>{% trans "Target Entity" %}</th>
+                        <th>{% trans "Details & Description" %}</th>
+                        <th>{% trans "Timestamp" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in logs %}
+                    <tr>
+                        <td>
+                            {% if log.user %}
+                            <strong>{{ log.user.get_full_name|default:log.user.username }}</strong><br>
+                            <small class="text-muted font-monospace">@{{ log.user.username }} ({{ log.user.get_role_display }})</small>
+                            {% else %}
+                            <span class="text-muted">{% trans "System / Automated" %}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <code class="badge bg-slate-100 text-dark border" style="background: var(--slate-100); color: var(--slate-700); font-weight: 600;">{{ log.action }}</code>
+                        </td>
+                        <td>
+                            <strong>{{ log.object_type }}</strong>
+                            {% if log.object_id %}<code class="ms-1 text-muted">#{{ log.object_id }}</code>{% endif %}
+                        </td>
+                        <td class="text-truncate d-inline-block" style="max-width: 320px;">{{ log.description }}</td>
+                        <td><code class="text-muted">{{ log.created_at|date:"d.m.Y H:i:s" }}</code></td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="5" class="p-0"></td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if not logs %}
+            {% trans "No records found" as al_empty_title %}
+            {% trans "No audit event matches the given search criteria." as al_empty_desc %}
+            {% include "components/empty_state.html" with icon="bi bi-shield-check" title=al_empty_title description=al_empty_desc %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% include "components/pagination.html" %}
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Book Requests" %} — Smart Library TJ{% endblock %}
+{% block page_title %}{% trans "Book Requests" %}{% endblock %}
+{% block page_subtitle %}<p>{% trans "School requests for additional textbook copies" %}</p>{% endblock %}
+{% block page_actions %}
+{% if user.role == 'SCHOOL_DIRECTOR' %}
+<a href="{% url 'library:book_request_create' %}" class="btn-pro btn-pro-primary"><i class="bi bi-plus-lg"></i> {% trans "New Request" %}</a>
+{% endif %}
+{% endblock %}
+{% block content %}
+{% url 'library:book_request_create' as request_create_url %}
+
+<div class="filter-bar-pro">
+    <form method="get" class="d-flex flex-wrap gap-2 w-100 align-items-center">
+        <select name="status" class="filter-select" onchange="this.form.submit()">
+            <option value="">{% trans "All Statuses" %}</option>
+            {% for code, label in statuses %}
+            <option value="{{ code }}" {% if status_filter == code %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn-pro btn-pro-primary"><i class="bi bi-filter"></i> {% trans "Apply" %}</button>
+        {% if status_filter %}
+        <a href="{% url 'library:book_request_list' %}" class="btn-pro btn-pro-outline"><i class="bi bi-x-lg"></i> {% trans "Reset" %}</a>
+        {% endif %}
+    </form>
+</div>
+
+<div class="card-pro">
+    <div class="card-pro-header">
+        <h5><i class="bi bi-envelope-paper text-primary"></i> {% trans "Requests" %}</h5>
+        <span class="badge bg-light text-muted">{{ page_obj.paginator.count }} {% trans "requests" %}</span>
+    </div>
+    <div class="card-pro-body p-0">
+        <div class="table-responsive">
+            <table class="table-pro">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>{% trans "Book" %}</th>
+                        <th>{% trans "School" %}</th>
+                        <th>{% trans "Qty" %}</th>
+                        <th>{% trans "Status" %}</th>
+                        <th>{% trans "Created" %}</th>
+                        <th>{% trans "Actions" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in book_requests %}
+                    <tr>
+                        <td class="text-muted">{{ forloop.counter0|add:page_obj.start_index }}</td>
+                        <td class="fw-bold">{{ r.book.title }}</td>
+                        <td>{{ r.school }}</td>
+                        <td>{{ r.requested_quantity }}</td>
+                        <td>{% include "components/status_badge.html" with status_code=r.status status_display=r.get_status_display %}</td>
+                        <td class="text-muted">{{ r.created_at|date:"d.m.Y" }}</td>
+                        <td>
+                            {% if r.status == 'PENDING' and user.role == 'SUPER_ADMIN' %}
+                            <form method="post" action="{% url 'library:book_request_approve' r.pk %}" class="d-inline-flex gap-1">
+                                {% csrf_token %}
+                                <button name="action" value="approve" class="btn-pro btn-pro-success" style="padding: 6px 10px;"><i class="bi bi-check-lg"></i></button>
+                                <button name="action" value="reject" class="btn-pro btn-pro-danger" style="padding: 6px 10px;"><i class="bi bi-x-lg"></i></button>
+                            </form>
+                            {% else %}
+                            <span class="text-muted">—</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="7" class="p-0"></td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if not book_requests %}
+            {% trans "No requests" as brl_et_title %}
+            {% trans "No requests for additional textbooks have been submitted yet." as brl_et_desc %}
+            {% trans "New Request" as brl_et_action %}
+            {% include "components/empty_state.html" with icon="bi bi-envelope-paper" title=brl_et_title description=brl_et_desc action_url=request_create_url action_text=brl_et_action action_icon="bi bi-plus-lg" %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% include "components/pagination.html" %}
+{% endblock %}

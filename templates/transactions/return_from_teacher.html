@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Return from Teacher" %} - Smart Library TJ{% endblock %}
+{% block page_title %}<i class="bi bi-arrow-left-circle text-success"></i> {% trans "Receive Textbook Return from Teacher" %}{% endblock %}
+{% block page_subtitle %}<p>{% trans "Class Teacher → Library Return" %}</p>{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card-pro">
+            <div class="card-pro-header">
+                <h5><span class="qa-icon icon-emerald" style="width: 34px; height: 34px; font-size: 16px;"><i class="bi bi-arrow-left-circle"></i></span> {% trans "Batch Return to Library" %}</h5>
+            </div>
+            <div class="card-pro-body">
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">{% trans "Select Books Returned by Teachers" %} <span class="text-danger">*</span></label>
+                        <select name="book_copies" class="form-select" size="8" multiple required>
+                            {% for copy in copies %}
+                            <option value="{{ copy.pk }}">
+                                [{{ copy.inventory_number }}] {{ copy.book.title }} ({{ copy.book.grade }} {% trans "grade" %})
+                            </option>
+                            {% empty %}
+                            <option value="" disabled>{% trans "No books currently marked as issued to teachers" %}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="form-text">{% trans "Tip: Hold Ctrl (or Cmd) to select multiple book copies for a batch return." %}</div>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn-pro btn-pro-success">
+                            <i class="bi bi-check2-circle"></i> {% trans "Accept into Library Stock" %}
+                        </button>
+                        <a href="{% url 'transactions:transaction_list' %}" class="btn-pro btn-pro-outline">
+                            {% trans "Cancel" %}
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

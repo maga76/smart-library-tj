@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Issue to Teacher" %} - Smart Library TJ{% endblock %}
+{% block page_title %}<i class="bi bi-arrow-right-circle text-primary"></i> {% trans "Issue Books to Class Teacher" %}{% endblock %}
+{% block page_subtitle %}<p>{% trans "Librarian → Class Teacher Handover" %}</p>{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card-pro">
+            <div class="card-pro-header">
+                <h5><span class="qa-icon icon-blue" style="width: 34px; height: 34px; font-size: 16px;"><i class="bi bi-arrow-right-circle"></i></span> {% trans "Batch Transfer to Teacher" %}</h5>
+            </div>
+            <div class="card-pro-body">
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">{% trans "Class Teacher" %} <span class="text-danger">*</span></label>
+                        <select name="teacher" class="form-select form-select-lg" required>
+                            <option value="">-- {% trans "Choose Teacher" %} --</option>
+                            {% for teacher in teachers %}
+                            <option value="{{ teacher.pk }}">{{ teacher.get_full_name }} ({{ teacher.username }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">{% trans "Select Available Book Copies" %} <span class="text-danger">*</span></label>
+                        <select name="book_copies" class="form-select" size="8" multiple required>
+                            {% for copy in copies %}
+                            <option value="{{ copy.pk }}">
+                                [{{ copy.inventory_number }}] {{ copy.book.title }} ({{ copy.book.grade }} {% trans "grade" %}, {{ copy.book.subject }})
+                            </option>
+                            {% empty %}
+                            <option value="" disabled>{% trans "No available books in library stock" %}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="form-text">{% trans "Tip: Hold Ctrl (or Cmd) to select multiple book copies for a batch transfer." %}</div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">{% trans "Note / Transfer Document Reference" %}</label>
+                        <textarea name="note" class="form-control" rows="2" placeholder="{% trans "Optional notes, order number, or handover comment..." %}"></textarea>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn-pro btn-pro-primary">
+                            <i class="bi bi-check2-circle"></i> {% trans "Confirm Transfer to Teacher" %}
+                        </button>
+                        <a href="{% url 'transactions:transaction_list' %}" class="btn-pro btn-pro-outline">
+                            {% trans "Cancel" %}
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

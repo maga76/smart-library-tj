@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Jamoats" %} - Smart Library TJ{% endblock %}
+{% block page_title %}{% trans "Jamoats" %}{% endblock %}
+{% block page_subtitle %}<p>{% trans "Smallest administrative units within each district" %}</p>{% endblock %}
+{% block page_actions %}
+<a href="{% url 'geography:jamoat_create' %}" class="btn-pro btn-pro-primary">
+    <i class="bi bi-plus-lg"></i> {% trans "Add Jamoat" %}
+</a>
+{% endblock %}
+{% block content %}
+{% trans "Active" as trans_active %}
+{% trans "Inactive" as trans_inactive %}
+
+<div class="filter-bar-pro">
+    <form method="get" class="d-flex flex-wrap gap-2 align-items-center w-100">
+        <div class="search-field">
+            <i class="bi bi-search"></i>
+            <input type="text" name="search" placeholder="{% trans "Search by name..." %}" value="{{ search }}">
+        </div>
+        <select name="district" class="filter-select" onchange="this.form.submit()">
+            <option value="">{% trans "All Districts" %}</option>
+            {% for d in districts %}
+            <option value="{{ d.pk }}" {% if district_filter == d.pk|stringformat:"s" %}selected{% endif %}>{{ d.name }} ({{ d.region.name }})</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn-pro btn-pro-primary"><i class="bi bi-funnel"></i> {% trans "Filter" %}</button>
+        {% if search or district_filter %}
+        <a href="{% url 'geography:jamoat_list' %}" class="btn-pro btn-pro-outline"><i class="bi bi-x-lg"></i></a>
+        {% endif %}
+    </form>
+</div>
+
+<div class="card-pro">
+    <div class="card-pro-header">
+        <h5><i class="bi bi-pin-map text-primary"></i> {% trans "Jamoats" %}</h5>
+        <span class="badge bg-light text-muted">{{ page_obj.paginator.count }} {% trans "jamoats" %}</span>
+    </div>
+    <div class="card-pro-body p-0">
+        <div class="table-responsive">
+            <table class="table-pro">
+                <thead>
+                    <tr>
+                        <th>№</th>
+                        <th>{% trans "Name (RU)" %}</th>
+                        <th>{% trans "District" %}</th>
+                        <th>{% trans "Region" %}</th>
+                        <th>{% trans "Status" %}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for j in jamoats %}
+                    <tr>
+                        <td><span class="fw-bold text-muted">{{ forloop.counter }}</span></td>
+                        <td class="fw-bold">{{ j.name }}</td>
+                        <td>{{ j.district.name }}</td>
+                        <td>{{ j.district.region.name }}</td>
+                        <td>
+                            {% if j.is_active %}
+                            {% include "components/status_badge.html" with status_code="AVAILABLE" status_display=trans_active %}
+                            {% else %}
+                            {% include "components/status_badge.html" with status_code="WRITTEN_OFF" status_display=trans_inactive %}
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'geography:jamoat_edit' j.pk %}" class="btn-pro btn-pro-outline" style="padding: 6px 12px;" title="{% trans "Edit" %}">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="6" class="p-0"></td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if not jamoats %}
+            {% trans "No jamoats found" as empty_title %}
+            {% trans "No jamoats match your search criteria." as empty_desc %}
+            {% include "components/empty_state.html" with icon="bi bi-pin-map" title=empty_title description=empty_desc %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% include "components/pagination.html" %}
+{% endblock %}

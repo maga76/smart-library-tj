@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Report Issue" %} — Smart Library TJ{% endblock %}
+{% block page_title %}{% trans "Report Book Issue" %}{% endblock %}
+{% block page_subtitle %}<p>{% trans "Log a lost or damaged textbook so the librarian can verify it" %}</p>{% endblock %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+
+    <div class="card-pro">
+        <div class="card-pro-header">
+            <h5><i class="bi bi-upc-scan text-primary"></i> {% trans "Book & Student" %}</h5>
+        </div>
+        <div class="card-pro-body">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">{% trans "Book Copy" %}</label>
+                    <select name="book_copy" class="form-select" required>
+                        <option value="">{% trans "Select copy" %}</option>
+                        {% for copy in copies %}
+                        <option value="{{ copy.pk }}">{{ copy.inventory_number }} — {{ copy.book.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">{% trans "Student" %}</label>
+                    <select name="student" class="form-select" required>
+                        <option value="">{% trans "Select student" %}</option>
+                        {% for student in students %}
+                        <option value="{{ student.pk }}">{{ student.get_full_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-pro">
+        <div class="card-pro-header">
+            <h5><i class="bi bi-exclamation-triangle text-primary"></i> {% trans "Issue Details" %}</h5>
+        </div>
+        <div class="card-pro-body">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">{% trans "Issue Type" %}</label>
+                    <select name="issue_type" class="form-select" required>
+                        <option value="LOST">{% trans "Lost" %}</option>
+                        <option value="DAMAGED">{% trans "Damaged" %}</option>
+                    </select>
+                </div>
+                <div class="col-md-8">
+                    <label class="form-label fw-bold">{% trans "Description" %}</label>
+                    <textarea name="description" class="form-control" rows="3" placeholder="{% trans "Describe what happened..." %}"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn-pro" style="background: var(--warning-dot); color: #fff;"><i class="bi bi-exclamation-triangle"></i> {% trans "Report Issue" %}</button>
+        <a href="{% url 'library:book_issue_list' %}" class="btn-pro btn-pro-outline">{% trans "Cancel" %}</a>
+    </div>
+</form>
+{% endblock %}

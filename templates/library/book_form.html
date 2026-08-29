@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{{ title }} — Smart Library TJ{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block page_subtitle %}<p>{% trans "Catalog entries describe a textbook title — physical copies are managed separately" %}</p>{% endblock %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+
+    <div class="card-pro">
+        <div class="card-pro-header">
+            <h5><i class="bi bi-info-circle text-primary"></i> {% trans "Basic Information" %}</h5>
+        </div>
+        <div class="card-pro-body">
+            <div class="row g-3">
+                <div class="col-md-8">
+                    <label class="form-label fw-bold">{% trans "Title" %}</label>
+                    <input type="text" name="title" class="form-control" value="{{ book.title|default:'' }}" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">{% trans "Author" %}</label>
+                    <input type="text" name="author" class="form-control" value="{{ book.author|default:'' }}" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">{% trans "Subject" %}</label>
+                    <input type="text" name="subject" class="form-control" value="{{ book.subject|default:'' }}" required>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-bold">{% trans "Grade" %}</label>
+                    <select name="grade" class="form-select">
+                        {% for i in "1234567891011" %}
+                        <option value="{{ forloop.counter }}" {% if book.grade == forloop.counter %}selected{% endif %}>{{ forloop.counter }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-bold">{% trans "Language" %}</label>
+                    <select name="language" class="form-select">
+                        <option value="tj" {% if book.language == 'tj' %}selected{% endif %}>Tajik</option>
+                        <option value="ru" {% if book.language == 'ru' %}selected{% endif %}>Russian</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-pro">
+        <div class="card-pro-header">
+            <h5><i class="bi bi-file-earmark-text text-primary"></i> {% trans "Publication Details" %}</h5>
+        </div>
+        <div class="card-pro-body">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">{% trans "ISBN" %}</label>
+                    <input type="text" name="isbn" class="form-control" value="{{ book.isbn|default:'' }}">
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label fw-bold">{% trans "Publisher" %}</label>
+                    <input type="text" name="publisher" class="form-control" value="{{ book.publisher|default:'' }}">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">{% trans "Publication Year" %}</label>
+                    <input type="number" name="publication_year" class="form-control" value="{{ book.publication_year|default:'' }}">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn-pro btn-pro-primary"><i class="bi bi-check-lg"></i> {% trans "Save" %}</button>
+        <a href="{% url 'library:book_list' %}" class="btn-pro btn-pro-outline">{% trans "Cancel" %}</a>
+    </div>
+</form>
+{% endblock %}

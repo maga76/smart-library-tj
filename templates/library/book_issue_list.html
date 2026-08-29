@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Book Issues" %} — Smart Library TJ{% endblock %}
+{% block page_title %}{% trans "Book Issues" %}{% endblock %}
+{% block page_subtitle %}<p>{% trans "Reported lost and damaged textbooks awaiting verification" %}</p>{% endblock %}
+{% block content %}
+
+<div class="filter-bar-pro">
+    <form method="get" class="d-flex flex-wrap gap-2 w-100 align-items-center">
+        <select name="type" class="filter-select" onchange="this.form.submit()">
+            <option value="">{% trans "All Types" %}</option>
+            <option value="LOST" {% if type_filter == 'LOST' %}selected{% endif %}>{% trans "Lost" %}</option>
+            <option value="DAMAGED" {% if type_filter == 'DAMAGED' %}selected{% endif %}>{% trans "Damaged" %}</option>
+        </select>
+        <select name="status" class="filter-select" onchange="this.form.submit()">
+            <option value="">{% trans "All Statuses" %}</option>
+            <option value="PENDING" {% if status_filter == 'PENDING' %}selected{% endif %}>{% trans "Pending" %}</option>
+            <option value="CONFIRMED" {% if status_filter == 'CONFIRMED' %}selected{% endif %}>{% trans "Confirmed" %}</option>
+            <option value="REJECTED" {% if status_filter == 'REJECTED' %}selected{% endif %}>{% trans "Rejected" %}</option>
+        </select>
+        <button type="submit" class="btn-pro btn-pro-primary"><i class="bi bi-filter"></i> {% trans "Apply" %}</button>
+        {% if status_filter or type_filter %}
+        <a href="{% url 'library:book_issue_list' %}" class="btn-pro btn-pro-outline"><i class="bi bi-x-lg"></i> {% trans "Reset" %}</a>
+        {% endif %}
+    </form>
+</div>
+
+<div class="card-pro">
+    <div class="card-pro-header">
+        <h5><i class="bi bi-exclamation-triangle text-primary"></i> {% trans "Issues" %}</h5>
+        <span class="badge bg-light text-muted">{{ page_obj.paginator.count }} {% trans "reports" %}</span>
+    </div>
+    <div class="card-pro-body p-0">
+        <div class="table-responsive">
+            <table class="table-pro">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>{% trans "Book" %}</th>
+                        <th>{% trans "Student" %}</th>
+                        <th>{% trans "Type" %}</th>
+                        <th>{% trans "Status" %}</th>
+                        <th>{% trans "Reported" %}</th>
+                        <th>{% trans "Actions" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in issues %}
+                    <tr>
+                        <td class="text-muted">{{ forloop.counter0|add:page_obj.start_index }}</td>
+                        <td class="fw-bold"><code>{{ i.book_copy.inventory_number }}</code> {{ i.book_copy.book.title }}</td>
+                        <td>{{ i.student.get_full_name }}</td>
+                        <td>{% include "components/status_badge.html" with status_code=i.issue_type status_display=i.get_issue_type_display %}</td>
+                        <td>{% include "components/status_badge.html" with status_code=i.status status_display=i.get_status_display %}</td>
+                        <td class="text-muted">{{ i.reported_at|date:"d.m.Y" }}</td>
+                        <td>
+                            {% if i.status == 'PENDING' and user.role == 'LIBRARIAN' %}
+                            <form method="post" action="{% url 'library:book_issue_confirm' i.pk %}" class="d-inline-flex gap-1">
+                                {% csrf_token %}
+                                <button name="action" value="confirm" class="btn-pro btn-pro-success" style="padding: 6px 10px;"><i class="bi bi-check-lg"></i></button>
+                                <button name="action" value="reject" class="btn-pro btn-pro-danger" style="padding: 6px 10px;"><i class="bi bi-x-lg"></i></button>
+                            </form>
+                            {% else %}
+                            <span class="text-muted">—</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="7" class="p-0"></td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if not issues %}
+            {% trans "No reports" as bi_et_title %}
+            {% trans "No lost or damaged textbook reports have been submitted yet." as bi_et_desc %}
+            {% include "components/empty_state.html" with icon="bi bi-exclamation-triangle" title=bi_et_title description=bi_et_desc %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% include "components/pagination.html" %}
+{% endblock %}

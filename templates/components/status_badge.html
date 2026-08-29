@@ -1,0 +1,8 @@
+{% comment %}
+Reusable Status Badge Component
+Params: status_code, status_display
+{% endcomment %}
+<span class="status-badge status-{{ status_code }}">
+    <span class="dot"></span>
+    <span>{{ status_display|default:status_code }}</span>
+</span>

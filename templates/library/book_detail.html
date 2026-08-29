@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{{ book.title }} — Smart Library TJ{% endblock %}
+{% block page_title %}{{ book.title }}{% endblock %}
+{% block page_subtitle %}<p>{{ book.author }} &middot; {{ book.subject }} &middot; {% trans "Grade" %} {{ book.grade }}</p>{% endblock %}
+{% block page_actions %}
+<a href="{% url 'library:book_edit' book.pk %}" class="btn-pro btn-pro-outline"><i class="bi bi-pencil"></i> {% trans "Edit" %}</a>
+<a href="{% url 'library:book_list' %}" class="btn-pro btn-pro-outline"><i class="bi bi-arrow-left"></i> {% trans "Back to Catalog" %}</a>
+{% endblock %}
+{% block content %}
+{% trans "Total Copies" as bd_st_title1 %}
+{% trans "Available" as bd_st_title2 %}
+{% trans "With Teachers" as bd_st_title3 %}
+{% trans "With Students" as bd_st_title4 %}
+{% trans "Lost / Damaged" as bd_st_title5 %}
+{% trans "Written Off" as bd_st_title6 %}
+
+<div class="row g-3 mb-4">
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        {% include "components/stat_card.html" with title=bd_st_title1 value=stats.total icon="bi bi-stack" color_class="icon-blue" %}
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        {% include "components/stat_card.html" with title=bd_st_title2 value=stats.available icon="bi bi-check-circle" color_class="icon-emerald" %}
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        {% include "components/stat_card.html" with title=bd_st_title3 value=stats.issued_teacher icon="bi bi-person-badge" color_class="icon-cyan" %}
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        {% include "components/stat_card.html" with title=bd_st_title4 value=stats.issued_student icon="bi bi-mortarboard" color_class="icon-purple" %}
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        {% include "components/stat_card.html" with title=bd_st_title5 value=stats.lost|add:stats.damaged icon="bi bi-exclamation-triangle" color_class="icon-rose" %}
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        {% include "components/stat_card.html" with title=bd_st_title6 value=stats.written_off icon="bi bi-x-circle" color_class="icon-amber" %}
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-4">
+        <div class="card-pro">
+            <div class="card-pro-header">
+                <h5><i class="bi bi-book text-primary"></i> {% trans "Book Information" %}</h5>
+            </div>
+            <div class="card-pro-body p-0">
+                <table class="table-pro">
+                    <tbody>
+                        <tr><td class="text-muted" style="width: 45%;">{% trans "Title" %}</td><td class="fw-bold">{{ book.title }}</td></tr>
+                        <tr><td class="text-muted">{% trans "Author" %}</td><td>{{ book.author }}</td></tr>
+                        <tr><td class="text-muted">{% trans "Subject" %}</td><td>{{ book.subject }}</td></tr>
+                        <tr><td class="text-muted">{% trans "Grade" %}</td><td>{{ book.grade }}</td></tr>
+                        <tr><td class="text-muted">{% trans "Language" %}</td><td>{{ book.get_language_display }}</td></tr>
+                        <tr><td class="text-muted">{% trans "ISBN" %}</td><td><code>{{ book.isbn|default:"—" }}</code></td></tr>
+                        <tr><td class="text-muted">{% trans "Publisher" %}</td><td>{{ book.publisher|default:"—" }}</td></tr>
+                        <tr><td class="text-muted">{% trans "Publication Year" %}</td><td>{{ book.publication_year|default:"—" }}</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <div class="card-pro">
+            <div class="card-pro-header">
+                <h5><i class="bi bi-upc-scan text-primary"></i> {% trans "Copies" %}</h5>
+                <span class="badge bg-light text-muted">{{ stats.total }} {% trans "total" %}</span>
+            </div>
+            <div class="card-pro-body p-0">
+                <div class="table-responsive">
+                    <table class="table-pro">
+                        <thead>
+                            <tr>
+                                <th>{% trans "Inventory #" %}</th>
+                                <th>{% trans "Status" %}</th>
+                                <th>{% trans "School" %}</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for copy in copies %}
+                            <tr>
+                                <td><a href="{% url 'library:copy_detail' copy.pk %}"><code>{{ copy.inventory_number }}</code></a></td>
+                                <td>{% include "components/status_badge.html" with status_code=copy.status status_display=copy.get_status_display %}</td>
+                                <td class="text-muted">{{ copy.school }}</td>
+                                <td><a href="{% url 'library:copy_detail' copy.pk %}" class="btn-pro btn-pro-outline" style="padding: 6px 10px;"><i class="bi bi-eye"></i></a></td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="4" class="p-0"></td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% if not copies %}
+                    {% trans "No copies" as bd_et_title %}
+                    {% trans "No physical copies have been registered for this textbook yet." as bd_et_desc %}
+                    {% include "components/empty_state.html" with icon="bi bi-upc-scan" title=bd_et_title description=bd_et_desc %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% include "components/pagination.html" %}
+    </div>
+</div>
+{% endblock %}

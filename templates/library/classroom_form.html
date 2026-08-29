@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Create Classroom" %} — Smart Library TJ{% endblock %}
+{% block page_title %}{% trans "Create Classroom" %}{% endblock %}
+{% block page_subtitle %}<p>{% trans "Set up a new class for the current academic year" %}</p>{% endblock %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+
+    <div class="card-pro">
+        <div class="card-pro-header">
+            <h5><i class="bi bi-door-open text-primary"></i> {% trans "Classroom Details" %}</h5>
+        </div>
+        <div class="card-pro-body">
+            <div class="row g-3">
+                {% if user.role == 'SUPER_ADMIN' %}
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">{% trans "School" %}</label>
+                    <select name="school" class="form-select" required>
+                        <option value="">{% trans "Select school" %}</option>
+                        {% for school in schools %}
+                        <option value="{{ school.pk }}">{{ school }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {% endif %}
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">{% trans "Name" %}</label>
+                    <input type="text" name="name" class="form-control" placeholder="10-A" required>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-bold">{% trans "Grade" %}</label>
+                    <select name="grade" class="form-select">
+                        {% for i in "1234567891011" %}
+                        <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-{% if user.role == 'SUPER_ADMIN' %}2{% else %}4{% endif %}">
+                    <label class="form-label fw-bold">{% trans "Academic Year" %}</label>
+                    <select name="academic_year" class="form-select" required>
+                        {% for y in years %}
+                        <option value="{{ y.pk }}">{{ y.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn-pro btn-pro-primary"><i class="bi bi-check-lg"></i> {% trans "Create" %}</button>
+        <a href="{% url 'library:classroom_list' %}" class="btn-pro btn-pro-outline">{% trans "Cancel" %}</a>
+    </div>
+</form>
+{% endblock %}

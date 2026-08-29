@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Enrollments" %} — Smart Library TJ{% endblock %}
+{% block page_title %}{% trans "Student Enrollments" %}{% endblock %}
+{% block page_subtitle %}<p>{% trans "Students currently enrolled across classrooms" %}</p>{% endblock %}
+{% block content %}
+
+<div class="filter-bar-pro">
+    <form method="get" class="d-flex flex-wrap gap-2 w-100 align-items-center">
+        <div class="search-field">
+            <i class="bi bi-search"></i>
+            <input type="text" name="search" placeholder="{% trans "Search by student name..." %}" value="{{ search }}">
+        </div>
+        <select name="classroom" class="filter-select" onchange="this.form.submit()">
+            <option value="">{% trans "All Classes" %}</option>
+            {% for c in classrooms %}
+            <option value="{{ c.pk }}" {% if class_filter == c.pk|stringformat:"s" %}selected{% endif %}>{{ c.name }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn-pro btn-pro-primary"><i class="bi bi-search"></i> {% trans "Search" %}</button>
+        {% if search or class_filter %}
+        <a href="{% url 'library:enrollment_list' %}" class="btn-pro btn-pro-outline"><i class="bi bi-x-lg"></i> {% trans "Reset" %}</a>
+        {% endif %}
+    </form>
+</div>
+
+<div class="card-pro">
+    <div class="card-pro-header">
+        <h5><i class="bi bi-people text-primary"></i> {% trans "Enrollments" %}</h5>
+        <span class="badge bg-light text-muted">{{ page_obj.paginator.count }} {% trans "students" %}</span>
+    </div>
+    <div class="card-pro-body p-0">
+        <div class="table-responsive">
+            <table class="table-pro">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>{% trans "Student" %}</th>
+                        <th>{% trans "Classroom" %}</th>
+                        <th>{% trans "Academic Year" %}</th>
+                        <th>{% trans "Status" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for e in enrollments %}
+                    <tr>
+                        <td class="text-muted">{{ forloop.counter0|add:page_obj.start_index }}</td>
+                        <td class="fw-bold">{{ e.student.get_full_name }}</td>
+                        <td>{{ e.classroom.name }}</td>
+                        <td>{{ e.academic_year }}</td>
+                        <td>
+                            {% if e.is_active %}
+                            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3">{% trans "Active" %}</span>
+                            {% else %}
+                            <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle rounded-pill px-3">{% trans "Inactive" %}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="5" class="p-0"></td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if not enrollments %}
+            {% trans "No enrollments found" as el_et_title %}
+            {% trans "Try changing your search or classroom filter." as el_et_desc %}
+            {% include "components/empty_state.html" with icon="bi bi-people" title=el_et_title description=el_et_desc %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% include "components/pagination.html" %}
+{% endblock %}

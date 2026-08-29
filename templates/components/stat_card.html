@@ -1,0 +1,19 @@
+{% comment %}
+Reusable Stat Card Component
+Params: title, value, icon, color_class (e.g. icon-blue, icon-emerald, icon-amber, icon-rose), subtitle, trend (optional)
+{% endcomment %}
+<div class="stat-card-pro">
+    <div class="stat-header">
+        <div class="stat-title">{{ title }}</div>
+        <div class="stat-icon-wrapper {{ color_class|default:'icon-blue' }}">
+            <i class="{{ icon|default:'bi bi-bar-chart' }}"></i>
+        </div>
+    </div>
+    <div class="stat-number">{{ value|default:"0" }}</div>
+    {% if subtitle %}
+    <div class="stat-footer">
+        {% if trend %}<span class="badge-trend-up">{{ trend }}</span>{% endif %}
+        <span>{{ subtitle }}</span>
+    </div>
+    {% endif %}
+</div>

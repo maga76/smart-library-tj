@@ -1,0 +1,39 @@
+from django.contrib import admin
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+from django.shortcuts import redirect
+from django.conf.urls.i18n import i18n_patterns
+from apps.accounts import views as account_views
+
+
+def root_redirect(request):
+    if request.user.is_authenticated:
+        return redirect(request.user.dashboard_url)
+    return redirect('accounts:login')
+
+
+urlpatterns = [
+    path('i18n/', include('django.conf.urls.i18n')),
+]
+
+urlpatterns += i18n_patterns(
+    path('admin/', admin.site.urls),
+    path('', root_redirect, name='root'),
+    path('login/', account_views.login_view, name='login'),
+    path('logout/', account_views.logout_view, name='logout'),
+    path('profile/', account_views.profile_view, name='profile'),
+    path('accounts/', include('apps.accounts.urls', namespace='accounts')),
+    path('dashboard/', include('apps.analytics.urls', namespace='analytics')),
+    path('geography/', include('apps.geography.urls', namespace='geography')),
+    path('schools/', include('apps.schools.urls', namespace='schools')),
+    path('library/', include('apps.library.urls', namespace='library')),
+    path('transactions/', include('apps.transactions.urls', namespace='transactions')),
+    path('ai/', include('apps.ai_assistant.urls', namespace='ai_assistant')),
+    path('audit/', include('apps.audit.urls', namespace='audit')),
+    prefix_default_language=False,
+)
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])

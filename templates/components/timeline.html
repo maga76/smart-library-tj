@@ -1,0 +1,51 @@
+{% load i18n %}
+{% comment %}
+Reusable Book Movement Timeline Component
+Params: transactions (queryset of BookTransaction)
+{% endcomment %}
+<div class="timeline-pro">
+    {% for tx in transactions %}
+    <div class="timeline-item">
+        <div class="timeline-icon">
+            {% if tx.transaction_type == 'WAREHOUSE_TO_SCHOOL' %}
+                <i class="bi bi-box-seam"></i>
+            {% elif tx.transaction_type == 'LIBRARIAN_TO_TEACHER' %}
+                <i class="bi bi-person-badge"></i>
+            {% elif tx.transaction_type == 'TEACHER_TO_STUDENT' %}
+                <i class="bi bi-person-check"></i>
+            {% elif tx.transaction_type == 'STUDENT_RETURN' or tx.transaction_type == 'TEACHER_RETURN' %}
+                <i class="bi bi-arrow-return-left"></i>
+            {% elif tx.transaction_type == 'LOST' %}
+                <i class="bi bi-exclamation-triangle text-danger"></i>
+            {% elif tx.transaction_type == 'DAMAGED' %}
+                <i class="bi bi-tools text-warning"></i>
+            {% elif tx.transaction_type == 'WRITTEN_OFF' %}
+                <i class="bi bi-x-circle text-muted"></i>
+            {% else %}
+                <i class="bi bi-clock-history"></i>
+            {% endif %}
+        </div>
+        <div class="timeline-content">
+            <div class="timeline-header">
+                <div class="timeline-title">{{ tx.get_transaction_type_display }}</div>
+                <div class="timeline-date">{{ tx.created_at|date:"d M Y, H:i" }}</div>
+            </div>
+            <div class="small text-muted mb-1">
+                {% if tx.from_user or tx.from_location %}
+                    <span>{% trans "From" %}: <strong>{{ tx.from_user.get_full_name|default:tx.from_location }}</strong></span> &rarr;
+                {% endif %}
+                {% if tx.to_user or tx.to_location %}
+                    <span>{% trans "To" %}: <strong>{{ tx.to_user.get_full_name|default:tx.to_location }}</strong></span>
+                {% endif %}
+            </div>
+            {% if tx.note %}
+            <div class="small text-secondary bg-white p-2 rounded border mt-2">
+                <i class="bi bi-chat-left-text me-1"></i> {{ tx.note }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% empty %}
+    <p class="text-muted text-center py-3">{% trans "No movement history" %}</p>
+    {% endfor %}
+</div>
