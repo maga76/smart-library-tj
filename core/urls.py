@@ -20,9 +20,9 @@ urlpatterns = [
 urlpatterns += i18n_patterns(
     path('admin/', admin.site.urls),
     path('', root_redirect, name='root'),
-    path('login/', account_views.login_view, name='login'),
-    path('logout/', account_views.logout_view, name='logout'),
-    path('profile/', account_views.profile_view, name='profile'),
+    path('login/', account_views.LoginView.as_view(), name='login'),
+    path('logout/', account_views.LogoutView.as_view(), name='logout'),
+    path('profile/', account_views.ProfileView.as_view(), name='profile'),
     path('accounts/', include('accounts.urls', namespace='accounts')),
     path('dashboard/', include('analytics.urls', namespace='analytics')),
     path('geography/', include('geography.urls', namespace='geography')),
