@@ -3,12 +3,25 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponseForbidden
 from django.core.paginator import Paginator
-from django.db.models import Q, OuterRef, Subquery
+from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 from .models import BookTransaction
 from library.models import BookCopy, Classroom, StudentEnrollment, TeacherClassAssignment
 from accounts.models import User
 from audit.utils import log_audit
+
+
+def _copies_currently_held_by(base_qs, user, status, tx_type, holder_field):
+    """Restrict a BookCopy queryset to copies whose most recent hand-off
+    transaction of the given type has `holder_field` equal to user, rather
+    than matching any historical transaction for that copy.
+    """
+    matching_ids = []
+    for copy in base_qs.filter(status=status):
+        last_tx = copy.transactions.filter(transaction_type=tx_type).order_by('-created_at').first()
+        if last_tx and getattr(last_tx, holder_field) == user.pk:
+            matching_ids.append(copy.pk)
+    return base_qs.filter(pk__in=matching_ids)
 
 
 @login_required
@@ -200,16 +213,12 @@ def issue_to_student_view(request):
         return redirect('transactions:transaction_list')
 
     # Available copies currently held by this teacher (based on the latest hand-off, not any historical one)
-    latest_teacher_tx = BookTransaction.objects.filter(
-        book_copy=OuterRef('pk'),
-        transaction_type=BookTransaction.TransactionType.LIBRARIAN_TO_TEACHER
-    ).order_by('-created_at')
-    my_copies = BookCopy.objects.filter(
-        school=request.user.school,
-        status=BookCopy.Status.ISSUED_TO_TEACHER,
-    ).annotate(
-        current_teacher_id=Subquery(latest_teacher_tx.values('to_user_id')[:1])
-    ).filter(current_teacher_id=request.user.pk).select_related('book').order_by('book__title', 'inventory_number')
+    my_copies = _copies_currently_held_by(
+        BookCopy.objects.filter(school=request.user.school), request.user,
+        BookCopy.Status.ISSUED_TO_TEACHER,
+        BookTransaction.TransactionType.LIBRARIAN_TO_TEACHER,
+        'to_user_id'
+    ).select_related('book').order_by('book__title', 'inventory_number')
 
     # Students from teacher's classes
     my_classrooms = Classroom.objects.filter(
@@ -275,16 +284,12 @@ def return_from_student_view(request):
         return redirect('transactions:transaction_list')
 
     # Copies currently held by a student this teacher issued to (based on the latest hand-off)
-    latest_student_tx = BookTransaction.objects.filter(
-        book_copy=OuterRef('pk'),
-        transaction_type=BookTransaction.TransactionType.TEACHER_TO_STUDENT
-    ).order_by('-created_at')
-    my_issued_copies = BookCopy.objects.filter(
-        school=request.user.school,
-        status=BookCopy.Status.ISSUED_TO_STUDENT,
-    ).annotate(
-        current_from_teacher_id=Subquery(latest_student_tx.values('from_user_id')[:1])
-    ).filter(current_from_teacher_id=request.user.pk).select_related('book').order_by('book__title', 'inventory_number')
+    my_issued_copies = _copies_currently_held_by(
+        BookCopy.objects.filter(school=request.user.school), request.user,
+        BookCopy.Status.ISSUED_TO_STUDENT,
+        BookTransaction.TransactionType.TEACHER_TO_STUDENT,
+        'from_user_id'
+    ).select_related('book').order_by('book__title', 'inventory_number')
 
     return render(request, 'transactions/return_from_student.html', {
         'copies': my_issued_copies,

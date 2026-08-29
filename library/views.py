@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponseForbidden, JsonResponse
 from django.core.paginator import Paginator
-from django.db.models import Q, Count, OuterRef, Subquery
+from django.db.models import Q, Count
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
@@ -21,18 +21,17 @@ def _copies_currently_held_by(base_qs, user, status, tx_type, holder_field):
     """Restrict a BookCopy queryset to copies whose most recent hand-off
     transaction of the given type has `holder_field` equal to user.
 
-    Filtering on status plus any historical transactions__to_user match is
-    not enough: a copy keeps matching an old holder even after it has since
-    been reassigned to someone else, because the join isn't restricted to
-    the latest transaction.
+    Filtering on status plus any historical transaction match is not enough:
+    a copy keeps matching an old holder even after it has since been
+    reassigned to someone else. So we check each copy's latest matching
+    transaction one by one and keep only the ones that match.
     """
-    latest_tx = BookTransaction.objects.filter(
-        book_copy=OuterRef('pk'),
-        transaction_type=tx_type
-    ).order_by('-created_at')
-    return base_qs.filter(status=status).annotate(
-        _current_holder_id=Subquery(latest_tx.values(holder_field)[:1])
-    ).filter(_current_holder_id=user.pk)
+    matching_ids = []
+    for copy in base_qs.filter(status=status):
+        last_tx = copy.transactions.filter(transaction_type=tx_type).order_by('-created_at').first()
+        if last_tx and getattr(last_tx, holder_field) == user.pk:
+            matching_ids.append(copy.pk)
+    return base_qs.filter(pk__in=matching_ids)
 
 
 # ==============================
@@ -702,19 +701,17 @@ def book_issue_create_view(request):
                 enrollments__classroom__in=my_classrooms,
                 enrollments__is_active=True
             )
-            latest_student_tx = BookTransaction.objects.filter(
-                book_copy=OuterRef('pk'),
-                transaction_type=BookTransaction.TransactionType.TEACHER_TO_STUDENT
-            ).order_by('-created_at')
             copy = get_object_or_404(
-                BookCopy.objects.annotate(
-                    current_from_teacher_id=Subquery(latest_student_tx.values('from_user_id')[:1])
-                ),
+                BookCopy,
                 pk=copy_id,
                 school=request.user.school,
                 status=BookCopy.Status.ISSUED_TO_STUDENT,
-                current_from_teacher_id=request.user.pk,
             )
+            last_tx = copy.transactions.filter(
+                transaction_type=BookTransaction.TransactionType.TEACHER_TO_STUDENT
+            ).order_by('-created_at').first()
+            if not last_tx or last_tx.from_user_id != request.user.pk:
+                return HttpResponseForbidden(_('Access denied.'))
         else:
             student = get_object_or_404(User, pk=student_id, role='STUDENT', school=request.user.school)
             copy = get_object_or_404(BookCopy, pk=copy_id, school=request.user.school)

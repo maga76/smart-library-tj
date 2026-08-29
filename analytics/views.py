@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
-from django.db.models import Count, Q, OuterRef, Subquery
+from django.db.models import Count, Q
 from django.utils.translation import gettext_lazy as _
 from accounts.models import User
 from geography.models import Region, District, Jamoat
@@ -19,13 +19,12 @@ def _copies_currently_held_by(base_qs, user, status, tx_type, holder_field):
     transaction of the given type has `holder_field` equal to user, rather
     than matching any historical transaction for that copy.
     """
-    latest_tx = BookTransaction.objects.filter(
-        book_copy=OuterRef('pk'),
-        transaction_type=tx_type
-    ).order_by('-created_at')
-    return base_qs.filter(status=status).annotate(
-        _current_holder_id=Subquery(latest_tx.values(holder_field)[:1])
-    ).filter(_current_holder_id=user.pk)
+    matching_ids = []
+    for copy in base_qs.filter(status=status):
+        last_tx = copy.transactions.filter(transaction_type=tx_type).order_by('-created_at').first()
+        if last_tx and getattr(last_tx, holder_field) == user.pk:
+            matching_ids.append(copy.pk)
+    return base_qs.filter(pk__in=matching_ids)
 
 
 @login_required
