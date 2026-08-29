@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponseForbidden
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
+from django.views import View
+from core.mixins import RoleRequiredMixin
 from .models import BookTransaction
 from library.models import BookCopy, Classroom, StudentEnrollment, TeacherClassAssignment
 from accounts.models import User
@@ -24,69 +25,95 @@ def _copies_currently_held_by(base_qs, user, status, tx_type, holder_field):
     return base_qs.filter(pk__in=matching_ids)
 
 
-@login_required
-def transaction_list_view(request):
-    user = request.user
-    transactions = BookTransaction.objects.select_related('book_copy', 'book_copy__book', 'from_user', 'to_user', 'created_by').all()
+class TransactionListView(RoleRequiredMixin, View):
+    allowed_roles = ['SUPER_ADMIN', 'DISTRICT_CHAIRMAN', 'JAMOAT_CHAIRMAN', 'SCHOOL_DIRECTOR', 'LIBRARIAN', 'CLASS_TEACHER', 'STUDENT']
 
-    if user.role == 'SUPER_ADMIN':
-        pass
-    elif user.role == 'DISTRICT_CHAIRMAN':
-        transactions = transactions.filter(book_copy__school__district=user.district)
-    elif user.role == 'JAMOAT_CHAIRMAN':
-        transactions = transactions.filter(book_copy__school__jamoat=user.jamoat)
-    elif user.role in ['SCHOOL_DIRECTOR', 'LIBRARIAN']:
-        transactions = transactions.filter(book_copy__school=user.school)
-    elif user.role == 'CLASS_TEACHER':
-        transactions = transactions.filter(
-            book_copy__school=user.school
-        ).filter(
-            Q(from_user=user) | Q(to_user=user)
-        )
-    elif user.role == 'STUDENT':
-        transactions = transactions.filter(
-            Q(from_user=user) | Q(to_user=user)
-        )
+    def get(self, request):
+        user = request.user
+        transactions = BookTransaction.objects.select_related('book_copy', 'book_copy__book', 'from_user', 'to_user', 'created_by').all()
 
-    search = request.GET.get('search', '').strip()
-    tx_type = request.GET.get('type', '')
-    school_filter = request.GET.get('school', '')
+        if user.role == 'DISTRICT_CHAIRMAN':
+            transactions = transactions.filter(book_copy__school__district=user.district)
+        elif user.role == 'JAMOAT_CHAIRMAN':
+            transactions = transactions.filter(book_copy__school__jamoat=user.jamoat)
+        elif user.role in ['SCHOOL_DIRECTOR', 'LIBRARIAN']:
+            transactions = transactions.filter(book_copy__school=user.school)
+        elif user.role == 'CLASS_TEACHER':
+            transactions = transactions.filter(
+                book_copy__school=user.school
+            ).filter(
+                Q(from_user=user) | Q(to_user=user)
+            )
+        elif user.role == 'STUDENT':
+            transactions = transactions.filter(
+                Q(from_user=user) | Q(to_user=user)
+            )
 
-    if search:
-        transactions = transactions.filter(
-            Q(book_copy__inventory_number__icontains=search) |
-            Q(book_copy__barcode__icontains=search) |
-            Q(book_copy__book__title__icontains=search) |
-            Q(from_user__username__icontains=search) |
-            Q(to_user__username__icontains=search)
-        )
-    if tx_type:
-        transactions = transactions.filter(transaction_type=tx_type)
-    if school_filter and user.role in ['SUPER_ADMIN', 'DISTRICT_CHAIRMAN']:
-        transactions = transactions.filter(book_copy__school_id=school_filter)
+        search = request.GET.get('search', '').strip()
+        tx_type = request.GET.get('type', '')
+        school_filter = request.GET.get('school', '')
 
-    paginator = Paginator(transactions.order_by('-created_at'), 25)
-    page_obj = paginator.get_page(request.GET.get('page'))
+        if search:
+            transactions = transactions.filter(
+                Q(book_copy__inventory_number__icontains=search) |
+                Q(book_copy__barcode__icontains=search) |
+                Q(book_copy__book__title__icontains=search) |
+                Q(from_user__username__icontains=search) |
+                Q(to_user__username__icontains=search)
+            )
+        if tx_type:
+            transactions = transactions.filter(transaction_type=tx_type)
+        if school_filter and user.role in ['SUPER_ADMIN', 'DISTRICT_CHAIRMAN']:
+            transactions = transactions.filter(book_copy__school_id=school_filter)
 
-    return render(request, 'transactions/transaction_list.html', {
-        'transactions': page_obj,
-        'page_obj': page_obj,
-        'search': search,
-        'tx_type': tx_type,
-        'school_filter': school_filter,
-        'types': BookTransaction.TransactionType.choices,
-    })
+        paginator = Paginator(transactions.order_by('-created_at'), 25)
+        page_obj = paginator.get_page(request.GET.get('page'))
+
+        return render(request, 'transactions/transaction_list.html', {
+            'transactions': page_obj,
+            'page_obj': page_obj,
+            'search': search,
+            'tx_type': tx_type,
+            'school_filter': school_filter,
+            'types': BookTransaction.TransactionType.choices,
+        })
 
 
-@login_required
-def issue_to_teacher_view(request):
-    if request.user.role != 'LIBRARIAN':
-        return HttpResponseForbidden(_('Access denied.'))
-    if not request.user.school:
-        messages.error(request, _('Librarian is not assigned to a school.'))
-        return redirect('analytics:dashboard')
+class IssueToTeacherView(RoleRequiredMixin, View):
+    allowed_roles = ['LIBRARIAN']
 
-    if request.method == 'POST':
+    def _no_school_response(self, request):
+        if not request.user.school:
+            messages.error(request, _('Librarian is not assigned to a school.'))
+            return redirect('analytics:dashboard')
+        return None
+
+    def get(self, request):
+        no_school = self._no_school_response(request)
+        if no_school:
+            return no_school
+
+        copies = BookCopy.objects.filter(
+            school=request.user.school,
+            status__in=[BookCopy.Status.AT_LIBRARY, BookCopy.Status.AVAILABLE]
+        ).select_related('book').order_by('book__grade', 'book__title', 'inventory_number')
+
+        teachers = User.objects.filter(
+            role='CLASS_TEACHER',
+            school=request.user.school,
+            is_active=True
+        ).order_by('last_name', 'first_name')
+
+        return render(request, 'transactions/issue_to_teacher.html', {
+            'copies': copies,
+            'teachers': teachers,
+        })
+
+    def post(self, request):
+        no_school = self._no_school_response(request)
+        if no_school:
+            return no_school
+
         copy_ids = request.POST.getlist('book_copies')
         teacher_id = request.POST.get('teacher')
         note = request.POST.get('note', '').strip()
@@ -128,32 +155,53 @@ def issue_to_teacher_view(request):
         messages.success(request, _('Successfully issued %(count)s textbooks to teacher %(teacher)s.') % {'count': issued_count, 'teacher': teacher.get_full_name()})
         return redirect('transactions:transaction_list')
 
-    copies = BookCopy.objects.filter(
-        school=request.user.school,
-        status__in=[BookCopy.Status.AT_LIBRARY, BookCopy.Status.AVAILABLE]
-    ).select_related('book').order_by('book__grade', 'book__title', 'inventory_number')
 
-    teachers = User.objects.filter(
-        role='CLASS_TEACHER',
-        school=request.user.school,
-        is_active=True
-    ).order_by('last_name', 'first_name')
+class IssueToStudentView(RoleRequiredMixin, View):
+    allowed_roles = ['CLASS_TEACHER']
 
-    return render(request, 'transactions/issue_to_teacher.html', {
-        'copies': copies,
-        'teachers': teachers,
-    })
+    def _no_school_response(self, request):
+        if not request.user.school:
+            messages.error(request, _('Teacher is not assigned to a school.'))
+            return redirect('analytics:dashboard')
+        return None
 
+    def get(self, request):
+        no_school = self._no_school_response(request)
+        if no_school:
+            return no_school
 
-@login_required
-def issue_to_student_view(request):
-    if request.user.role != 'CLASS_TEACHER':
-        return HttpResponseForbidden(_('Access denied.'))
-    if not request.user.school:
-        messages.error(request, _('Teacher is not assigned to a school.'))
-        return redirect('analytics:dashboard')
+        # Available copies currently held by this teacher (based on the latest hand-off, not any historical one)
+        my_copies = _copies_currently_held_by(
+            BookCopy.objects.filter(school=request.user.school), request.user,
+            BookCopy.Status.ISSUED_TO_TEACHER,
+            BookTransaction.TransactionType.LIBRARIAN_TO_TEACHER,
+            'to_user_id'
+        ).select_related('book').order_by('book__title', 'inventory_number')
 
-    if request.method == 'POST':
+        # Students from teacher's classes
+        my_classrooms = Classroom.objects.filter(
+            teacher_assignments__teacher=request.user,
+            teacher_assignments__is_class_teacher=True
+        )
+
+        students = User.objects.filter(
+            role='STUDENT',
+            school=request.user.school,
+            enrollments__classroom__in=my_classrooms,
+            enrollments__is_active=True,
+            is_active=True
+        ).select_related('school').prefetch_related('enrollments__classroom').distinct().order_by('last_name', 'first_name')
+
+        return render(request, 'transactions/issue_to_student.html', {
+            'copies': my_copies,
+            'students': students,
+        })
+
+    def post(self, request):
+        no_school = self._no_school_response(request)
+        if no_school:
+            return no_school
+
         copy_id = request.POST.get('book_copy')
         student_id = request.POST.get('student')
         note = request.POST.get('note', '').strip()
@@ -212,40 +260,24 @@ def issue_to_student_view(request):
         messages.success(request, _('Textbook "%(title)s" (%(inv)s) has been successfully issued to student %(student)s.') % {'title': copy.book.title, 'inv': copy.inventory_number, 'student': student.get_full_name()})
         return redirect('transactions:transaction_list')
 
-    # Available copies currently held by this teacher (based on the latest hand-off, not any historical one)
-    my_copies = _copies_currently_held_by(
-        BookCopy.objects.filter(school=request.user.school), request.user,
-        BookCopy.Status.ISSUED_TO_TEACHER,
-        BookTransaction.TransactionType.LIBRARIAN_TO_TEACHER,
-        'to_user_id'
-    ).select_related('book').order_by('book__title', 'inventory_number')
 
-    # Students from teacher's classes
-    my_classrooms = Classroom.objects.filter(
-        teacher_assignments__teacher=request.user,
-        teacher_assignments__is_class_teacher=True
-    )
+class ReturnFromStudentView(RoleRequiredMixin, View):
+    allowed_roles = ['CLASS_TEACHER']
 
-    students = User.objects.filter(
-        role='STUDENT',
-        school=request.user.school,
-        enrollments__classroom__in=my_classrooms,
-        enrollments__is_active=True,
-        is_active=True
-    ).select_related('school').prefetch_related('enrollments__classroom').distinct().order_by('last_name', 'first_name')
+    def get(self, request):
+        # Copies currently held by a student this teacher issued to (based on the latest hand-off)
+        my_issued_copies = _copies_currently_held_by(
+            BookCopy.objects.filter(school=request.user.school), request.user,
+            BookCopy.Status.ISSUED_TO_STUDENT,
+            BookTransaction.TransactionType.TEACHER_TO_STUDENT,
+            'from_user_id'
+        ).select_related('book').order_by('book__title', 'inventory_number')
 
-    return render(request, 'transactions/issue_to_student.html', {
-        'copies': my_copies,
-        'students': students,
-    })
+        return render(request, 'transactions/return_from_student.html', {
+            'copies': my_issued_copies,
+        })
 
-
-@login_required
-def return_from_student_view(request):
-    if request.user.role != 'CLASS_TEACHER':
-        return HttpResponseForbidden(_('Access denied.'))
-
-    if request.method == 'POST':
+    def post(self, request):
         copy_id = request.POST.get('book_copy')
         note = request.POST.get('note', '').strip()
 
@@ -283,25 +315,21 @@ def return_from_student_view(request):
         messages.success(request, _('Textbook "%(title)s" (%(inv)s) has been successfully returned from the student.') % {'title': copy.book.title, 'inv': copy.inventory_number})
         return redirect('transactions:transaction_list')
 
-    # Copies currently held by a student this teacher issued to (based on the latest hand-off)
-    my_issued_copies = _copies_currently_held_by(
-        BookCopy.objects.filter(school=request.user.school), request.user,
-        BookCopy.Status.ISSUED_TO_STUDENT,
-        BookTransaction.TransactionType.TEACHER_TO_STUDENT,
-        'from_user_id'
-    ).select_related('book').order_by('book__title', 'inventory_number')
 
-    return render(request, 'transactions/return_from_student.html', {
-        'copies': my_issued_copies,
-    })
+class ReturnFromTeacherView(RoleRequiredMixin, View):
+    allowed_roles = ['LIBRARIAN']
 
+    def get(self, request):
+        copies = BookCopy.objects.filter(
+            school=request.user.school,
+            status=BookCopy.Status.ISSUED_TO_TEACHER
+        ).select_related('book').order_by('book__title', 'inventory_number')
 
-@login_required
-def return_from_teacher_view(request):
-    if request.user.role != 'LIBRARIAN':
-        return HttpResponseForbidden(_('Access denied.'))
+        return render(request, 'transactions/return_from_teacher.html', {
+            'copies': copies,
+        })
 
-    if request.method == 'POST':
+    def post(self, request):
         copy_ids = request.POST.getlist('book_copies')
         if not copy_ids:
             single_id = request.POST.get('book_copy')
@@ -346,22 +374,24 @@ def return_from_teacher_view(request):
         messages.success(request, _('Successfully accepted %(count)s textbooks back into the library.') % {'count': returned_count})
         return redirect('transactions:transaction_list')
 
-    copies = BookCopy.objects.filter(
-        school=request.user.school,
-        status=BookCopy.Status.ISSUED_TO_TEACHER
-    ).select_related('book').order_by('book__title', 'inventory_number')
 
-    return render(request, 'transactions/return_from_teacher.html', {
-        'copies': copies,
-    })
+class ReportLostView(RoleRequiredMixin, View):
+    allowed_roles = ['CLASS_TEACHER', 'LIBRARIAN']
 
+    def get(self, request):
+        if request.user.role == 'LIBRARIAN':
+            copies = BookCopy.objects.filter(school=request.user.school).exclude(
+                status__in=[BookCopy.Status.LOST, BookCopy.Status.WRITTEN_OFF]
+            ).select_related('book')
+        else:
+            copies = BookCopy.objects.filter(
+                school=request.user.school,
+                status__in=[BookCopy.Status.ISSUED_TO_TEACHER, BookCopy.Status.ISSUED_TO_STUDENT]
+            ).select_related('book')
 
-@login_required
-def report_lost_view(request):
-    if request.user.role not in ['CLASS_TEACHER', 'LIBRARIAN']:
-        return HttpResponseForbidden(_('Access denied.'))
+        return render(request, 'transactions/report_lost.html', {'copies': copies})
 
-    if request.method == 'POST':
+    def post(self, request):
         copy_id = request.POST.get('book_copy')
         note = request.POST.get('note', '').strip()
         copy = get_object_or_404(BookCopy, pk=copy_id, school=request.user.school)
@@ -384,25 +414,24 @@ def report_lost_view(request):
         messages.warning(request, _('Textbook "%(title)s" (%(inv)s) has been marked as lost.') % {'title': copy.book.title, 'inv': copy.inventory_number})
         return redirect('transactions:transaction_list')
 
-    if request.user.role == 'LIBRARIAN':
-        copies = BookCopy.objects.filter(school=request.user.school).exclude(
-            status__in=[BookCopy.Status.LOST, BookCopy.Status.WRITTEN_OFF]
-        ).select_related('book')
-    else:
-        copies = BookCopy.objects.filter(
-            school=request.user.school,
-            status__in=[BookCopy.Status.ISSUED_TO_TEACHER, BookCopy.Status.ISSUED_TO_STUDENT]
-        ).select_related('book')
 
-    return render(request, 'transactions/report_lost.html', {'copies': copies})
+class ReportDamagedView(RoleRequiredMixin, View):
+    allowed_roles = ['CLASS_TEACHER', 'LIBRARIAN']
 
+    def get(self, request):
+        if request.user.role == 'LIBRARIAN':
+            copies = BookCopy.objects.filter(school=request.user.school).exclude(
+                status__in=[BookCopy.Status.DAMAGED, BookCopy.Status.WRITTEN_OFF]
+            ).select_related('book')
+        else:
+            copies = BookCopy.objects.filter(
+                school=request.user.school,
+                status__in=[BookCopy.Status.ISSUED_TO_TEACHER, BookCopy.Status.ISSUED_TO_STUDENT]
+            ).select_related('book')
 
-@login_required
-def report_damaged_view(request):
-    if request.user.role not in ['CLASS_TEACHER', 'LIBRARIAN']:
-        return HttpResponseForbidden(_('Access denied.'))
+        return render(request, 'transactions/report_damaged.html', {'copies': copies})
 
-    if request.method == 'POST':
+    def post(self, request):
         copy_id = request.POST.get('book_copy')
         note = request.POST.get('note', '').strip()
         copy = get_object_or_404(BookCopy, pk=copy_id, school=request.user.school)
@@ -425,24 +454,14 @@ def report_damaged_view(request):
         messages.warning(request, _('Textbook "%(title)s" (%(inv)s) has been marked as damaged.') % {'title': copy.book.title, 'inv': copy.inventory_number})
         return redirect('transactions:transaction_list')
 
-    if request.user.role == 'LIBRARIAN':
-        copies = BookCopy.objects.filter(school=request.user.school).exclude(
-            status__in=[BookCopy.Status.DAMAGED, BookCopy.Status.WRITTEN_OFF]
-        ).select_related('book')
-    else:
-        copies = BookCopy.objects.filter(
-            school=request.user.school,
-            status__in=[BookCopy.Status.ISSUED_TO_TEACHER, BookCopy.Status.ISSUED_TO_STUDENT]
-        ).select_related('book')
 
-    return render(request, 'transactions/report_damaged.html', {'copies': copies})
+class WriteOffView(RoleRequiredMixin, View):
+    allowed_roles = ['SUPER_ADMIN', 'LIBRARIAN']
 
+    def get(self, request, pk):
+        return redirect('library:copy_list')
 
-@login_required
-def write_off_view(request, pk):
-    if request.user.role not in ['SUPER_ADMIN', 'LIBRARIAN']:
-        return HttpResponseForbidden(_('Access denied.'))
-    if request.method == 'POST':
+    def post(self, request, pk):
         copy = get_object_or_404(BookCopy, pk=pk)
         if request.user.role == 'LIBRARIAN' and copy.school != request.user.school:
             return HttpResponseForbidden(_('Access denied.'))
@@ -465,5 +484,3 @@ def write_off_view(request, pk):
         log_audit(request.user, 'WRITE_OFF', 'BookCopy', copy.pk, f'Written off copy {copy.inventory_number} ({copy.book.title}). Reason: {reason}')
         messages.info(request, _('Copy "%(title)s" (%(inv)s) has been written off from the library fund.') % {'title': copy.book.title, 'inv': copy.inventory_number})
         return redirect('library:copy_detail', pk=copy.pk)
-
-    return redirect('library:copy_list')
