@@ -17,14 +17,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    'apps.accounts',
-    'apps.geography',
-    'apps.schools',
-    'apps.library',
-    'apps.transactions',
-    'apps.analytics',
-    'apps.ai_assistant',
-    'apps.audit',
+    'accounts',
+    'geography',
+    'schools',
+    'library',
+    'transactions',
+    'analytics',
+    'ai_assistant',
+    'audit',
 ]
 
 MIDDLEWARE = [

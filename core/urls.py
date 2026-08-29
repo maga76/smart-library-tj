@@ -4,7 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.shortcuts import redirect
 from django.conf.urls.i18n import i18n_patterns
-from apps.accounts import views as account_views
+from accounts import views as account_views
 
 
 def root_redirect(request):
@@ -23,14 +23,14 @@ urlpatterns += i18n_patterns(
     path('login/', account_views.login_view, name='login'),
     path('logout/', account_views.logout_view, name='logout'),
     path('profile/', account_views.profile_view, name='profile'),
-    path('accounts/', include('apps.accounts.urls', namespace='accounts')),
-    path('dashboard/', include('apps.analytics.urls', namespace='analytics')),
-    path('geography/', include('apps.geography.urls', namespace='geography')),
-    path('schools/', include('apps.schools.urls', namespace='schools')),
-    path('library/', include('apps.library.urls', namespace='library')),
-    path('transactions/', include('apps.transactions.urls', namespace='transactions')),
-    path('ai/', include('apps.ai_assistant.urls', namespace='ai_assistant')),
-    path('audit/', include('apps.audit.urls', namespace='audit')),
+    path('accounts/', include('accounts.urls', namespace='accounts')),
+    path('dashboard/', include('analytics.urls', namespace='analytics')),
+    path('geography/', include('geography.urls', namespace='geography')),
+    path('schools/', include('schools.urls', namespace='schools')),
+    path('library/', include('library.urls', namespace='library')),
+    path('transactions/', include('transactions.urls', namespace='transactions')),
+    path('ai/', include('ai_assistant.urls', namespace='ai_assistant')),
+    path('audit/', include('audit.urls', namespace='audit')),
     prefix_default_language=False,
 )
 
