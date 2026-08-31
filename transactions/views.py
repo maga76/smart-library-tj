@@ -10,6 +10,8 @@ from .models import BookTransaction
 from library.models import BookCopy, Classroom, StudentEnrollment, TeacherClassAssignment
 from accounts.models import User
 from audit.utils import log_audit
+from notifications.utils import create_notification
+from notifications.models import Notification
 
 
 def _copies_currently_held_by(base_qs, user, status, tx_type, holder_field):
@@ -484,3 +486,89 @@ class WriteOffView(RoleRequiredMixin, View):
         log_audit(request.user, 'WRITE_OFF', 'BookCopy', copy.pk, f'Written off copy {copy.inventory_number} ({copy.book.title}). Reason: {reason}')
         messages.info(request, _('Copy "%(title)s" (%(inv)s) has been written off from the library fund.') % {'title': copy.book.title, 'inv': copy.inventory_number})
         return redirect('library:copy_detail', pk=copy.pk)
+
+
+# ==============================
+# STUDENT RETURN REQUEST
+# ==============================
+
+class StudentReturnRequestView(RoleRequiredMixin, View):
+    allowed_roles = ['STUDENT']
+
+    def get(self, request):
+        my_books = _copies_currently_held_by(
+            BookCopy.objects.all(), request.user,
+            BookCopy.Status.ISSUED_TO_STUDENT,
+            BookTransaction.TransactionType.TEACHER_TO_STUDENT,
+            'to_user_id'
+        ).select_related('book').order_by('book__title', 'inventory_number')
+
+        return render(request, 'transactions/student_return_request.html', {
+            'my_books': my_books,
+        })
+
+    def post(self, request):
+        copy_id = request.POST.get('book_copy')
+        note = request.POST.get('note', '').strip()
+
+        if not copy_id:
+            messages.error(request, _('Select a book to return.'))
+            return redirect('transactions:student_return_request')
+
+        copy = get_object_or_404(
+            BookCopy,
+            pk=copy_id,
+            status=BookCopy.Status.ISSUED_TO_STUDENT,
+        )
+
+        # Verify this student actually holds the book
+        last_tx = copy.transactions.filter(
+            transaction_type=BookTransaction.TransactionType.TEACHER_TO_STUDENT
+        ).order_by('-created_at').first()
+        if not last_tx or last_tx.to_user_id != request.user.pk:
+            return HttpResponseForbidden(_('Access denied.'))
+
+        teacher = last_tx.from_user
+
+        # Notify the teacher
+        if teacher:
+            create_notification(
+                recipient=teacher,
+                sender=request.user,
+                notification_type=Notification.NotificationType.RETURN_REQUEST,
+                title=_('Student wants to return a book'),
+                message=_('%(student)s wants to return "%(book)s" (%(inv)s). %(note)s') % {
+                    'student': request.user.get_full_name(),
+                    'book': copy.book.title,
+                    'inv': copy.inventory_number,
+                    'note': note,
+                },
+                related_url='/transactions/return-student/',
+            )
+
+        # Notify librarian
+        librarian = User.objects.filter(
+            role='LIBRARIAN',
+            school=copy.school,
+            is_active=True
+        ).first()
+        if librarian:
+            create_notification(
+                recipient=librarian,
+                sender=request.user,
+                notification_type=Notification.NotificationType.RETURN_REQUEST,
+                title=_('Student wants to return a book'),
+                message=_('%(student)s wants to return "%(book)s" (%(inv)s) to teacher %(teacher)s. %(note)s') % {
+                    'student': request.user.get_full_name(),
+                    'book': copy.book.title,
+                    'inv': copy.inventory_number,
+                    'teacher': teacher.get_full_name() if teacher else '',
+                    'note': note,
+                },
+                related_url='/transactions/return-student/',
+            )
+
+        log_audit(request.user, 'STUDENT_RETURN_REQUEST', 'BookTransaction', copy.pk,
+                  f'Student {request.user.get_full_name()} requested return of {copy.inventory_number} ({copy.book.title})')
+        messages.success(request, _('Your return request has been sent to your teacher. Please hand over the book to your teacher.'))
+        return redirect('transactions:transaction_list')

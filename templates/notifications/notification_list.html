@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Notifications" %} — Smart Library TJ{% endblock %}
+{% block page_title %}{% trans "Notifications" %}{% endblock %}
+{% block page_actions %}
+{% if unread_count > 0 %}
+<form method="post" action="{% url 'notifications:notification_mark_all_read' %}" class="d-inline">
+    {% csrf_token %}
+    <button type="submit" class="btn-pro btn-pro-outline btn-pro-sm">
+        <i class="bi bi-check-all"></i> {% trans "Mark all as read" %}
+    </button>
+</form>
+{% endif %}
+{% endblock %}
+{% block content %}
+
+{% if unread_count > 0 %}
+<div class="alert alert-primary d-flex align-items-center mb-4" role="alert">
+    <i class="bi bi-bell-fill me-2"></i>
+    {% blocktrans %}You have {{ unread_count }} unread notification(s).{% endblocktrans %}
+</div>
+{% endif %}
+
+<div class="card-pro">
+    <div class="card-pro-body p-0">
+        {% for notif in notifications %}
+        <div class="d-flex align-items-start gap-3 p-3 {% if not notif.is_read %}bg-light{% endif %}" style="border-bottom: 1px solid var(--border-color);">
+            <div class="mt-1">
+                <i class="bi {{ notif.icon }} {{ notif.color }}" style="font-size: 1.3rem;"></i>
+            </div>
+            <div class="flex-grow-1">
+                <div class="fw-bold" style="font-size: 14px;">{{ notif.title }}</div>
+                <div class="text-muted" style="font-size: 13px;">{{ notif.message }}</div>
+                <div class="text-muted mt-1" style="font-size: 12px;">
+                    {% if notif.sender %}
+                    {{ notif.sender.get_full_name }} &middot;
+                    {% endif %}
+                    {{ notif.created_at|date:"d.m.Y H:i" }}
+                </div>
+            </div>
+            {% if not notif.is_read %}
+            <form method="post" action="{% url 'notifications:notification_mark_read' notif.pk %}" class="mt-1">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-sm btn-outline-secondary" title="{% trans "Mark as read" %}">
+                    <i class="bi bi-check-lg"></i>
+                </button>
+            </form>
+            {% endif %}
+        </div>
+        {% empty %}
+        <div class="p-4">
+            {% trans "No notifications" as et_title %}
+            {% trans "You don't have any notifications yet." as et_desc %}
+            {% include "components/empty_state.html" with icon="bi bi-bell-slash" title=et_title description=et_desc %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

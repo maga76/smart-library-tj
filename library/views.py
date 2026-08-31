@@ -11,12 +11,14 @@ from django.views import View
 from core.mixins import RoleRequiredMixin
 from .models import (
     AcademicYear, Classroom, StudentEnrollment, TeacherClassAssignment,
-    Book, BookCopy, BookRequest, BookIssue
+    Book, BookCopy, BookRequest, BookIssue, StudentBookRequest
 )
 from schools.models import School
 from accounts.models import User
 from transactions.models import BookTransaction
 from audit.utils import log_audit
+from notifications.utils import create_notification
+from notifications.models import Notification
 
 
 def _copies_currently_held_by(base_qs, user, status, tx_type, holder_field):
@@ -831,3 +833,176 @@ class BookIssueConfirmView(RoleRequiredMixin, View):
             messages.info(request, _('Report has been rejected.'))
 
         return redirect('library:book_issue_list')
+
+
+# ==============================
+# STUDENT BOOK REQUESTS
+# ==============================
+
+class StudentBookRequestListView(RoleRequiredMixin, View):
+    allowed_roles = ['STUDENT', 'CLASS_TEACHER', 'SCHOOL_DIRECTOR', 'LIBRARIAN', 'SUPER_ADMIN']
+
+    def get(self, request):
+        user = request.user
+        if user.role == 'STUDENT':
+            student_requests = StudentBookRequest.objects.filter(student=user).select_related('book', 'school', 'reviewed_by')
+        elif user.role == 'CLASS_TEACHER':
+            student_requests = StudentBookRequest.objects.filter(
+                student__enrollments__classroom__teacher_assignments__teacher=user,
+                student__enrollments__classroom__teacher_assignments__is_class_teacher=True
+            ).select_related('student', 'book', 'school', 'reviewed_by').distinct()
+        elif user.role in ['SCHOOL_DIRECTOR', 'LIBRARIAN']:
+            student_requests = StudentBookRequest.objects.filter(school=user.school).select_related('student', 'book', 'school', 'reviewed_by')
+        else:
+            student_requests = StudentBookRequest.objects.select_related('student', 'book', 'school', 'reviewed_by')
+
+        status_filter = request.GET.get('status', '')
+        if status_filter:
+            student_requests = student_requests.filter(status=status_filter)
+
+        paginator = Paginator(student_requests.order_by('-created_at'), 20)
+        page_obj = paginator.get_page(request.GET.get('page'))
+
+        return render(request, 'library/student_book_request_list.html', {
+            'student_requests': page_obj,
+            'page_obj': page_obj,
+            'status_filter': status_filter,
+            'statuses': StudentBookRequest.Status.choices,
+        })
+
+
+class StudentBookRequestCreateView(RoleRequiredMixin, View):
+    allowed_roles = ['STUDENT']
+
+    def get(self, request):
+        books = Book.objects.all().order_by('grade', 'title')
+        return render(request, 'library/student_book_request_form.html', {'books': books})
+
+    def post(self, request):
+        book_id = request.POST.get('book')
+        reason = request.POST.get('reason', '').strip()
+
+        if not book_id:
+            messages.error(request, _('Please select a book.'))
+            return redirect('library:student_book_request_create')
+
+        book = get_object_or_404(Book, pk=book_id)
+
+        req = StudentBookRequest.objects.create(
+            student=request.user,
+            school=request.user.school,
+            book=book,
+            reason=reason,
+        )
+
+        # Notify class teacher
+        my_enrollment = request.user.enrollments.filter(is_active=True).first()
+        if my_enrollment:
+            teachers = User.objects.filter(
+                role='CLASS_TEACHER',
+                school=request.user.school,
+                class_assignments__classroom=my_enrollment.classroom,
+                class_assignments__is_class_teacher=True,
+                is_active=True
+            ).distinct()
+            for teacher in teachers:
+                create_notification(
+                    recipient=teacher,
+                    sender=request.user,
+                    notification_type=Notification.NotificationType.BOOK_REQUEST,
+                    title=_('New book request from student'),
+                    message=_('%(student)s requests textbook "%(book)s". Reason: %(reason)s') % {
+                        'student': request.user.get_full_name(),
+                        'book': book.title,
+                        'reason': reason or _('Not specified'),
+                    },
+                    related_url='/library/student-requests/',
+                )
+
+        # Notify librarian
+        librarian = User.objects.filter(
+            role='LIBRARIAN',
+            school=request.user.school,
+            is_active=True
+        ).first()
+        if librarian:
+            create_notification(
+                recipient=librarian,
+                sender=request.user,
+                notification_type=Notification.NotificationType.BOOK_REQUEST,
+                title=_('New book request from student'),
+                message=_('%(student)s requests textbook "%(book)s". Reason: %(reason)s') % {
+                    'student': request.user.get_full_name(),
+                    'book': book.title,
+                    'reason': reason or _('Not specified'),
+                },
+                related_url='/library/student-requests/',
+            )
+
+        log_audit(request.user, 'STUDENT_BOOK_REQUEST', 'StudentBookRequest', req.pk,
+                  f'Student {request.user.get_full_name()} requested book "{book.title}"')
+        messages.success(request, _('Your book request has been submitted. You will be notified when it is reviewed.'))
+        return redirect('library:student_book_request_list')
+
+
+class StudentBookRequestReviewView(RoleRequiredMixin, View):
+    allowed_roles = ['CLASS_TEACHER', 'SCHOOL_DIRECTOR', 'LIBRARIAN', 'SUPER_ADMIN']
+
+    def get(self, request, pk):
+        return redirect('library:student_book_request_list')
+
+    def post(self, request, pk):
+        req = get_object_or_404(StudentBookRequest, pk=pk)
+        action = request.POST.get('action')
+        review_note = request.POST.get('review_note', '').strip()
+
+        if action == 'approve':
+            req.status = StudentBookRequest.Status.APPROVED
+            req.reviewed_by = request.user
+            req.reviewed_at = timezone.now()
+            req.review_note = review_note
+            req.save()
+
+            create_notification(
+                recipient=req.student,
+                sender=request.user,
+                notification_type=Notification.NotificationType.REQUEST_APPROVED,
+                title=_('Your book request has been approved'),
+                message=_('Your request for "%(book)s" has been approved by %(reviewer)s.') % {
+                    'book': req.book.title,
+                    'reviewer': request.user.get_full_name(),
+                },
+                related_url='/library/student-requests/',
+            )
+            messages.success(request, _('Request approved.'))
+
+        elif action == 'reject':
+            req.status = StudentBookRequest.Status.REJECTED
+            req.reviewed_by = request.user
+            req.reviewed_at = timezone.now()
+            req.review_note = review_note
+            req.save()
+
+            create_notification(
+                recipient=req.student,
+                sender=request.user,
+                notification_type=Notification.NotificationType.REQUEST_REJECTED,
+                title=_('Your book request has been rejected'),
+                message=_('Your request for "%(book)s" has been rejected by %(reviewer)s. %(note)s') % {
+                    'book': req.book.title,
+                    'reviewer': request.user.get_full_name(),
+                    'note': review_note,
+                },
+                related_url='/library/student-requests/',
+            )
+            messages.info(request, _('Request rejected.'))
+
+        elif action == 'review':
+            req.status = StudentBookRequest.Status.REVIEWED
+            req.reviewed_by = request.user
+            req.reviewed_at = timezone.now()
+            req.review_note = review_note
+            req.save()
+            messages.info(request, _('Request marked as reviewed.'))
+
+        return redirect('library:student_book_request_list')

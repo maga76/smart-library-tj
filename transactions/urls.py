@@ -12,4 +12,5 @@ urlpatterns = [
     path('report-lost/', views.ReportLostView.as_view(), name='report_lost'),
     path('report-damaged/', views.ReportDamagedView.as_view(), name='report_damaged'),
     path('write-off/<int:pk>/', views.WriteOffView.as_view(), name='write_off'),
+    path('student-return/', views.StudentReturnRequestView.as_view(), name='student_return_request'),
 ]

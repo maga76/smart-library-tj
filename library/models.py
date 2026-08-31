@@ -153,6 +153,32 @@ class BookRequest(models.Model):
         return f'{self.book.title} - {self.school.name} ({self.get_status_display()})'
 
 
+class StudentBookRequest(models.Model):
+    class Status(models.TextChoices):
+        PENDING = 'PENDING', _('Pending')
+        REVIEWED = 'REVIEWED', _('Reviewed')
+        APPROVED = 'APPROVED', _('Approved')
+        REJECTED = 'REJECTED', _('Rejected')
+
+    student = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='student_book_requests')
+    school = models.ForeignKey('schools.School', on_delete=models.CASCADE, related_name='student_book_requests')
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='student_requests')
+    reason = models.TextField(blank=True)
+    status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
+    created_at = models.DateTimeField(auto_now_add=True)
+    reviewed_by = models.ForeignKey('accounts.User', on_delete=models.SET_NULL, null=True, blank=True, related_name='reviewed_student_requests')
+    reviewed_at = models.DateTimeField(null=True, blank=True)
+    review_note = models.TextField(blank=True)
+
+    class Meta:
+        verbose_name = _('Student Book Request')
+        verbose_name_plural = _('Student Book Requests')
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f'{self.student.get_full_name()} - {self.book.title} ({self.get_status_display()})'
+
+
 class BookIssue(models.Model):
     class IssueType(models.TextChoices):
         LOST = 'LOST', _('Lost')

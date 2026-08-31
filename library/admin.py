@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import AcademicYear, Classroom, StudentEnrollment, TeacherClassAssignment
+from .models import AcademicYear, Classroom, StudentEnrollment, TeacherClassAssignment, StudentBookRequest
 
 
 @admin.register(AcademicYear)
@@ -24,3 +24,10 @@ class StudentEnrollmentAdmin(admin.ModelAdmin):
 class TeacherClassAssignmentAdmin(admin.ModelAdmin):
     list_display = ['teacher', 'classroom', 'academic_year', 'is_class_teacher']
     list_filter = ['academic_year', 'is_class_teacher']
+
+
+@admin.register(StudentBookRequest)
+class StudentBookRequestAdmin(admin.ModelAdmin):
+    list_display = ['student', 'book', 'school', 'status', 'created_at']
+    list_filter = ['status', 'school']
+    search_fields = ['student__first_name', 'student__last_name', 'book__title']

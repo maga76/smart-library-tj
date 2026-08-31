@@ -33,4 +33,9 @@ urlpatterns = [
     path('issues/', views.BookIssueListView.as_view(), name='book_issue_list'),
     path('issues/create/', views.BookIssueCreateView.as_view(), name='book_issue_create'),
     path('issues/<int:pk>/confirm/', views.BookIssueConfirmView.as_view(), name='book_issue_confirm'),
+
+    # Student Book Requests
+    path('student-requests/', views.StudentBookRequestListView.as_view(), name='student_book_request_list'),
+    path('student-requests/create/', views.StudentBookRequestCreateView.as_view(), name='student_book_request_create'),
+    path('student-requests/<int:pk>/review/', views.StudentBookRequestReviewView.as_view(), name='student_book_request_review'),
 ]

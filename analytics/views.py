@@ -9,7 +9,7 @@ from geography.models import Region, District, Jamoat
 from schools.models import School
 from library.models import (
     Book, BookCopy, Classroom, StudentEnrollment, TeacherClassAssignment,
-    BookRequest, BookIssue, AcademicYear
+    BookRequest, BookIssue, AcademicYear, StudentBookRequest
 )
 from transactions.models import BookTransaction
 from audit.models import AuditLog
@@ -248,6 +248,10 @@ class LibrarianDashboardView(RoleRequiredMixin, View):
             'total_damaged': BookCopy.objects.filter(school=school, status=BookCopy.Status.DAMAGED).count(),
             'total_written_off': BookCopy.objects.filter(school=school, status=BookCopy.Status.WRITTEN_OFF).count(),
             'pending_issues': BookIssue.objects.filter(book_copy__school=school, status=BookIssue.IssueStatus.PENDING).count(),
+            'pending_student_requests': StudentBookRequest.objects.filter(
+                school=school,
+                status__in=[StudentBookRequest.Status.PENDING, StudentBookRequest.Status.REVIEWED]
+            ).count(),
             'recent_transactions': BookTransaction.objects.filter(
                 book_copy__school=school
             ).select_related('book_copy', 'book_copy__book', 'from_user', 'to_user').order_by('-created_at')[:10],
@@ -294,6 +298,11 @@ class TeacherDashboardView(RoleRequiredMixin, View):
         books_returned = BookTransaction.objects.filter(
             to_user=user, transaction_type=BookTransaction.TransactionType.STUDENT_RETURN
         ).count()
+        pending_student_requests = StudentBookRequest.objects.filter(
+            student__enrollments__classroom__teacher_assignments__teacher=user,
+            student__enrollments__classroom__teacher_assignments__is_class_teacher=True,
+            status__in=[StudentBookRequest.Status.PENDING, StudentBookRequest.Status.REVIEWED]
+        ).distinct().count()
 
         context = {
             'assignments': my_assignments,
@@ -305,6 +314,7 @@ class TeacherDashboardView(RoleRequiredMixin, View):
             'books_returned': books_returned,
             'reported_lost': reported_lost,
             'reported_damaged': reported_damaged,
+            'pending_student_requests': pending_student_requests,
             'my_copies': my_copies[:15],
             'issued_to_students': issued_to_students[:15],
         }
@@ -330,6 +340,7 @@ class StudentDashboardView(RoleRequiredMixin, View):
         ).select_related('book_copy', 'book_copy__book').order_by('-created_at')[:10]
 
         my_issues = BookIssue.objects.filter(student=user).select_related('book_copy', 'book_copy__book').order_by('-reported_at')
+        my_requests = StudentBookRequest.objects.filter(student=user).order_by('-created_at')[:5]
 
         context = {
             'total_books': my_books.count(),
@@ -339,6 +350,7 @@ class StudentDashboardView(RoleRequiredMixin, View):
             'my_books': my_books,
             'returned_books': returned_books,
             'my_issues': my_issues,
+            'my_requests': my_requests,
         }
         return render(request, 'dashboards/student.html', context)
 

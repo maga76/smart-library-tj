@@ -31,6 +31,7 @@ urlpatterns += i18n_patterns(
     path('transactions/', include('transactions.urls', namespace='transactions')),
     path('ai/', include('ai_assistant.urls', namespace='ai_assistant')),
     path('audit/', include('audit.urls', namespace='audit')),
+    path('notifications/', include('notifications.urls', namespace='notifications')),
     prefix_default_language=False,
 )
 

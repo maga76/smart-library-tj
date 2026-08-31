@@ -29,6 +29,31 @@
     </div>
 </div>
 
+<div class="row g-3 mb-4">
+    <div class="col-md-6">
+        <a href="{% url 'library:student_book_request_create' %}" class="card-pro h-100 text-decoration-none" style="cursor: pointer;">
+            <div class="card-pro-body d-flex align-items-center gap-3">
+                <div class="icon-circle bg-primary-subtle"><i class="bi bi-envelope-paper text-primary"></i></div>
+                <div>
+                    <h6 class="mb-0">{% trans "Request a Textbook" %}</h6>
+                    <small class="text-muted">{% trans "Need a book that's missing? Request it here." %}</small>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-6">
+        <a href="{% url 'transactions:student_return_request' %}" class="card-pro h-100 text-decoration-none" style="cursor: pointer;">
+            <div class="card-pro-body d-flex align-items-center gap-3">
+                <div class="icon-circle bg-success-subtle"><i class="bi bi-arrow-counterclockwise text-success"></i></div>
+                <div>
+                    <h6 class="mb-0">{% trans "Return a Textbook" %}</h6>
+                    <small class="text-muted">{% trans "Ready to return a book? Send a request to your teacher." %}</small>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+
 <h5 class="mb-3" style="font-size: 15px;"><i class="bi bi-journal-bookmark text-primary"></i> {% trans "My Textbooks" %}</h5>
 <div class="row g-3 mb-4">
     {% for copy in my_books %}

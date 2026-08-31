@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Request a Textbook" %} — Smart Library TJ{% endblock %}
+{% block page_title %}{% trans "Request a Textbook" %}{% endblock %}
+{% block page_subtitle %}<p>{% trans "Select a textbook you need and explain why" %}</p>{% endblock %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+
+    <div class="card-pro">
+        <div class="card-pro-header">
+            <h5><i class="bi bi-envelope-paper text-primary"></i> {% trans "Book Request Details" %}</h5>
+        </div>
+        <div class="card-pro-body">
+            <div class="row g-3">
+                <div class="col-md-12">
+                    <label class="form-label fw-bold">{% trans "Select Textbook" %}</label>
+                    <select name="book" class="form-select" required>
+                        <option value="">{% trans "Choose a textbook..." %}</option>
+                        {% for book in books %}
+                        <option value="{{ book.pk }}">{{ book.title }} — {{ book.author }} ({% trans "Grade" %} {{ book.grade }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-12">
+                    <label class="form-label fw-bold">{% trans "Reason (why do you need this book?)" %}</label>
+                    <textarea name="reason" class="form-control" rows="4" placeholder="{% trans "Explain why you need this textbook..." %}"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn-pro btn-pro-primary"><i class="bi bi-send"></i> {% trans "Submit Request" %}</button>
+        <a href="{% url 'library:student_book_request_list' %}" class="btn-pro btn-pro-outline">{% trans "Cancel" %}</a>
+    </div>
+</form>
+{% endblock %}
