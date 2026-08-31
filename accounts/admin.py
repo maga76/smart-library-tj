@@ -13,3 +13,8 @@ class CustomUserAdmin(UserAdmin):
             'fields': ('role', 'phone', 'region', 'district', 'jamoat', 'school')
         }),
     )
+    add_fieldsets = UserAdmin.add_fieldsets + (
+        ('Additional Info', {
+            'fields': ('role', 'phone', 'region', 'district', 'jamoat', 'school')
+        }),
+    )

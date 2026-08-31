@@ -35,6 +35,9 @@
 
     {% if user.is_authenticated %}
     <div class="app-wrapper">
+        <!-- Mobile Sidebar Backdrop -->
+        <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
         <!-- Sidebar Navigation -->
         {% include 'includes/sidebar.html' %}
 

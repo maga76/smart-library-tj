@@ -36,6 +36,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Tapping the dark backdrop (or pressing Escape) closes the mobile sidebar
+    const sidebarBackdrop = document.getElementById('sidebar-backdrop');
+    if (sidebarBackdrop && appWrapper) {
+        sidebarBackdrop.addEventListener('click', function() {
+            appWrapper.classList.remove('sidebar-open');
+        });
+    }
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && appWrapper) {
+            appWrapper.classList.remove('sidebar-open');
+        }
+    });
+
     // 2. Floating AI Assistant «Доно» Drawer
     const donoFabTrigger = document.getElementById('dono-fab-trigger');
     const donoDrawer = document.getElementById('dono-drawer');

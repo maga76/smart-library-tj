@@ -75,6 +75,11 @@ class Command(BaseCommand):
             name_ru='Маҳаллаи Шаҳрак (И. Сомони)',
             defaults={'name_tj': 'Маҳаллаи Шаҳрак (И. Сомонӣ)', 'is_active': True}
         )
+        jam_khujand1, _ = Jamoat.objects.get_or_create(
+            district=dist_khujand,
+            name_ru='Маҳаллаи Марказӣ (Хуҷанд)',
+            defaults={'name_tj': 'Маҳаллаи Марказӣ (Хуҷанд)', 'is_active': True}
+        )
 
         # 3. Schools
         school15, _ = School.objects.get_or_create(
@@ -103,6 +108,21 @@ class Command(BaseCommand):
                 'phone': '+992 37 233-20-20',
                 'email': 'gymnasium20@smartlib.tj',
                 'student_capacity': 900,
+                'is_active': True,
+            }
+        )
+
+        school5, _ = School.objects.get_or_create(
+            school_number='5',
+            defaults={
+                'name': 'Мактаби таҳсилоти миёнаи умумии №5',
+                'region': reg_sughd,
+                'district': dist_khujand,
+                'jamoat': jam_khujand1,
+                'address': 'ш. Хуҷанд, кӯчаи Ленин 30',
+                'phone': '+992 34 222-05-05',
+                'email': 'school5.khujand@smartlib.tj',
+                'student_capacity': 800,
                 'is_active': True,
             }
         )
@@ -246,6 +266,117 @@ class Command(BaseCommand):
         student2.set_password('admin123')
         student2.save()
 
+        # 4b. Users for School №20 and School №5
+        director_20, _ = User.objects.get_or_create(
+            username='director_20',
+            defaults={
+                'first_name': 'Ҷамшед', 'last_name': 'Раҷабов', 'email': 'director20@smartlib.tj',
+                'role': User.Role.SCHOOL_DIRECTOR, 'school': school20,
+                'region': reg_dushanbe, 'district': dist_sino, 'jamoat': jam_sino1, 'is_active': True,
+            }
+        )
+        director_20.set_password('admin123')
+        director_20.save()
+
+        librarian_20, _ = User.objects.get_or_create(
+            username='librarian_20',
+            defaults={
+                'first_name': 'Мадина', 'last_name': 'Қосимова', 'email': 'librarian20@smartlib.tj',
+                'role': User.Role.LIBRARIAN, 'school': school20,
+                'region': reg_dushanbe, 'district': dist_sino, 'jamoat': jam_sino1, 'is_active': True,
+            }
+        )
+        librarian_20.set_password('admin123')
+        librarian_20.save()
+
+        teacher_20, _ = User.objects.get_or_create(
+            username='teacher_muzaffar',
+            defaults={
+                'first_name': 'Музаффар', 'last_name': 'Ҷӯраев', 'email': 'teacher.juraev@smartlib.tj',
+                'role': User.Role.CLASS_TEACHER, 'school': school20,
+                'region': reg_dushanbe, 'district': dist_sino, 'jamoat': jam_sino1, 'is_active': True,
+            }
+        )
+        teacher_20.set_password('admin123')
+        teacher_20.save()
+
+        student_karim, _ = User.objects.get_or_create(
+            username='student_karim',
+            defaults={
+                'first_name': 'Карим', 'last_name': 'Раҳмонов', 'email': 'karim.r@smartlib.tj',
+                'role': User.Role.STUDENT, 'school': school20,
+                'region': reg_dushanbe, 'district': dist_sino, 'jamoat': jam_sino1, 'is_active': True,
+            }
+        )
+        student_karim.set_password('admin123')
+        student_karim.save()
+
+        student_malika, _ = User.objects.get_or_create(
+            username='student_malika',
+            defaults={
+                'first_name': 'Малика', 'last_name': 'Эргашева', 'email': 'malika.e@smartlib.tj',
+                'role': User.Role.STUDENT, 'school': school20,
+                'region': reg_dushanbe, 'district': dist_sino, 'jamoat': jam_sino1, 'is_active': True,
+            }
+        )
+        student_malika.set_password('admin123')
+        student_malika.save()
+
+        director_5, _ = User.objects.get_or_create(
+            username='director_5',
+            defaults={
+                'first_name': 'Фарҳод', 'last_name': 'Иброҳимов', 'email': 'director5@smartlib.tj',
+                'role': User.Role.SCHOOL_DIRECTOR, 'school': school5,
+                'region': reg_sughd, 'district': dist_khujand, 'jamoat': jam_khujand1, 'is_active': True,
+            }
+        )
+        director_5.set_password('admin123')
+        director_5.save()
+
+        librarian_5, _ = User.objects.get_or_create(
+            username='librarian_5',
+            defaults={
+                'first_name': 'Зарина', 'last_name': 'Сафарова', 'email': 'librarian5@smartlib.tj',
+                'role': User.Role.LIBRARIAN, 'school': school5,
+                'region': reg_sughd, 'district': dist_khujand, 'jamoat': jam_khujand1, 'is_active': True,
+            }
+        )
+        librarian_5.set_password('admin123')
+        librarian_5.save()
+
+        teacher_5, _ = User.objects.get_or_create(
+            username='teacher_5',
+            defaults={
+                'first_name': 'Абдулло', 'last_name': 'Назаров', 'email': 'teacher.nazarov@smartlib.tj',
+                'role': User.Role.CLASS_TEACHER, 'school': school5,
+                'region': reg_sughd, 'district': dist_khujand, 'jamoat': jam_khujand1, 'is_active': True,
+            }
+        )
+        teacher_5.set_password('admin123')
+        teacher_5.save()
+
+        student_5a, _ = User.objects.get_or_create(
+            username='student_5a',
+            defaults={
+                'first_name': 'Фирӯза', 'last_name': 'Мирзоева', 'email': 'firuza.m@smartlib.tj',
+                'role': User.Role.STUDENT, 'school': school5,
+                'region': reg_sughd, 'district': dist_khujand, 'jamoat': jam_khujand1, 'is_active': True,
+            }
+        )
+        student_5a.set_password('admin123')
+        student_5a.save()
+
+        student_5b, _ = User.objects.get_or_create(
+            username='student_5b',
+            defaults={
+                'first_name': 'Умед', 'last_name': 'Валиев', 'email': 'umed.v@smartlib.tj',
+                'role': User.Role.STUDENT, 'school': school5,
+                'region': reg_sughd, 'district': dist_khujand, 'jamoat': jam_khujand1, 'is_active': True,
+            }
+        )
+        student_5b.set_password('admin123')
+        student_5b.save()
+
         # 5. Classrooms & Assignments
         class_10a, _ = Classroom.objects.get_or_create(
             school=school15,
@@ -284,6 +415,40 @@ class Command(BaseCommand):
             student=student2,
             academic_year=year,
             defaults={'classroom': class_10a, 'is_active': True}
+        )
+
+        # Classrooms & enrollments for School №20 and School №5
+        class_20_10a, _ = Classroom.objects.get_or_create(
+            school=school20, name='10-А', academic_year=year, defaults={'grade': 10}
+        )
+        class_5_10a, _ = Classroom.objects.get_or_create(
+            school=school5, name='10-А', academic_year=year, defaults={'grade': 10}
+        )
+
+        TeacherClassAssignment.objects.get_or_create(
+            teacher=teacher_20, classroom=class_20_10a, academic_year=year,
+            defaults={'is_class_teacher': True}
+        )
+        TeacherClassAssignment.objects.get_or_create(
+            teacher=teacher_5, classroom=class_5_10a, academic_year=year,
+            defaults={'is_class_teacher': True}
+        )
+
+        StudentEnrollment.objects.get_or_create(
+            student=student_karim, academic_year=year,
+            defaults={'classroom': class_20_10a, 'is_active': True}
+        )
+        StudentEnrollment.objects.get_or_create(
+            student=student_malika, academic_year=year,
+            defaults={'classroom': class_20_10a, 'is_active': True}
+        )
+        StudentEnrollment.objects.get_or_create(
+            student=student_5a, academic_year=year,
+            defaults={'classroom': class_5_10a, 'is_active': True}
+        )
+        StudentEnrollment.objects.get_or_create(
+            student=student_5b, academic_year=year,
+            defaults={'classroom': class_5_10a, 'is_active': True}
         )
 
         # 6. Book Catalog
@@ -492,6 +657,103 @@ class Command(BaseCommand):
                             note='Барои тақсимот ба хонандагон'
                         )
 
+        # 7b. Book Copies & Full Movement Chain for School №20 and School №5
+        # (lighter catalog per school: first 15 books, 5 copies each, to keep seeding fast)
+        other_schools = [
+            {
+                'school': school20, 'code': '020', 'librarian': librarian_20, 'teacher': teacher_20,
+                'students': [student_karim, student_malika], 'library_name': 'Китобхонаи Гимназияи №20',
+            },
+            {
+                'school': school5, 'code': '005', 'librarian': librarian_5, 'teacher': teacher_5,
+                'students': [student_5a, student_5b], 'library_name': 'Китобхонаи МТМУ №5',
+            },
+        ]
+
+        for entry in other_schools:
+            school_obj = entry['school']
+            code = entry['code']
+            lib_user = entry['librarian']
+            tch_user = entry['teacher']
+            students_list = entry['students']
+            library_name = entry['library_name']
+
+            school_copies = []
+            for book in created_books[:15]:
+                for copy_i in range(1, 6):
+                    inv = f'TJ-S{code}-B{book.pk:04d}-{copy_i:05d}'
+                    bc = f'BC{code}{book.pk:04d}{copy_i:05d}'
+                    copy, created = BookCopy.objects.get_or_create(
+                        inventory_number=inv,
+                        defaults={
+                            'book': book,
+                            'barcode': bc,
+                            'school': school_obj,
+                            'status': BookCopy.Status.AT_LIBRARY,
+                        }
+                    )
+                    if created:
+                        BookTransaction.objects.create(
+                            book_copy=copy,
+                            from_user=None,
+                            to_user=lib_user,
+                            from_location='Маркази тақсимоти Вазорати маориф',
+                            to_location=library_name,
+                            transaction_type=BookTransaction.TransactionType.WAREHOUSE_TO_SCHOOL,
+                            created_by=super_admin,
+                            note='Оприходование тиража 2024 года'
+                        )
+                    school_copies.append(copy)
+
+            # Librarian -> Teacher -> Student chain for the first two copies per student,
+            # including one full round-trip return to demonstrate student -> teacher returns.
+            for i, student in enumerate(students_list):
+                copy = school_copies[i]
+                if copy.status != BookCopy.Status.AT_LIBRARY:
+                    continue
+
+                copy.status = BookCopy.Status.ISSUED_TO_TEACHER
+                copy.save()
+                BookTransaction.objects.create(
+                    book_copy=copy,
+                    from_user=lib_user,
+                    to_user=tch_user,
+                    from_location=library_name,
+                    to_location=f'Роҳбари синф {tch_user.get_full_name()}',
+                    transaction_type=BookTransaction.TransactionType.LIBRARIAN_TO_TEACHER,
+                    created_by=lib_user,
+                    note='Супоридан ба роҳбари синф'
+                )
+
+                copy.status = BookCopy.Status.ISSUED_TO_STUDENT
+                copy.save()
+                BookTransaction.objects.create(
+                    book_copy=copy,
+                    from_user=tch_user,
+                    to_user=student,
+                    from_location=f'Роҳбари синф {tch_user.get_full_name()}',
+                    to_location=f'Хонанда {student.get_full_name()}',
+                    transaction_type=BookTransaction.TransactionType.TEACHER_TO_STUDENT,
+                    created_by=tch_user,
+                    note='Супоридан ба хонанда барои соли хониш'
+                )
+
+                # First student in each school returns the book to the teacher,
+                # demonstrating the "return to teacher" flow (see ReturnFromStudentView).
+                if i == 0:
+                    copy.status = BookCopy.Status.ISSUED_TO_TEACHER
+                    copy.save()
+                    BookTransaction.objects.create(
+                        book_copy=copy,
+                        from_user=student,
+                        to_user=tch_user,
+                        from_location=f'Хонанда {student.get_full_name()}',
+                        to_location=f'Роҳбари синф {tch_user.get_full_name()}',
+                        transaction_type=BookTransaction.TransactionType.STUDENT_RETURN,
+                        created_by=tch_user,
+                        note='Бозгардонидани китоб ба роҳбари синф'
+                    )
+
         # 8. Demo Book Request & Issue
         if created_books:
             BookRequest.objects.get_or_create(
@@ -517,4 +779,14 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS('5. Librarian:         librarian_15'))
         self.stdout.write(self.style.SUCCESS('6. Class Teacher:     teacher_rustam'))
         self.stdout.write(self.style.SUCCESS('7. Student:           student_anisa / student_davron'))
+        self.stdout.write(self.style.SUCCESS('--- School №20 (Dushanbe) ---'))
+        self.stdout.write(self.style.SUCCESS('   Director:          director_20'))
+        self.stdout.write(self.style.SUCCESS('   Librarian:         librarian_20'))
+        self.stdout.write(self.style.SUCCESS('   Class Teacher:     teacher_muzaffar'))
+        self.stdout.write(self.style.SUCCESS('   Students:          student_karim / student_malika'))
+        self.stdout.write(self.style.SUCCESS('--- School №5 (Khujand) ---'))
+        self.stdout.write(self.style.SUCCESS('   Director:          director_5'))
+        self.stdout.write(self.style.SUCCESS('   Librarian:         librarian_5'))
+        self.stdout.write(self.style.SUCCESS('   Class Teacher:     teacher_5'))
+        self.stdout.write(self.style.SUCCESS('   Students:          student_5a / student_5b'))
         self.stdout.write(self.style.SUCCESS('=========================================\n'))
