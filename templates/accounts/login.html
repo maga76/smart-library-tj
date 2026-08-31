@@ -22,18 +22,42 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="{% static 'css/style.css' %}" rel="stylesheet">
     <script src="{% static 'js/theme.js' %}" defer></script>
 
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
             min-height: 100vh;
             overflow: hidden;
+            background: #0a0f1a;
         }
 
+        /* ══════════════════════════════════════════
+           GIRIH SVG PATTERN
+           ══════════════════════════════════════════ */
+        .girih-pattern {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.06;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23c8a84e' stroke-width='0.8'%3E%3Cpath d='M60 0 L120 30 L120 90 L60 120 L0 90 L0 30 Z'/%3E%3Cpath d='M60 20 L100 40 L100 80 L60 100 L20 80 L20 40 Z'/%3E%3Cpath d='M60 40 L80 50 L80 70 L60 80 L40 70 L40 50 Z'/%3E%3Cpath d='M0 30 L60 0 L120 30'/%3E%3Cpath d='M0 90 L60 120 L120 90'/%3E%3Cpath d='M60 0 L60 120'/%3E%3Cpath d='M0 30 L60 60 L120 30'/%3E%3Cpath d='M0 90 L60 60 L120 90'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: 120px 120px;
+        }
+
+        .girih-pattern-gold {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%23d4a843' stroke-width='0.5'%3E%3Cpolygon points='40,0 80,20 80,60 40,80 0,60 0,20'/%3E%3Cpolygon points='40,10 70,25 70,55 40,70 10,55 10,25'/%3E%3Cline x1='40' y1='0' x2='40' y2='80'/%3E%3Cline x1='0' y1='20' x2='80' y2='60'/%3E%3Cline x1='0' y1='60' x2='80' y2='20'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: 80px 80px;
+        }
+
+        /* ══════════════════════════════════════════
+           LOGIN PAGE LAYOUT
+           ══════════════════════════════════════════ */
         .login-page {
             display: flex;
             min-height: 100vh;
@@ -42,7 +66,7 @@
         /* ── Left Hero Panel ── */
         .login-hero {
             flex: 1;
-            background: linear-gradient(160deg, #0f172a 0%, #1e3a8a 40%, #2563eb 70%, #3b82f6 100%);
+            background: linear-gradient(165deg, #0b3d4a 0%, #0e4d5c 25%, #12606e 50%, #0f5260 75%, #0a3a47 100%);
             position: relative;
             display: flex;
             flex-direction: column;
@@ -55,147 +79,157 @@
         .login-hero::before {
             content: '';
             position: absolute;
-            width: 800px; height: 800px;
-            background: radial-gradient(circle, rgba(96,165,250,0.15) 0%, transparent 70%);
-            top: -250px; right: -200px;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(212,168,67,0.08) 0%, transparent 70%);
+            top: -200px; right: -150px;
             pointer-events: none;
         }
 
         .login-hero::after {
             content: '';
             position: absolute;
-            width: 500px; height: 500px;
-            background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%);
-            bottom: -150px; left: -100px;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(212,168,67,0.05) 0%, transparent 70%);
+            bottom: -100px; left: -80px;
             pointer-events: none;
         }
 
-        /* Floating decorative shapes */
-        .hero-shapes {
-            position: absolute;
-            inset: 0;
-            overflow: hidden;
-            pointer-events: none;
-        }
-        .hero-shapes span {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.04);
-            animation: floatShape 20s ease-in-out infinite;
-        }
-        .hero-shapes span:nth-child(1) { width: 300px; height: 300px; top: 10%; left: 60%; animation-delay: 0s; }
-        .hero-shapes span:nth-child(2) { width: 180px; height: 180px; top: 60%; left: 20%; animation-delay: -7s; }
-        .hero-shapes span:nth-child(3) { width: 120px; height: 120px; top: 30%; left: 45%; animation-delay: -14s; }
-
-        @keyframes floatShape {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-30px) scale(1.05); }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            flex: 1;
+            justify-content: center;
         }
 
-        .hero-content { position: relative; z-index: 2; }
-
+        /* Brand */
         .hero-brand {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 14px;
-            margin-bottom: 56px;
-        }
-        .hero-brand-icon {
-            width: 52px; height: 52px;
-            border-radius: 14px;
-            background: rgba(255,255,255,0.12);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-        }
-        .hero-brand-text h3 {
-            font-size: 20px;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            margin-bottom: 2px;
-        }
-        .hero-brand-text small {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            opacity: 0.55;
-            font-weight: 600;
-        }
-
-        .hero-headline {
-            font-size: 42px;
-            font-weight: 800;
-            line-height: 1.15;
-            letter-spacing: -0.03em;
-            margin-bottom: 18px;
-            max-width: 560px;
-        }
-        .hero-subtitle {
-            font-size: 16px;
-            line-height: 1.6;
-            opacity: 0.65;
-            max-width: 500px;
+            gap: 12px;
             margin-bottom: 40px;
         }
 
-        .hero-features { display: flex; flex-direction: column; gap: 16px; }
-        .hero-feature {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            font-size: 15px;
-            font-weight: 500;
-        }
-        .hero-feature-icon {
-            width: 36px; height: 36px;
-            border-radius: 10px;
-            background: rgba(52,211,153,0.15);
+        .hero-brand-icon {
+            width: 72px; height: 72px;
+            border-radius: 20px;
+            background: rgba(212,168,67,0.15);
+            border: 1px solid rgba(212,168,67,0.3);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #34d399;
-            font-size: 16px;
-            flex-shrink: 0;
+        }
+        .hero-brand-icon svg {
+            width: 40px; height: 40px;
         }
 
-        .hero-footer { position: relative; z-index: 2; }
+        .hero-brand-name {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: #fff;
+        }
+
+        .hero-brand-sub {
+            font-size: 10.5px;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            color: rgba(212,168,67,0.7);
+            font-weight: 700;
+            margin-top: -4px;
+        }
+
+        /* Headline */
+        .hero-headline {
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1.5;
+            opacity: 0.85;
+            max-width: 440px;
+            margin-bottom: 48px;
+        }
+
+        /* Feature Icons */
+        .hero-features {
+            display: flex;
+            gap: 32px;
+            margin-bottom: 16px;
+        }
+        .hero-feature {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            text-align: center;
+            width: 120px;
+        }
+        .hero-feature-icon {
+            width: 52px; height: 52px;
+            border-radius: 14px;
+            background: rgba(212,168,67,0.12);
+            border: 1px solid rgba(212,168,67,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #d4a843;
+            font-size: 22px;
+        }
+        .hero-feature-label {
+            font-size: 12px;
+            font-weight: 600;
+            opacity: 0.75;
+            line-height: 1.3;
+        }
+
+        /* Demo pills */
+        .hero-footer {
+            position: relative;
+            z-index: 2;
+        }
 
         .demo-label {
-            font-size: 11px;
+            font-size: 10px;
             text-transform: uppercase;
-            letter-spacing: 1.2px;
-            opacity: 0.4;
+            letter-spacing: 1.5px;
+            opacity: 0.35;
             font-weight: 700;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
+            text-align: center;
         }
-        .demo-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+        .demo-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+        }
         .demo-pill {
             cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.12);
-            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
             backdrop-filter: blur(6px);
-            color: rgba(255,255,255,0.8);
-            font-size: 12.5px;
+            color: rgba(255,255,255,0.6);
+            font-size: 11.5px;
             font-weight: 600;
-            padding: 7px 14px;
+            padding: 6px 12px;
             border-radius: 9999px;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             transition: all 0.2s ease;
         }
         .demo-pill:hover {
-            background: rgba(255,255,255,0.15);
-            border-color: rgba(255,255,255,0.25);
+            background: rgba(212,168,67,0.15);
+            border-color: rgba(212,168,67,0.3);
+            color: #d4a843;
             transform: translateY(-1px);
-            color: #fff;
         }
-        .demo-pill i { font-size: 13px; opacity: 0.7; }
+        .demo-pill i { font-size: 11px; }
 
-        /* ── Right Form Panel ── */
+        /* ── Right Login Panel ── */
         .login-panel {
             width: 520px;
             min-height: 100vh;
@@ -203,8 +237,9 @@
             flex-direction: column;
             justify-content: center;
             padding: 48px 56px;
-            background: #fff;
+            background: #1a1f2e;
             position: relative;
+            overflow: hidden;
         }
 
         .panel-topbar {
@@ -212,59 +247,107 @@
             top: 24px; right: 24px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            z-index: 10;
         }
+
         .theme-btn {
-            width: 40px; height: 40px;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
-            background: #f8fafc;
+            width: 38px; height: 38px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.04);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            color: #64748b;
-            font-size: 17px;
+            color: rgba(255,255,255,0.4);
+            font-size: 16px;
             transition: all 0.2s;
         }
-        .theme-btn:hover { background: #e2e8f0; color: #334155; }
+        .theme-btn:hover { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7); }
 
-        .lang-dropdown .btn {
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
-            background: #f8fafc;
-            color: #475569;
-            font-size: 13px;
-            font-weight: 600;
-            padding: 8px 14px;
+        .lang-btn {
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.04);
+            color: rgba(255,255,255,0.5);
+            font-size: 12px;
+            font-weight: 700;
+            padding: 8px 12px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
+            cursor: pointer;
             transition: all 0.2s;
+            font-family: inherit;
         }
-        .lang-dropdown .btn:hover { background: #e2e8f0; }
+        .lang-btn:hover { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.8); }
 
-        .panel-header { margin-bottom: 36px; }
+        .lang-dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 6px;
+            background: #252a3a;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 6px;
+            min-width: 140px;
+            display: none;
+            z-index: 100;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+        }
+        .lang-dropdown-menu.show { display: block; }
+        .lang-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 12px;
+            border-radius: 8px;
+            color: rgba(255,255,255,0.6);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+            border: none;
+            background: none;
+            width: 100%;
+            font-family: inherit;
+        }
+        .lang-option:hover { background: rgba(255,255,255,0.06); color: #fff; }
+        .lang-option.active { background: rgba(212,168,67,0.12); color: #d4a843; font-weight: 600; }
+
+        .lang-wrapper { position: relative; }
+
+        /* Panel Header */
+        .panel-header {
+            margin-bottom: 36px;
+            position: relative;
+            z-index: 2;
+        }
         .panel-header h2 {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 800;
-            color: #0f172a;
+            color: #f1f5f9;
             letter-spacing: -0.03em;
             margin-bottom: 8px;
         }
         .panel-header p {
-            font-size: 15px;
-            color: #94a3b8;
+            font-size: 14px;
+            color: #64748b;
             line-height: 1.5;
         }
 
+        /* Form */
         .form-group { margin-bottom: 20px; }
         .form-group label {
             display: block;
-            font-size: 13px;
+            font-size: 12.5px;
             font-weight: 700;
-            color: #334155;
+            color: #94a3b8;
             margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .input-wrapper {
@@ -274,7 +357,7 @@
             position: absolute;
             left: 16px; top: 50%;
             transform: translateY(-50%);
-            color: #94a3b8;
+            color: #475569;
             font-size: 18px;
             pointer-events: none;
             transition: color 0.2s;
@@ -282,34 +365,34 @@
         .input-wrapper input {
             width: 100%;
             padding: 14px 16px 14px 48px;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 14px;
+            border: 1.5px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
             font-size: 15px;
             font-family: inherit;
-            color: #0f172a;
-            background: #f8fafc;
+            color: #f1f5f9;
+            background: rgba(255,255,255,0.04);
             transition: all 0.2s;
             outline: none;
         }
-        .input-wrapper input::placeholder { color: #cbd5e1; }
+        .input-wrapper input::placeholder { color: #475569; }
         .input-wrapper input:focus {
-            border-color: #3b82f6;
-            background: #fff;
-            box-shadow: 0 0 0 4px rgba(59,130,246,0.08);
+            border-color: rgba(212,168,67,0.5);
+            background: rgba(255,255,255,0.06);
+            box-shadow: 0 0 0 4px rgba(212,168,67,0.08);
         }
-        .input-wrapper input:focus + .input-icon,
         .input-wrapper input:focus ~ .input-icon {
-            color: #3b82f6;
+            color: #d4a843;
         }
 
+        /* Login Button - Gold Gradient */
         .login-btn {
             width: 100%;
-            padding: 16px;
+            padding: 15px;
             border: none;
-            border-radius: 14px;
-            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
-            color: #fff;
-            font-size: 16px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #b8942d 0%, #d4a843 40%, #e6be5a 70%, #d4a843 100%);
+            color: #1a1f2e;
+            font-size: 15px;
             font-weight: 700;
             font-family: inherit;
             cursor: pointer;
@@ -318,196 +401,181 @@
             justify-content: center;
             gap: 10px;
             transition: all 0.25s;
-            box-shadow: 0 4px 14px rgba(37,99,235,0.3);
+            box-shadow: 0 4px 16px rgba(212,168,67,0.25);
             margin-top: 8px;
+            letter-spacing: 0.3px;
         }
         .login-btn:hover {
             transform: translateY(-1px);
-            box-shadow: 0 8px 24px rgba(37,99,235,0.35);
+            box-shadow: 0 8px 28px rgba(212,168,67,0.35);
+            background: linear-gradient(135deg, #c9a234 0%, #e0b84e 40%, #f0cc66 70%, #e0b84e 100%);
         }
         .login-btn:active { transform: translateY(0); }
 
-        .panel-footer {
-            text-align: center;
-            margin-top: 48px;
-            font-size: 13px;
-            color: #94a3b8;
-        }
-
+        /* Error Alert */
         .error-alert {
-            background: #fef2f2;
-            border: 1px solid #fecaca;
+            background: rgba(239,68,68,0.1);
+            border: 1px solid rgba(239,68,68,0.2);
             border-radius: 12px;
-            padding: 14px 18px;
+            padding: 13px 16px;
             margin-bottom: 24px;
             display: flex;
             align-items: center;
             gap: 10px;
-            color: #b91c1c;
-            font-size: 14px;
+            color: #f87171;
+            font-size: 13.5px;
             font-weight: 500;
             animation: shake 0.4s ease;
+            position: relative;
+            z-index: 2;
         }
-        .error-alert i { font-size: 18px; }
+        .error-alert i { font-size: 17px; }
 
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-6px); }
-            75% { transform: translateX(6px); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
         }
 
-        /* ── Mobile ── */
+        /* Panel Footer */
+        .panel-footer {
+            text-align: center;
+            margin-top: 48px;
+            font-size: 12px;
+            color: #475569;
+            line-height: 1.7;
+            position: relative;
+            z-index: 2;
+        }
+        .panel-footer .lang-line {
+            display: block;
+        }
+
+        /* ══════════════════════════════════════════
+           MOBILE
+           ══════════════════════════════════════════ */
         @media (max-width: 991.98px) {
             body { overflow: auto; }
             .login-hero { display: none; }
             .login-panel {
                 width: 100%;
                 max-width: 100%;
-                padding: 80px 20px 32px;
+                padding: 80px 24px 32px;
                 min-height: 100vh;
                 height: auto;
             }
-            .panel-topbar {
-                top: 16px;
-                right: 16px;
-            }
+            .panel-topbar { top: 16px; right: 16px; }
             .panel-header h2 { font-size: 22px; }
-            .hero-brand { margin-bottom: 0; }
-            /* 16px prevents iOS Safari from auto-zooming in when the input is focused */
             .input-wrapper input { font-size: 16px; }
         }
-
         @media (max-width: 400px) {
-            .login-panel { padding: 76px 16px 24px; }
+            .login-panel { padding: 72px 16px 24px; }
         }
 
-        /* ── Dark theme adjustments ── */
-        :root[data-theme="dark"] .login-panel,
-        :root:not([data-theme="light"]):not([data-theme="dark"]) .login-panel {
-            background: #0f172a;
+        /* ══════════════════════════════════════════
+           DARK THEME (when data-theme="dark")
+           ══════════════════════════════════════════ */
+        :root[data-theme="light"] .login-panel {
+            background: #f8fafc;
         }
-        :root[data-theme="dark"] .panel-header h2,
-        :root:not([data-theme="light"]):not([data-theme="dark"]) .panel-header h2 {
-            color: #e2e8f0;
+        :root[data-theme="light"] .panel-header h2 { color: #0f172a; }
+        :root[data-theme="light"] .panel-header p { color: #94a3b8; }
+        :root[data-theme="light"] .form-group label { color: #64748b; }
+        :root[data-theme="light"] .input-wrapper input {
+            background: #f1f5f9;
+            border-color: #e2e8f0;
+            color: #0f172a;
         }
-        :root[data-theme="dark"] .panel-header p,
-        :root:not([data-theme="light"]):not([data-theme="dark"]) .panel-header p {
+        :root[data-theme="light"] .input-wrapper input::placeholder { color: #94a3b8; }
+        :root[data-theme="light"] .input-wrapper input:focus {
+            background: #fff;
+            border-color: rgba(212,168,67,0.5);
+        }
+        :root[data-theme="light"] .theme-btn {
+            background: #f1f5f9;
+            border-color: #e2e8f0;
             color: #64748b;
         }
-        :root[data-theme="dark"] .form-group label,
-        :root:not([data-theme="light"]):not([data-theme="dark"]) .form-group label {
-            color: #cbd5e1;
+        :root[data-theme="light"] .lang-btn {
+            background: #f1f5f9;
+            border-color: #e2e8f0;
+            color: #64748b;
         }
-        :root[data-theme="dark"] .input-wrapper input,
-        :root:not([data-theme="light"]):not([data-theme="dark"]) .input-wrapper input {
-            background: #1e293b;
-            border-color: #334155;
-            color: #e2e8f0;
+        :root[data-theme="light"] .panel-footer { color: #94a3b8; }
+        :root[data-theme="light"] .error-alert {
+            background: #fef2f2;
+            border-color: #fecaca;
+            color: #b91c1c;
         }
-        :root[data-theme="dark"] .input-wrapper input::placeholder,
-        :root:not([data-theme="light"]):not([data-theme="dark"]) .input-wrapper input::placeholder {
-            color: #475569;
+        :root[data-theme="light"] .lang-dropdown-menu {
+            background: #fff;
+            border-color: #e2e8f0;
         }
-        :root[data-theme="dark"] .input-wrapper input:focus,
-        :root:not([data-theme="light"]):not([data-theme="dark"]) .input-wrapper input:focus {
-            background: #1e293b;
-        }
-        :root[data-theme="dark"] .theme-btn,
-        :root:not([data-theme="light"]):not([data-theme="dark"]) .theme-btn {
-            background: #1e293b;
-            border-color: #334155;
-            color: #94a3b8;
-        }
-        :root[data-theme="dark"] .lang-dropdown .btn,
-        :root:not([data-theme="light"]):not([data-theme="dark"]) .lang-dropdown .btn {
-            background: #1e293b;
-            border-color: #334155;
-            color: #94a3b8;
-        }
-        :root[data-theme="dark"] .panel-footer,
-        :root:not([data-theme="light"]):not([data-theme="dark"]) .panel-footer {
-            color: #475569;
-        }
-        :root[data-theme="dark"] .error-alert,
-        :root:not([data-theme="light"]):not([data-theme="dark"]) .error-alert {
-            background: rgba(239,68,68,0.1);
-            border-color: rgba(239,68,68,0.3);
-            color: #f87171;
-        }
-        @media (prefers-color-scheme: dark) {
-            :root:not([data-theme="light"]) .login-panel {
-                background: #0f172a;
-            }
-            :root:not([data-theme="light"]) .panel-header h2 { color: #e2e8f0; }
-            :root:not([data-theme="light"]) .panel-header p { color: #64748b; }
-            :root:not([data-theme="light"]) .form-group label { color: #cbd5e1; }
-            :root:not([data-theme="light"]) .input-wrapper input {
-                background: #1e293b;
-                border-color: #334155;
-                color: #e2e8f0;
-            }
-            :root:not([data-theme="light"]) .input-wrapper input::placeholder { color: #475569; }
-            :root:not([data-theme="light"]) .input-wrapper input:focus { background: #1e293b; }
-            :root:not([data-theme="light"]) .theme-btn {
-                background: #1e293b; border-color: #334155; color: #94a3b8;
-            }
-            :root:not([data-theme="light"]) .lang-dropdown .btn {
-                background: #1e293b; border-color: #334155; color: #94a3b8;
-            }
-            :root:not([data-theme="light"]) .panel-footer { color: #475569; }
-            :root:not([data-theme="light"]) .error-alert {
-                background: rgba(239,68,68,0.1);
-                border-color: rgba(239,68,68,0.3);
-                color: #f87171;
-            }
+        :root[data-theme="light"] .lang-option { color: #475569; }
+        :root[data-theme="light"] .lang-option:hover { background: #f1f5f9; color: #0f172a; }
+        :root[data-theme="light"] .login-btn {
+            color: #1a1f2e;
         }
     </style>
 </head>
 <body>
 
 <div class="login-page">
-    <!-- Left Hero Panel -->
+    <!-- ═══════════════════════════════════════
+         LEFT HERO PANEL
+         ═══════════════════════════════════════ -->
     <div class="login-hero">
-        <div class="hero-shapes">
-            <span></span><span></span><span></span>
-        </div>
+        <div class="girih-pattern"></div>
+        <div class="girih-pattern-gold"></div>
 
         <div class="hero-content">
+            <!-- Brand -->
             <div class="hero-brand">
                 <div class="hero-brand-icon">
-                    <i class="bi bi-book-half"></i>
+                    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 4C14 4 8 6 8 10V32C8 32 12 28 20 28C28 28 32 32 32 32V10C32 6 26 4 20 4Z" stroke="#d4a843" stroke-width="1.8" fill="none"/>
+                        <path d="M20 4V28" stroke="#d4a843" stroke-width="1.2"/>
+                        <path d="M12 10H17" stroke="#d4a843" stroke-width="1" opacity="0.6"/>
+                        <path d="M12 14H16" stroke="#d4a843" stroke-width="1" opacity="0.4"/>
+                        <path d="M23 10H28" stroke="#d4a843" stroke-width="1" opacity="0.6"/>
+                        <path d="M24 14H28" stroke="#d4a843" stroke-width="1" opacity="0.4"/>
+                    </svg>
                 </div>
-                <div class="hero-brand-text">
-                    <h3>Smart Library TJ</h3>
-                    <small>{% trans "Digital Education System" %}</small>
-                </div>
+                <div class="hero-brand-name">Smart Library TJ</div>
+                <div class="hero-brand-sub">{% trans "DIGITAL EDUCATION SYSTEM" %}</div>
             </div>
 
-            <h1 class="hero-headline">
+            <!-- Headline -->
+            <div class="hero-headline">
                 {% trans "Unified digital ecosystem of school libraries in Tajikistan" %}
-            </h1>
-            <p class="hero-subtitle">
-                {% trans "Centralized piece-by-piece tracking of textbooks from national warehouse and schools to individual students." %}
-            </p>
+            </div>
 
+            <!-- Three Feature Icons -->
             <div class="hero-features">
                 <div class="hero-feature">
-                    <div class="hero-feature-icon"><i class="bi bi-check2"></i></div>
-                    <span>{% trans "Transparent chain of issuing and returning textbooks" %}</span>
+                    <div class="hero-feature-icon">
+                        <i class="bi bi-stack"></i>
+                    </div>
+                    <span class="hero-feature-label">{% trans "Centralized Accounting" %}</span>
                 </div>
                 <div class="hero-feature">
-                    <div class="hero-feature-icon"><i class="bi bi-check2"></i></div>
-                    <span>{% trans "Unique barcodes and camera scanner for schools" %}</span>
+                    <div class="hero-feature-icon">
+                        <i class="bi bi-upc-scan"></i>
+                    </div>
+                    <span class="hero-feature-label">{% trans "Barcode & QR" %}</span>
                 </div>
                 <div class="hero-feature">
-                    <div class="hero-feature-icon"><i class="bi bi-check2"></i></div>
-                    <span>{% trans "Smart assistant \"Dono\" in two languages" %}</span>
+                    <div class="hero-feature-icon">
+                        <i class="bi bi-stars"></i>
+                    </div>
+                    <span class="hero-feature-label">{% trans "AI \"Dono\"" %}</span>
                 </div>
             </div>
         </div>
 
+        <!-- Demo Quick Login -->
         <div class="hero-footer">
-            <div class="demo-label">{% trans "Quick login for testing (click to auto-fill):" %}</div>
+            <div class="demo-label">{% trans "Quick demo login" %}</div>
             <div class="demo-pills">
                 <span class="demo-pill" onclick="fillCreds('admin', 'admin123')">
                     <i class="bi bi-shield-lock"></i> Super Admin
@@ -531,52 +599,60 @@
         </div>
     </div>
 
-    <!-- Right Login Form Panel -->
+    <!-- ═══════════════════════════════════════
+         RIGHT LOGIN PANEL
+         ═══════════════════════════════════════ -->
     <div class="login-panel">
+        <div class="girih-pattern-gold"></div>
+
+        <!-- Top Bar: Theme + Language -->
         <div class="panel-topbar">
             <button type="button" id="theme-toggle-btn" class="theme-btn" title="{% trans "Toggle theme" %}">
                 <i class="bi bi-moon-stars theme-toggle-icon"></i>
             </button>
-            <div class="dropdown lang-dropdown">
-                <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                    <i class="bi bi-translate"></i>
+            <div class="lang-wrapper">
+                <button type="button" class="lang-btn" id="lang-toggle-btn">
+                    <i class="bi bi-translate" style="font-size: 14px;"></i>
                     {% get_current_language as LANGUAGE_CODE %}
-                    {% if LANGUAGE_CODE == 'tg' %}Тоҷикӣ{% elif LANGUAGE_CODE == 'en' %}English{% else %}Русский{% endif %}
+                    {% if LANGUAGE_CODE == 'tg' %}Тҷ{% elif LANGUAGE_CODE == 'en' %}EN{% else %}RU{% endif %}
+                    <i class="bi bi-chevron-down" style="font-size: 10px; opacity: 0.5;"></i>
                 </button>
-                <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                    <li>
-                        <form method="post" action="{% url 'set_language' %}">
-                            {% csrf_token %}
-                            <input name="next" type="hidden" value="{{ request.get_full_path }}">
-                            <input type="hidden" name="language" value="tg">
-                            <button type="submit" class="dropdown-item {% if LANGUAGE_CODE == 'tg' %}active{% endif %}">🇹🇯 Тоҷикӣ</button>
-                        </form>
-                    </li>
-                    <li>
-                        <form method="post" action="{% url 'set_language' %}">
-                            {% csrf_token %}
-                            <input name="next" type="hidden" value="{{ request.get_full_path }}">
-                            <input type="hidden" name="language" value="ru">
-                            <button type="submit" class="dropdown-item {% if LANGUAGE_CODE == 'ru' %}active{% endif %}">🇷🇺 Русский</button>
-                        </form>
-                    </li>
-                    <li>
-                        <form method="post" action="{% url 'set_language' %}">
-                            {% csrf_token %}
-                            <input name="next" type="hidden" value="{{ request.get_full_path }}">
-                            <input type="hidden" name="language" value="en">
-                            <button type="submit" class="dropdown-item {% if LANGUAGE_CODE == 'en' %}active{% endif %}">🇬🇧 English</button>
-                        </form>
-                    </li>
-                </ul>
+                <div class="lang-dropdown-menu" id="lang-dropdown">
+                    <form method="post" action="{% url 'set_language' %}">
+                        {% csrf_token %}
+                        <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                        <input type="hidden" name="language" value="ru">
+                        <button type="submit" class="lang-option {% if LANGUAGE_CODE == 'ru' %}active{% endif %}">
+                            <span>RU</span> Русский
+                        </button>
+                    </form>
+                    <form method="post" action="{% url 'set_language' %}">
+                        {% csrf_token %}
+                        <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                        <input type="hidden" name="language" value="tg">
+                        <button type="submit" class="lang-option {% if LANGUAGE_CODE == 'tg' %}active{% endif %}">
+                            <span>TJ</span> Тоҷикӣ
+                        </button>
+                    </form>
+                    <form method="post" action="{% url 'set_language' %}">
+                        {% csrf_token %}
+                        <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                        <input type="hidden" name="language" value="en">
+                        <button type="submit" class="lang-option {% if LANGUAGE_CODE == 'en' %}active{% endif %}">
+                            <span>EN</span> English
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
 
+        <!-- Header -->
         <div class="panel-header">
             <h2>{% trans "Welcome to Smart Library" %}</h2>
-            <p>{% trans "Sign in to access your personal dashboard and school library records." %}</p>
+            <p>{% trans "Sign in to access your dashboard and library records." %}</p>
         </div>
 
+        <!-- Error -->
         {% if form.errors %}
         <div class="error-alert">
             <i class="bi bi-exclamation-circle-fill"></i>
@@ -584,6 +660,7 @@
         </div>
         {% endif %}
 
+        <!-- Login Form -->
         <form method="post">
             {% csrf_token %}
 
@@ -609,12 +686,15 @@
             </button>
         </form>
 
+        <!-- Footer -->
         <div class="panel-footer">
-            {% trans "Republic of Tajikistan" %} &copy; 2026 Smart Library TJ
+            <span class="lang-line">{% trans "Republic of Tajikistan" %} &copy; 2026 Smart Library TJ</span>
+            <span class="lang-line">Ҷумҳурии Тоҷикистон &copy; 2026 Smart Library TJ</span>
         </div>
     </div>
 </div>
 
+<!-- Scripts -->
 <script>
 function fillCreds(u, p) {
     var uf = document.getElementById('username_field');
@@ -623,6 +703,15 @@ function fillCreds(u, p) {
     pf.value = p;
     uf.focus();
 }
+
+// Language dropdown toggle
+document.getElementById('lang-toggle-btn').addEventListener('click', function(e) {
+    e.stopPropagation();
+    document.getElementById('lang-dropdown').classList.toggle('show');
+});
+document.addEventListener('click', function() {
+    document.getElementById('lang-dropdown').classList.remove('show');
+});
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
