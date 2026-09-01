@@ -249,7 +249,7 @@ class Command(BaseCommand):
 
         # 4. Users for all 7 roles
         # Super Admin
-        super_admin, _ = User.objects.get_or_create(
+        super_admin, created = User.objects.get_or_create(
             username='admin',
             defaults={
                 'first_name': 'Фирдавс',
@@ -261,11 +261,12 @@ class Command(BaseCommand):
                 'is_active': True,
             }
         )
-        super_admin.set_password('admin123')
-        super_admin.save()
+        if created:
+            super_admin.set_password('admin123')
+            super_admin.save()
 
         # District Chairman
-        district_chairman, _ = User.objects.get_or_create(
+        district_chairman, created = User.objects.get_or_create(
             username='district_somoni',
             defaults={
                 'first_name': 'Рустам',
@@ -277,11 +278,12 @@ class Command(BaseCommand):
                 'is_active': True,
             }
         )
-        district_chairman.set_password('admin123')
-        district_chairman.save()
+        if created:
+            district_chairman.set_password('admin123')
+            district_chairman.save()
 
         # Jamoat Chairman
-        jamoat_chairman, _ = User.objects.get_or_create(
+        jamoat_chairman, created = User.objects.get_or_create(
             username='jamoat_leader',
             defaults={
                 'first_name': 'Сӯҳроб',
@@ -294,11 +296,12 @@ class Command(BaseCommand):
                 'is_active': True,
             }
         )
-        jamoat_chairman.set_password('admin123')
-        jamoat_chairman.save()
+        if created:
+            jamoat_chairman.set_password('admin123')
+            jamoat_chairman.save()
 
         # School Director
-        director, _ = User.objects.get_or_create(
+        director, created = User.objects.get_or_create(
             username='director_15',
             defaults={
                 'first_name': 'Дилшод',
@@ -312,11 +315,12 @@ class Command(BaseCommand):
                 'is_active': True,
             }
         )
-        director.set_password('admin123')
-        director.save()
+        if created:
+            director.set_password('admin123')
+            director.save()
 
         # Librarian
-        librarian, _ = User.objects.get_or_create(
+        librarian, created = User.objects.get_or_create(
             username='librarian_15',
             defaults={
                 'first_name': 'Нигора',
@@ -330,11 +334,12 @@ class Command(BaseCommand):
                 'is_active': True,
             }
         )
-        librarian.set_password('admin123')
-        librarian.save()
+        if created:
+            librarian.set_password('admin123')
+            librarian.save()
 
         # Class Teacher
-        teacher, _ = User.objects.get_or_create(
+        teacher, created = User.objects.get_or_create(
             username='teacher_rustam',
             defaults={
                 'first_name': 'Муҳаммад',
@@ -348,11 +353,12 @@ class Command(BaseCommand):
                 'is_active': True,
             }
         )
-        teacher.set_password('admin123')
-        teacher.save()
+        if created:
+            teacher.set_password('admin123')
+            teacher.save()
 
         # Students
-        student1, _ = User.objects.get_or_create(
+        student1, created = User.objects.get_or_create(
             username='student_anisa',
             defaults={
                 'first_name': 'Аниса',
@@ -366,10 +372,11 @@ class Command(BaseCommand):
                 'is_active': True,
             }
         )
-        student1.set_password('admin123')
-        student1.save()
+        if created:
+            student1.set_password('admin123')
+            student1.save()
 
-        student2, _ = User.objects.get_or_create(
+        student2, created = User.objects.get_or_create(
             username='student_davron',
             defaults={
                 'first_name': 'Даврон',
@@ -383,11 +390,12 @@ class Command(BaseCommand):
                 'is_active': True,
             }
         )
-        student2.set_password('admin123')
-        student2.save()
+        if created:
+            student2.set_password('admin123')
+            student2.save()
 
         # 4b. Users for School №20 and School №5
-        director_20, _ = User.objects.get_or_create(
+        director_20, created = User.objects.get_or_create(
             username='director_20',
             defaults={
                 'first_name': 'Ҷамшед', 'last_name': 'Раҷабов', 'email': 'director20@smartlib.tj',
@@ -395,10 +403,11 @@ class Command(BaseCommand):
                 'region': reg_dushanbe, 'district': dist_sino, 'jamoat': jam_sino1, 'is_active': True,
             }
         )
-        director_20.set_password('admin123')
-        director_20.save()
+        if created:
+            director_20.set_password('admin123')
+            director_20.save()
 
-        librarian_20, _ = User.objects.get_or_create(
+        librarian_20, created = User.objects.get_or_create(
             username='librarian_20',
             defaults={
                 'first_name': 'Мадина', 'last_name': 'Қосимова', 'email': 'librarian20@smartlib.tj',
@@ -406,10 +415,11 @@ class Command(BaseCommand):
                 'region': reg_dushanbe, 'district': dist_sino, 'jamoat': jam_sino1, 'is_active': True,
             }
         )
-        librarian_20.set_password('admin123')
-        librarian_20.save()
+        if created:
+            librarian_20.set_password('admin123')
+            librarian_20.save()
 
-        teacher_20, _ = User.objects.get_or_create(
+        teacher_20, created = User.objects.get_or_create(
             username='teacher_muzaffar',
             defaults={
                 'first_name': 'Музаффар', 'last_name': 'Ҷӯраев', 'email': 'teacher.juraev@smartlib.tj',
@@ -417,10 +427,11 @@ class Command(BaseCommand):
                 'region': reg_dushanbe, 'district': dist_sino, 'jamoat': jam_sino1, 'is_active': True,
             }
         )
-        teacher_20.set_password('admin123')
-        teacher_20.save()
+        if created:
+            teacher_20.set_password('admin123')
+            teacher_20.save()
 
-        student_karim, _ = User.objects.get_or_create(
+        student_karim, created = User.objects.get_or_create(
             username='student_karim',
             defaults={
                 'first_name': 'Карим', 'last_name': 'Раҳмонов', 'email': 'karim.r@smartlib.tj',
@@ -428,10 +439,11 @@ class Command(BaseCommand):
                 'region': reg_dushanbe, 'district': dist_sino, 'jamoat': jam_sino1, 'is_active': True,
             }
         )
-        student_karim.set_password('admin123')
-        student_karim.save()
+        if created:
+            student_karim.set_password('admin123')
+            student_karim.save()
 
-        student_malika, _ = User.objects.get_or_create(
+        student_malika, created = User.objects.get_or_create(
             username='student_malika',
             defaults={
                 'first_name': 'Малика', 'last_name': 'Эргашева', 'email': 'malika.e@smartlib.tj',
@@ -439,10 +451,11 @@ class Command(BaseCommand):
                 'region': reg_dushanbe, 'district': dist_sino, 'jamoat': jam_sino1, 'is_active': True,
             }
         )
-        student_malika.set_password('admin123')
-        student_malika.save()
+        if created:
+            student_malika.set_password('admin123')
+            student_malika.save()
 
-        director_5, _ = User.objects.get_or_create(
+        director_5, created = User.objects.get_or_create(
             username='director_5',
             defaults={
                 'first_name': 'Фарҳод', 'last_name': 'Иброҳимов', 'email': 'director5@smartlib.tj',
@@ -450,10 +463,11 @@ class Command(BaseCommand):
                 'region': reg_sughd, 'district': dist_khujand, 'jamoat': jam_khujand1, 'is_active': True,
             }
         )
-        director_5.set_password('admin123')
-        director_5.save()
+        if created:
+            director_5.set_password('admin123')
+            director_5.save()
 
-        librarian_5, _ = User.objects.get_or_create(
+        librarian_5, created = User.objects.get_or_create(
             username='librarian_5',
             defaults={
                 'first_name': 'Зарина', 'last_name': 'Сафарова', 'email': 'librarian5@smartlib.tj',
@@ -461,10 +475,11 @@ class Command(BaseCommand):
                 'region': reg_sughd, 'district': dist_khujand, 'jamoat': jam_khujand1, 'is_active': True,
             }
         )
-        librarian_5.set_password('admin123')
-        librarian_5.save()
+        if created:
+            librarian_5.set_password('admin123')
+            librarian_5.save()
 
-        teacher_5, _ = User.objects.get_or_create(
+        teacher_5, created = User.objects.get_or_create(
             username='teacher_5',
             defaults={
                 'first_name': 'Абдулло', 'last_name': 'Назаров', 'email': 'teacher.nazarov@smartlib.tj',
@@ -472,10 +487,11 @@ class Command(BaseCommand):
                 'region': reg_sughd, 'district': dist_khujand, 'jamoat': jam_khujand1, 'is_active': True,
             }
         )
-        teacher_5.set_password('admin123')
-        teacher_5.save()
+        if created:
+            teacher_5.set_password('admin123')
+            teacher_5.save()
 
-        student_5a, _ = User.objects.get_or_create(
+        student_5a, created = User.objects.get_or_create(
             username='student_5a',
             defaults={
                 'first_name': 'Фирӯза', 'last_name': 'Мирзоева', 'email': 'firuza.m@smartlib.tj',
@@ -483,10 +499,11 @@ class Command(BaseCommand):
                 'region': reg_sughd, 'district': dist_khujand, 'jamoat': jam_khujand1, 'is_active': True,
             }
         )
-        student_5a.set_password('admin123')
-        student_5a.save()
+        if created:
+            student_5a.set_password('admin123')
+            student_5a.save()
 
-        student_5b, _ = User.objects.get_or_create(
+        student_5b, created = User.objects.get_or_create(
             username='student_5b',
             defaults={
                 'first_name': 'Умед', 'last_name': 'Валиев', 'email': 'umed.v@smartlib.tj',
@@ -494,8 +511,9 @@ class Command(BaseCommand):
                 'region': reg_sughd, 'district': dist_khujand, 'jamoat': jam_khujand1, 'is_active': True,
             }
         )
-        student_5b.set_password('admin123')
-        student_5b.save()
+        if created:
+            student_5b.set_password('admin123')
+            student_5b.save()
 
         # 5. Classrooms & Assignments
         class_10a, _ = Classroom.objects.get_or_create(
