@@ -8,24 +8,26 @@ from accounts.models import User
 from geography.models import Region, District, Jamoat
 from schools.models import School
 from library.models import (
-    Book, BookCopy, Classroom, StudentEnrollment, TeacherClassAssignment,
+    Book, BookCopy, Classroom, TeacherClassAssignment,
     BookRequest, BookIssue, AcademicYear, StudentBookRequest
 )
 from transactions.models import BookTransaction
 from audit.models import AuditLog
+from library.utils import copies_currently_held_by
 
 
-def _copies_currently_held_by(base_qs, user, status, tx_type, holder_field):
-    """Restrict a BookCopy queryset to copies whose most recent hand-off
-    transaction of the given type has `holder_field` equal to user, rather
-    than matching any historical transaction for that copy.
-    """
-    matching_ids = []
-    for copy in base_qs.filter(status=status):
-        last_tx = copy.transactions.filter(transaction_type=tx_type).order_by('-created_at').first()
-        if last_tx and getattr(last_tx, holder_field) == user.pk:
-            matching_ids.append(copy.pk)
-    return base_qs.filter(pk__in=matching_ids)
+def _school_ranking(schools):
+    """Rank schools by textbook coverage against a target of 10 books/student."""
+    ranking = []
+    for s in schools:
+        target = (s.student_count or 0) * 10
+        if target > 0:
+            coverage_pct = min(100, round((s.book_count / target) * 100))
+        else:
+            coverage_pct = 100 if s.book_count else 0
+        ranking.append({'school': s, 'coverage_pct': coverage_pct})
+    ranking.sort(key=lambda x: x['coverage_pct'], reverse=True)
+    return ranking
 
 
 class DashboardView(LoginRequiredMixin, View):
@@ -104,15 +106,7 @@ class DistrictDashboardView(RoleRequiredMixin, View):
         deficit = max(0, target_books - total_books)
         surplus = max(0, total_books - target_books)
 
-        school_ranking = []
-        for s in schools:
-            target = (s.student_count or 0) * 10
-            if target > 0:
-                coverage_pct = min(100, round((s.book_count / target) * 100))
-            else:
-                coverage_pct = 100 if s.book_count else 0
-            school_ranking.append({'school': s, 'coverage_pct': coverage_pct})
-        school_ranking.sort(key=lambda x: x['coverage_pct'], reverse=True)
+        school_ranking = _school_ranking(schools)
 
         context = {
             'district': district,
@@ -153,15 +147,7 @@ class JamoatDashboardView(RoleRequiredMixin, View):
         target_books = total_students * 10
         deficit = max(0, target_books - total_books)
 
-        school_ranking = []
-        for s in schools:
-            target = (s.student_count or 0) * 10
-            if target > 0:
-                coverage_pct = min(100, round((s.book_count / target) * 100))
-            else:
-                coverage_pct = 100 if s.book_count else 0
-            school_ranking.append({'school': s, 'coverage_pct': coverage_pct})
-        school_ranking.sort(key=lambda x: x['coverage_pct'], reverse=True)
+        school_ranking = _school_ranking(schools)
 
         context = {
             'jamoat': jamoat,
@@ -271,7 +257,7 @@ class TeacherDashboardView(RoleRequiredMixin, View):
         my_class_ids = my_assignments.filter(is_class_teacher=True).values_list('classroom_id', flat=True)
 
         # Books in teacher custody (received from librarian and not yet handed to students)
-        my_copies = _copies_currently_held_by(
+        my_copies = copies_currently_held_by(
             BookCopy.objects.filter(school=user.school), user,
             BookCopy.Status.ISSUED_TO_TEACHER,
             BookTransaction.TransactionType.LIBRARIAN_TO_TEACHER,
@@ -279,7 +265,7 @@ class TeacherDashboardView(RoleRequiredMixin, View):
         ).select_related('book')
 
         # Books currently issued to students by this teacher
-        issued_to_students = _copies_currently_held_by(
+        issued_to_students = copies_currently_held_by(
             BookCopy.objects.filter(school=user.school), user,
             BookCopy.Status.ISSUED_TO_STUDENT,
             BookTransaction.TransactionType.TEACHER_TO_STUDENT,
@@ -327,7 +313,7 @@ class StudentDashboardView(RoleRequiredMixin, View):
     def get(self, request):
         user = request.user
         # All books currently in student's possession
-        my_books = _copies_currently_held_by(
+        my_books = copies_currently_held_by(
             BookCopy.objects.all(), user,
             BookCopy.Status.ISSUED_TO_STUDENT,
             BookTransaction.TransactionType.TEACHER_TO_STUDENT,
@@ -364,7 +350,10 @@ class AnalyticsDetailView(RoleRequiredMixin, View):
             copies_qs = copies_qs.filter(school__district=request.user.district)
 
         total_books = copies_qs.count()
+        status_labels = dict(BookCopy.Status.choices)
         by_status = copies_qs.values('status').annotate(count=Count('id')).order_by('-count')
+        for row in by_status:
+            row['status_label'] = status_labels.get(row['status'], row['status'])
 
         by_grade = Book.objects.values('grade').annotate(
             copies_count=Count('copies', filter=Q(copies__in=copies_qs), distinct=True)

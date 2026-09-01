@@ -27,7 +27,7 @@
                 <div class="mt-3">
                     {% for item in by_status %}
                     <div class="d-flex justify-content-between align-items-center py-1 border-bottom small">
-                        <span>{% include "components/status_badge.html" with status_code=item.status status_display=item.status %}</span>
+                        <span>{% include "components/status_badge.html" with status_code=item.status status_display=item.status_label %}</span>
                         <strong>{{ item.count }}</strong>
                     </div>
                     {% empty %}
@@ -114,6 +114,7 @@
 {% endblock %}
 
 {% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Books by Status (doughnut)
@@ -122,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
         new Chart(statusCtx, {
             type: 'doughnut',
             data: {
-                labels: [{% for item in by_status %}'{{ item.status|escapejs }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+                labels: [{% for item in by_status %}'{{ item.status_label|escapejs }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
                 datasets: [{
                     data: [{% for item in by_status %}{{ item.count }}{% if not forloop.last %}, {% endif %}{% endfor %}],
                     backgroundColor: ['#10b981', '#2563eb', '#06b6d4', '#f59e0b', '#ef4444', '#7c3aed', '#ea580c', '#64748b'],

@@ -54,7 +54,7 @@
                         <td>{% include "components/status_badge.html" with status_code=i.status status_display=i.get_status_display %}</td>
                         <td class="text-muted">{{ i.reported_at|date:"d.m.Y" }}</td>
                         <td>
-                            {% if i.status == 'PENDING' and user.role == 'LIBRARIAN' %}
+                            {% if i.status == 'PENDING' and user.role in 'LIBRARIAN,SUPER_ADMIN' %}
                             <form method="post" action="{% url 'library:book_issue_confirm' i.pk %}" class="d-inline-flex gap-1">
                                 {% csrf_token %}
                                 <button name="action" value="confirm" class="btn-pro btn-pro-success" style="padding: 6px 10px;"><i class="bi bi-check-lg"></i></button>

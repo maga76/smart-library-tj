@@ -1894,3 +1894,566 @@ msgstr "История перемещений"
 
 msgid "Defect & Loss Acts"
 msgstr "Акты утери и порчи"
+
+#: messages
+msgid "%(student)s requests textbook \"%(book)s\". Reason: %(reason)s"
+msgstr "%(student)s запрашивает учебник \"%(book)s\". Причина: %(reason)s"
+
+#: messages
+msgid ""
+"%(student)s wants to return \"%(book)s\" (%(inv)s) to teacher %(teacher)s. "
+"%(note)s"
+msgstr ""
+"%(student)s хочет вернуть \"%(book)s\" (%(inv)s) учителю %(teacher)s. "
+"%(note)s"
+
+#: messages
+msgid "%(student)s wants to return \"%(book)s\" (%(inv)s). %(note)s"
+msgstr "%(student)s хочет вернуть \"%(book)s\" (%(inv)s). %(note)s"
+
+#: messages
+msgid ""
+"A read-only, chronological record of every security-relevant action "
+"performed in the system."
+msgstr ""
+"Хронологическая запись только для чтения обо всех значимых для безопасности "
+"действиях в системе."
+
+#: messages
+msgid "Academic Years"
+msgstr "Учебные годы"
+
+#: messages
+msgid "Add User"
+msgstr "Добавить пользователя"
+
+#: messages
+msgid "Administrative district within a region"
+msgstr "Административный район в составе области"
+
+#: messages
+msgid "Administrative districts within each region"
+msgstr "Административные районы в составе каждой области"
+
+#: messages
+msgid "All"
+msgstr "Все"
+
+#: messages
+msgid "Any additional notes..."
+msgstr "Дополнительные примечания..."
+
+#: messages
+msgid "Approve"
+msgstr "Одобрить"
+
+#: messages
+msgid "Approved"
+msgstr "Одобрено"
+
+#: messages
+msgid "Assignments"
+msgstr "Назначения"
+
+#: messages
+msgid "Back to Schools"
+msgstr "Назад к школам"
+
+#: messages
+msgid "Barcode & QR"
+msgstr "Штрихкод и QR"
+
+#: messages
+msgid "Book & Student"
+msgstr "Книга и ученик"
+
+#: messages
+msgid "Book Copy"
+msgstr "Экземпляр книги"
+
+#: messages
+msgid "Book Information"
+msgstr "Информация о книге"
+
+#: messages
+msgid "Book Issues"
+msgstr "Проблемы с книгами"
+
+#: messages
+msgid "Book Request"
+msgstr "Заявка на книгу"
+
+#: messages
+msgid "Book Request Details"
+msgstr "Детали заявки на книгу"
+
+#: messages
+msgid "Books"
+msgstr "Книги"
+
+#: messages
+msgid "Browse and manage the national textbook catalog"
+msgstr "Просмотр и управление национальным каталогом учебников"
+
+#: messages
+msgid "Centralized Accounting"
+msgstr "Централизованный учёт"
+
+#: messages
+msgid "Choose a textbook..."
+msgstr "Выберите учебник..."
+
+#: messages
+msgid "Classroom"
+msgstr "Класс"
+
+#: messages
+msgid "Classrooms & Student Count"
+msgstr "Классы и количество учеников"
+
+#: messages
+msgid "Condition note, term, or comments..."
+msgstr "Состояние, срок или комментарии..."
+
+#: messages
+msgid "DIGITAL EDUCATION SYSTEM"
+msgstr "ЦИФРОВАЯ СИСТЕМА ОБРАЗОВАНИЯ"
+
+#: messages
+msgid "Date"
+msgstr "Дата"
+
+#: messages
+msgid "Define the start and end dates of a new academic year"
+msgstr "Укажите даты начала и окончания нового учебного года"
+
+#: messages
+msgid "District Chairman"
+msgstr "Председатель района"
+
+#: messages
+msgid "District Chairman Dashboard"
+msgstr "Панель председателя района"
+
+#: messages
+msgid "Every physical textbook copy, tracked by inventory number and barcode"
+msgstr ""
+"Каждый физический экземпляр учебника, отслеживаемый по инвентарному номеру и"
+" штрихкоду"
+
+#: messages
+msgid "Explain why you need this textbook..."
+msgstr "Объясните, зачем вам нужен этот учебник..."
+
+#: messages
+msgid "Filter by Status"
+msgstr "Фильтр по статусу"
+
+#: messages
+msgid "From"
+msgstr "От"
+
+#: messages
+msgid "Fulfilled"
+msgstr "Выполнено"
+
+#: messages
+msgid "General"
+msgstr "Общее"
+
+#: messages
+msgid "Issue to a student"
+msgstr "Выдать ученику"
+
+#: messages
+msgid "Issued"
+msgstr "Выдано"
+
+#: messages
+msgid "Issued to Student"
+msgstr "Выдано ученику"
+
+#: messages
+msgid "Issued to Teacher"
+msgstr "Выдано учителю"
+
+#: messages
+msgid "Issues"
+msgstr "Проблемы"
+
+#: messages
+msgid "Jamoat"
+msgstr "Джамоат"
+
+#: messages
+msgid "Jamoat Chairman"
+msgstr "Председатель джамоата"
+
+#: messages
+msgid "Jamoat Chairman Dashboard"
+msgstr "Панель председателя джамоата"
+
+#: messages
+msgid "Librarian to Teacher"
+msgstr "От библиотекаря учителю"
+
+#: messages
+msgid "Log a lost or damaged textbook so the librarian can verify it"
+msgstr ""
+"Зарегистрируйте утерянный или повреждённый учебник, чтобы библиотекарь мог "
+"это подтвердить"
+
+#: messages
+msgid "Lost/Damaged"
+msgstr "Утеряно/Повреждено"
+
+#: messages
+msgid "Manage classes and their enrolled student counts"
+msgstr "Управление классами и количеством зачисленных учеников"
+
+#: messages
+msgid "Manage the school system's academic year calendar"
+msgstr "Управление календарём учебных годов школьной системы"
+
+#: messages
+msgid "Mark all as read"
+msgstr "Отметить всё как прочитанное"
+
+#: messages
+msgid "Mark as read"
+msgstr "Отметить как прочитанное"
+
+#: messages
+msgid "My Book Requests"
+msgstr "Мои заявки на книги"
+
+#: messages
+msgid "My Books"
+msgstr "Мои книги"
+
+#: messages
+msgid "My Notifications"
+msgstr "Мои уведомления"
+
+#: messages
+msgid "National School Library System"
+msgstr "Национальная система школьных библиотек"
+
+#: messages
+msgid "National geographic hierarchy — top level"
+msgstr "Национальная географическая иерархия — верхний уровень"
+
+#: messages
+msgid "Need a book that's missing? Request it here."
+msgstr "Не хватает книги? Оформите заявку здесь."
+
+#: messages
+msgid "New book request from student"
+msgstr "Новая заявка на книгу от ученика"
+
+#: messages
+msgid "No movement history"
+msgstr "Нет истории перемещений"
+
+#: messages
+msgid "Not specified"
+msgstr "Не указано"
+
+#: messages
+msgid "Note (optional)"
+msgstr "Примечание (необязательно)"
+
+#: messages
+msgid "Notification"
+msgstr "Уведомление"
+
+#: messages
+msgid "Notifications"
+msgstr "Уведомления"
+
+#: messages
+msgid "Optional notes, order number, or handover comment..."
+msgstr "Необязательные примечания, номер заказа или комментарий к передаче..."
+
+#: messages
+msgid "Please select a book."
+msgstr "Пожалуйста, выберите книгу."
+
+#: messages
+msgid "Quick demo login"
+msgstr "Быстрый демо-вход"
+
+#: messages
+msgid "Ready to return a book? Send a request to your teacher."
+msgstr "Готовы вернуть книгу? Отправьте запрос своему учителю."
+
+#: messages
+msgid "Reason (why do you need this book?)"
+msgstr "Причина (зачем вам эта книга?)"
+
+#: messages
+msgid "Receive back from a student"
+msgstr "Принять обратно от ученика"
+
+#: messages
+msgid "Register a new batch of physical copies for a catalog title"
+msgstr ""
+"Зарегистрировать новую партию физических экземпляров для позиции каталога"
+
+#: messages
+msgid "Register or update a school's core details"
+msgstr "Зарегистрировать или обновить основные данные школы"
+
+#: messages
+msgid "Registry of all schools and their library status"
+msgstr "Реестр всех школ и статус их библиотек"
+
+#: messages
+msgid "Reject"
+msgstr "Отклонить"
+
+#: messages
+msgid "Report Book Issue"
+msgstr "Сообщить о проблеме с книгой"
+
+#: messages
+msgid "Reported lost and damaged textbooks awaiting verification"
+msgstr "Заявленные утерянные и повреждённые учебники, ожидающие проверки"
+
+#: messages
+msgid "Request Approved"
+msgstr "Заявка одобрена"
+
+#: messages
+msgid "Request Rejected"
+msgstr "Заявка отклонена"
+
+#: messages
+msgid "Request a Textbook"
+msgstr "Заказать учебник"
+
+#: messages
+msgid "Request additional textbook copies for your school"
+msgstr "Запросить дополнительные экземпляры учебников для вашей школы"
+
+#: messages
+msgid "Request approved."
+msgstr "Заявка одобрена."
+
+#: messages
+msgid "Request has been rejected."
+msgstr "Заявка была отклонена."
+
+#: messages
+msgid "Request marked as reviewed."
+msgstr "Заявка отмечена как рассмотренная."
+
+#: messages
+msgid "Request rejected."
+msgstr "Заявка отклонена."
+
+#: messages
+msgid "Requests"
+msgstr "Заявки"
+
+#: messages
+msgid "Return Request"
+msgstr "Запрос на возврат"
+
+#: messages
+msgid "Return a Textbook"
+msgstr "Вернуть учебник"
+
+#: messages
+msgid "Reviewed"
+msgstr "Рассмотрено"
+
+#: messages
+msgid ""
+"Scan a barcode with your device camera or enter the number manually to "
+"inspect textbook details."
+msgstr ""
+"Отсканируйте штрихкод камерой устройства или введите номер вручную, чтобы "
+"посмотреть детали учебника."
+
+#: messages
+msgid "School Director"
+msgstr "Директор школы"
+
+#: messages
+msgid "School requests for additional textbook copies"
+msgstr "Заявки школ на дополнительные экземпляры учебников"
+
+#: messages
+msgid "Search by name..."
+msgstr "Поиск по имени..."
+
+#: messages
+msgid "Search by title, barcode or inventory ID..."
+msgstr "Поиск по названию, штрихкоду или инвентарному номеру..."
+
+#: messages
+msgid ""
+"Search by title, barcode, or inventory number to see custody status "
+"instantly."
+msgstr ""
+"Найдите по названию, штрихкоду или инвентарному номеру, чтобы сразу увидеть,"
+" у кого находится книга."
+
+#: messages
+msgid "Select Textbook"
+msgstr "Выберите учебник"
+
+#: messages
+msgid "Select Textbook to Return"
+msgstr "Выберите учебник для возврата"
+
+#: messages
+msgid "Select a book to return."
+msgstr "Выберите книгу для возврата."
+
+#: messages
+msgid "Select a textbook you need and explain why"
+msgstr "Выберите нужный учебник и объясните причину"
+
+#: messages
+msgid "Select a textbook you want to return to your teacher"
+msgstr "Выберите учебник, который хотите вернуть учителю"
+
+#: messages
+msgid "Select copy"
+msgstr "Выберите экземпляр"
+
+#: messages
+msgid "Select student"
+msgstr "Выберите ученика"
+
+#: messages
+msgid "Send Return Request"
+msgstr "Отправить запрос на возврат"
+
+#: messages
+msgid "Set up a new class for the current academic year"
+msgstr "Создать новый класс для текущего учебного года"
+
+#: messages
+msgid "Sign in to access your dashboard and library records."
+msgstr ""
+"Войдите, чтобы получить доступ к панели управления и данным библиотеки."
+
+#: messages
+msgid "Smallest administrative unit within a district"
+msgstr "Наименьшая административная единица в составе района"
+
+#: messages
+msgid "Smallest administrative units within each district"
+msgstr "Наименьшие административные единицы в составе каждого района"
+
+#: messages
+msgid "Student Book Request"
+msgstr "Заявка ученика на книгу"
+
+#: messages
+msgid "Student Book Requests"
+msgstr "Заявки учеников на книги"
+
+#: messages
+msgid "Student Requests"
+msgstr "Заявки учеников"
+
+#: messages
+msgid "Student Return"
+msgstr "Возврат от ученика"
+
+#: messages
+msgid "Student wants to return a book"
+msgstr "Ученик хочет вернуть книгу"
+
+#: messages
+msgid "Students currently enrolled across classrooms"
+msgstr "Ученики, зачисленные в классы в данный момент"
+
+#: messages
+msgid "Tajikistan"
+msgstr "Таджикистан"
+
+#: messages
+msgid "Teacher Assignments"
+msgstr "Назначения учителей"
+
+#: messages
+msgid "Teacher Return"
+msgstr "Возврат от учителя"
+
+#: messages
+msgid "Teacher to Student"
+msgstr "От учителя ученику"
+
+#: messages
+msgid "Textbook"
+msgstr "Учебник"
+
+#: messages
+msgid "There is no data in this section, or it doesn't match your filter."
+msgstr "В этом разделе нет данных, либо они не соответствуют вашему фильтру."
+
+#: messages
+msgid "To"
+msgstr "До"
+
+#: messages
+msgid "Top-level administrative region"
+msgstr "Административная область высшего уровня"
+
+#: messages
+msgid "Type"
+msgstr "Тип"
+
+#: messages
+msgid "Warehouse to School"
+msgstr "Со склада в школу"
+
+#: messages
+msgid "You don't have any textbooks to return at the moment."
+msgstr "У вас пока нет учебников для возврата."
+
+#: messages
+msgid "Your book request has been approved"
+msgstr "Ваша заявка на книгу одобрена"
+
+#: messages
+msgid "Your book request has been rejected"
+msgstr "Ваша заявка на книгу отклонена"
+
+#: messages
+msgid ""
+"Your book request has been submitted. You will be notified when it is "
+"reviewed."
+msgstr ""
+"Ваша заявка на книгу отправлена. Вы получите уведомление, когда её "
+"рассмотрят."
+
+#: messages
+msgid "Your request for \"%(book)s\" has been approved by %(reviewer)s."
+msgstr "Ваша заявка на \"%(book)s\" одобрена пользователем %(reviewer)s."
+
+#: messages
+msgid "Your request for \"%(book)s\" has been rejected by %(reviewer)s. %(note)s"
+msgstr ""
+"Ваша заявка на \"%(book)s\" отклонена пользователем %(reviewer)s. %(note)s"
+
+#: messages
+msgid ""
+"Your return request has been sent to your teacher. Please hand over the book"
+" to your teacher."
+msgstr ""
+"Ваш запрос на возврат отправлен учителю. Пожалуйста, передайте книгу "
+"учителю."
+
+#: messages
+msgid "reports"
+msgstr "отчёты"
+
+#: messages
+msgid "Доно"
+msgstr "Доно"

@@ -1927,3 +1927,555 @@ msgstr "Transactions Log"
 
 msgid "Defect & Loss Acts"
 msgstr "Defect & Loss Acts"
+
+#: messages
+msgid "%(student)s requests textbook \"%(book)s\". Reason: %(reason)s"
+msgstr "%(student)s requests textbook \"%(book)s\". Reason: %(reason)s"
+
+#: messages
+msgid ""
+"%(student)s wants to return \"%(book)s\" (%(inv)s) to teacher %(teacher)s. "
+"%(note)s"
+msgstr ""
+"%(student)s wants to return \"%(book)s\" (%(inv)s) to teacher %(teacher)s. "
+"%(note)s"
+
+#: messages
+msgid "%(student)s wants to return \"%(book)s\" (%(inv)s). %(note)s"
+msgstr "%(student)s wants to return \"%(book)s\" (%(inv)s). %(note)s"
+
+#: messages
+msgid ""
+"A read-only, chronological record of every security-relevant action "
+"performed in the system."
+msgstr ""
+"A read-only, chronological record of every security-relevant action "
+"performed in the system."
+
+#: messages
+msgid "Academic Years"
+msgstr "Academic Years"
+
+#: messages
+msgid "Add User"
+msgstr "Add User"
+
+#: messages
+msgid "Administrative district within a region"
+msgstr "Administrative district within a region"
+
+#: messages
+msgid "Administrative districts within each region"
+msgstr "Administrative districts within each region"
+
+#: messages
+msgid "All"
+msgstr "All"
+
+#: messages
+msgid "Any additional notes..."
+msgstr "Any additional notes..."
+
+#: messages
+msgid "Approve"
+msgstr "Approve"
+
+#: messages
+msgid "Approved"
+msgstr "Approved"
+
+#: messages
+msgid "Assignments"
+msgstr "Assignments"
+
+#: messages
+msgid "Back to Schools"
+msgstr "Back to Schools"
+
+#: messages
+msgid "Barcode & QR"
+msgstr "Barcode & QR"
+
+#: messages
+msgid "Book & Student"
+msgstr "Book & Student"
+
+#: messages
+msgid "Book Copy"
+msgstr "Book Copy"
+
+#: messages
+msgid "Book Information"
+msgstr "Book Information"
+
+#: messages
+msgid "Book Issues"
+msgstr "Book Issues"
+
+#: messages
+msgid "Book Request"
+msgstr "Book Request"
+
+#: messages
+msgid "Book Request Details"
+msgstr "Book Request Details"
+
+#: messages
+msgid "Books"
+msgstr "Books"
+
+#: messages
+msgid "Browse and manage the national textbook catalog"
+msgstr "Browse and manage the national textbook catalog"
+
+#: messages
+msgid "Centralized Accounting"
+msgstr "Centralized Accounting"
+
+#: messages
+msgid "Choose a textbook..."
+msgstr "Choose a textbook..."
+
+#: messages
+msgid "Classroom"
+msgstr "Classroom"
+
+#: messages
+msgid "Classrooms & Student Count"
+msgstr "Classrooms & Student Count"
+
+#: messages
+msgid "Condition note, term, or comments..."
+msgstr "Condition note, term, or comments..."
+
+#: messages
+msgid "DIGITAL EDUCATION SYSTEM"
+msgstr "DIGITAL EDUCATION SYSTEM"
+
+#: messages
+msgid "Date"
+msgstr "Date"
+
+#: messages
+msgid "Define the start and end dates of a new academic year"
+msgstr "Define the start and end dates of a new academic year"
+
+#: messages
+msgid "District Chairman"
+msgstr "District Chairman"
+
+#: messages
+msgid "District Chairman Dashboard"
+msgstr "District Chairman Dashboard"
+
+#: messages
+msgid "Every physical textbook copy, tracked by inventory number and barcode"
+msgstr "Every physical textbook copy, tracked by inventory number and barcode"
+
+#: messages
+msgid "Explain why you need this textbook..."
+msgstr "Explain why you need this textbook..."
+
+#: messages
+msgid "Filter by Status"
+msgstr "Filter by Status"
+
+#: messages
+msgid "From"
+msgstr "From"
+
+#: messages
+msgid "Fulfilled"
+msgstr "Fulfilled"
+
+#: messages
+msgid "General"
+msgstr "General"
+
+#: messages
+msgid "Issue to a student"
+msgstr "Issue to a student"
+
+#: messages
+msgid "Issued"
+msgstr "Issued"
+
+#: messages
+msgid "Issued to Student"
+msgstr "Issued to Student"
+
+#: messages
+msgid "Issued to Teacher"
+msgstr "Issued to Teacher"
+
+#: messages
+msgid "Issues"
+msgstr "Issues"
+
+#: messages
+msgid "Jamoat"
+msgstr "Jamoat"
+
+#: messages
+msgid "Jamoat Chairman"
+msgstr "Jamoat Chairman"
+
+#: messages
+msgid "Jamoat Chairman Dashboard"
+msgstr "Jamoat Chairman Dashboard"
+
+#: messages
+msgid "Librarian to Teacher"
+msgstr "Librarian to Teacher"
+
+#: messages
+msgid "Log a lost or damaged textbook so the librarian can verify it"
+msgstr "Log a lost or damaged textbook so the librarian can verify it"
+
+#: messages
+msgid "Lost/Damaged"
+msgstr "Lost/Damaged"
+
+#: messages
+msgid "Manage classes and their enrolled student counts"
+msgstr "Manage classes and their enrolled student counts"
+
+#: messages
+msgid "Manage the school system's academic year calendar"
+msgstr "Manage the school system's academic year calendar"
+
+#: messages
+msgid "Mark all as read"
+msgstr "Mark all as read"
+
+#: messages
+msgid "Mark as read"
+msgstr "Mark as read"
+
+#: messages
+msgid "My Book Requests"
+msgstr "My Book Requests"
+
+#: messages
+msgid "My Books"
+msgstr "My Books"
+
+#: messages
+msgid "My Notifications"
+msgstr "My Notifications"
+
+#: messages
+msgid "National School Library System"
+msgstr "National School Library System"
+
+#: messages
+msgid "National geographic hierarchy — top level"
+msgstr "National geographic hierarchy — top level"
+
+#: messages
+msgid "Need a book that's missing? Request it here."
+msgstr "Need a book that's missing? Request it here."
+
+#: messages
+msgid "New book request from student"
+msgstr "New book request from student"
+
+#: messages
+msgid "No movement history"
+msgstr "No movement history"
+
+#: messages
+msgid "Not specified"
+msgstr "Not specified"
+
+#: messages
+msgid "Note (optional)"
+msgstr "Note (optional)"
+
+#: messages
+msgid "Notification"
+msgstr "Notification"
+
+#: messages
+msgid "Notifications"
+msgstr "Notifications"
+
+#: messages
+msgid "Optional notes, order number, or handover comment..."
+msgstr "Optional notes, order number, or handover comment..."
+
+#: messages
+msgid "Please select a book."
+msgstr "Please select a book."
+
+#: messages
+msgid "Quick demo login"
+msgstr "Quick demo login"
+
+#: messages
+msgid "Ready to return a book? Send a request to your teacher."
+msgstr "Ready to return a book? Send a request to your teacher."
+
+#: messages
+msgid "Reason (why do you need this book?)"
+msgstr "Reason (why do you need this book?)"
+
+#: messages
+msgid "Receive back from a student"
+msgstr "Receive back from a student"
+
+#: messages
+msgid "Register a new batch of physical copies for a catalog title"
+msgstr "Register a new batch of physical copies for a catalog title"
+
+#: messages
+msgid "Register or update a school's core details"
+msgstr "Register or update a school's core details"
+
+#: messages
+msgid "Registry of all schools and their library status"
+msgstr "Registry of all schools and their library status"
+
+#: messages
+msgid "Reject"
+msgstr "Reject"
+
+#: messages
+msgid "Report Book Issue"
+msgstr "Report Book Issue"
+
+#: messages
+msgid "Reported lost and damaged textbooks awaiting verification"
+msgstr "Reported lost and damaged textbooks awaiting verification"
+
+#: messages
+msgid "Request Approved"
+msgstr "Request Approved"
+
+#: messages
+msgid "Request Rejected"
+msgstr "Request Rejected"
+
+#: messages
+msgid "Request a Textbook"
+msgstr "Request a Textbook"
+
+#: messages
+msgid "Request additional textbook copies for your school"
+msgstr "Request additional textbook copies for your school"
+
+#: messages
+msgid "Request approved."
+msgstr "Request approved."
+
+#: messages
+msgid "Request marked as reviewed."
+msgstr "Request marked as reviewed."
+
+#: messages
+msgid "Request rejected."
+msgstr "Request rejected."
+
+#: messages
+msgid "Requests"
+msgstr "Requests"
+
+#: messages
+msgid "Return Request"
+msgstr "Return Request"
+
+#: messages
+msgid "Return a Textbook"
+msgstr "Return a Textbook"
+
+#: messages
+msgid "Reviewed"
+msgstr "Reviewed"
+
+#: messages
+msgid ""
+"Scan a barcode with your device camera or enter the number manually to "
+"inspect textbook details."
+msgstr ""
+"Scan a barcode with your device camera or enter the number manually to "
+"inspect textbook details."
+
+#: messages
+msgid "School Director"
+msgstr "School Director"
+
+#: messages
+msgid "School requests for additional textbook copies"
+msgstr "School requests for additional textbook copies"
+
+#: messages
+msgid "Search by name..."
+msgstr "Search by name..."
+
+#: messages
+msgid "Search by title, barcode or inventory ID..."
+msgstr "Search by title, barcode or inventory ID..."
+
+#: messages
+msgid ""
+"Search by title, barcode, or inventory number to see custody status "
+"instantly."
+msgstr ""
+"Search by title, barcode, or inventory number to see custody status "
+"instantly."
+
+#: messages
+msgid "Select Textbook"
+msgstr "Select Textbook"
+
+#: messages
+msgid "Select Textbook to Return"
+msgstr "Select Textbook to Return"
+
+#: messages
+msgid "Select a book to return."
+msgstr "Select a book to return."
+
+#: messages
+msgid "Select a textbook you need and explain why"
+msgstr "Select a textbook you need and explain why"
+
+#: messages
+msgid "Select a textbook you want to return to your teacher"
+msgstr "Select a textbook you want to return to your teacher"
+
+#: messages
+msgid "Select copy"
+msgstr "Select copy"
+
+#: messages
+msgid "Select student"
+msgstr "Select student"
+
+#: messages
+msgid "Send Return Request"
+msgstr "Send Return Request"
+
+#: messages
+msgid "Set up a new class for the current academic year"
+msgstr "Set up a new class for the current academic year"
+
+#: messages
+msgid "Sign in to access your dashboard and library records."
+msgstr "Sign in to access your dashboard and library records."
+
+#: messages
+msgid "Smallest administrative unit within a district"
+msgstr "Smallest administrative unit within a district"
+
+#: messages
+msgid "Smallest administrative units within each district"
+msgstr "Smallest administrative units within each district"
+
+#: messages
+msgid "Student Book Request"
+msgstr "Student Book Request"
+
+#: messages
+msgid "Student Book Requests"
+msgstr "Student Book Requests"
+
+#: messages
+msgid "Student Requests"
+msgstr "Student Requests"
+
+#: messages
+msgid "Student Return"
+msgstr "Student Return"
+
+#: messages
+msgid "Student wants to return a book"
+msgstr "Student wants to return a book"
+
+#: messages
+msgid "Students currently enrolled across classrooms"
+msgstr "Students currently enrolled across classrooms"
+
+#: messages
+msgid "Tajikistan"
+msgstr "Tajikistan"
+
+#: messages
+msgid "Teacher Assignments"
+msgstr "Teacher Assignments"
+
+#: messages
+msgid "Teacher Return"
+msgstr "Teacher Return"
+
+#: messages
+msgid "Teacher to Student"
+msgstr "Teacher to Student"
+
+#: messages
+msgid "Textbook"
+msgstr "Textbook"
+
+#: messages
+msgid "There is no data in this section, or it doesn't match your filter."
+msgstr "There is no data in this section, or it doesn't match your filter."
+
+#: messages
+msgid "To"
+msgstr "To"
+
+#: messages
+msgid "Top-level administrative region"
+msgstr "Top-level administrative region"
+
+#: messages
+msgid "Type"
+msgstr "Type"
+
+#: messages
+msgid "Warehouse to School"
+msgstr "Warehouse to School"
+
+#: messages
+msgid "You don't have any textbooks to return at the moment."
+msgstr "You don't have any textbooks to return at the moment."
+
+#: messages
+msgid "Your book request has been approved"
+msgstr "Your book request has been approved"
+
+#: messages
+msgid "Your book request has been rejected"
+msgstr "Your book request has been rejected"
+
+#: messages
+msgid ""
+"Your book request has been submitted. You will be notified when it is "
+"reviewed."
+msgstr ""
+"Your book request has been submitted. You will be notified when it is "
+"reviewed."
+
+#: messages
+msgid "Your request for \"%(book)s\" has been approved by %(reviewer)s."
+msgstr "Your request for \"%(book)s\" has been approved by %(reviewer)s."
+
+#: messages
+msgid "Your request for \"%(book)s\" has been rejected by %(reviewer)s. %(note)s"
+msgstr "Your request for \"%(book)s\" has been rejected by %(reviewer)s. %(note)s"
+
+#: messages
+msgid ""
+"Your return request has been sent to your teacher. Please hand over the book"
+" to your teacher."
+msgstr ""
+"Your return request has been sent to your teacher. Please hand over the book"
+" to your teacher."
+
+#: messages
+msgid "reports"
+msgstr "reports"
+
+#: messages
+msgid "Доно"
+msgstr "Dono"

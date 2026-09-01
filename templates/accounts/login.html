@@ -31,8 +31,21 @@
             font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
             min-height: 100vh;
             overflow: hidden;
-            background: #0a0f1a;
+            background: #1a0708;
         }
+
+        /* ── National tricolour ribbon (flag: red / white / green) ── */
+        .tj-ribbon {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            display: flex;
+            z-index: 50;
+        }
+        .tj-ribbon span { flex: 1; }
+        .tj-ribbon span:nth-child(1) { background: #cc0000; }
+        .tj-ribbon span:nth-child(2) { background: #f8f8f8; }
+        .tj-ribbon span:nth-child(3) { background: #006600; }
 
         /* ══════════════════════════════════════════
            GIRIH SVG PATTERN
@@ -66,7 +79,7 @@
         /* ── Left Hero Panel ── */
         .login-hero {
             flex: 1;
-            background: linear-gradient(165deg, #0b3d4a 0%, #0e4d5c 25%, #12606e 50%, #0f5260 75%, #0a3a47 100%);
+            background: linear-gradient(165deg, #3b0a10 0%, #5c0f17 25%, #7a1420 50%, #57101a 75%, #300810 100%);
             position: relative;
             display: flex;
             flex-direction: column;
@@ -80,7 +93,7 @@
             content: '';
             position: absolute;
             width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(212,168,67,0.08) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(212,168,67,0.10) 0%, transparent 70%);
             top: -200px; right: -150px;
             pointer-events: none;
         }
@@ -89,9 +102,19 @@
             content: '';
             position: absolute;
             width: 400px; height: 400px;
-            background: radial-gradient(circle, rgba(212,168,67,0.05) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(0,102,51,0.14) 0%, transparent 70%);
             bottom: -100px; left: -80px;
             pointer-events: none;
+        }
+
+        /* Pamir mountain silhouette — "Roof of the World" */
+        .hero-mountains {
+            position: absolute;
+            left: 0; right: 0; bottom: 0;
+            height: 130px;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.9;
         }
 
         .hero-content {
@@ -113,6 +136,20 @@
             gap: 12px;
             margin-bottom: 40px;
         }
+
+        .hero-brand-stars {
+            display: flex;
+            align-items: flex-end;
+            gap: 7px;
+            height: 16px;
+            margin-bottom: 2px;
+        }
+        .hero-brand-stars i {
+            color: #d4a843;
+            font-size: 9px;
+            opacity: 0.85;
+        }
+        .hero-brand-stars i:nth-child(4) { font-size: 13px; opacity: 1; }
 
         .hero-brand-icon {
             width: 72px; height: 72px;
@@ -178,6 +215,11 @@
             color: #d4a843;
             font-size: 22px;
         }
+        .hero-feature-icon.accent-green {
+            background: rgba(0,102,51,0.18);
+            border-color: rgba(0,153,76,0.35);
+            color: #4ade80;
+        }
         .hero-feature-label {
             font-size: 12px;
             font-weight: 600;
@@ -237,7 +279,7 @@
             flex-direction: column;
             justify-content: center;
             padding: 48px 56px;
-            background: #1a1f2e;
+            background: #201317;
             position: relative;
             overflow: hidden;
         }
@@ -476,32 +518,32 @@
            DARK THEME (when data-theme="dark")
            ══════════════════════════════════════════ */
         :root[data-theme="light"] .login-panel {
-            background: #f8fafc;
+            background: #fdfaf4;
         }
-        :root[data-theme="light"] .panel-header h2 { color: #0f172a; }
-        :root[data-theme="light"] .panel-header p { color: #94a3b8; }
-        :root[data-theme="light"] .form-group label { color: #64748b; }
+        :root[data-theme="light"] .panel-header h2 { color: #3b0a10; }
+        :root[data-theme="light"] .panel-header p { color: #9a7d6b; }
+        :root[data-theme="light"] .form-group label { color: #8a6a5a; }
         :root[data-theme="light"] .input-wrapper input {
-            background: #f1f5f9;
-            border-color: #e2e8f0;
-            color: #0f172a;
+            background: #f6efe4;
+            border-color: #ecdfcc;
+            color: #3b0a10;
         }
-        :root[data-theme="light"] .input-wrapper input::placeholder { color: #94a3b8; }
+        :root[data-theme="light"] .input-wrapper input::placeholder { color: #b3a08f; }
         :root[data-theme="light"] .input-wrapper input:focus {
             background: #fff;
             border-color: rgba(212,168,67,0.5);
         }
         :root[data-theme="light"] .theme-btn {
-            background: #f1f5f9;
-            border-color: #e2e8f0;
-            color: #64748b;
+            background: #f6efe4;
+            border-color: #ecdfcc;
+            color: #8a6a5a;
         }
         :root[data-theme="light"] .lang-btn {
-            background: #f1f5f9;
-            border-color: #e2e8f0;
-            color: #64748b;
+            background: #f6efe4;
+            border-color: #ecdfcc;
+            color: #8a6a5a;
         }
-        :root[data-theme="light"] .panel-footer { color: #94a3b8; }
+        :root[data-theme="light"] .panel-footer { color: #b3a08f; }
         :root[data-theme="light"] .error-alert {
             background: #fef2f2;
             border-color: #fecaca;
@@ -509,16 +551,18 @@
         }
         :root[data-theme="light"] .lang-dropdown-menu {
             background: #fff;
-            border-color: #e2e8f0;
+            border-color: #ecdfcc;
         }
-        :root[data-theme="light"] .lang-option { color: #475569; }
-        :root[data-theme="light"] .lang-option:hover { background: #f1f5f9; color: #0f172a; }
+        :root[data-theme="light"] .lang-option { color: #8a6a5a; }
+        :root[data-theme="light"] .lang-option:hover { background: #f6efe4; color: #3b0a10; }
         :root[data-theme="light"] .login-btn {
             color: #1a1f2e;
         }
     </style>
 </head>
 <body>
+
+<div class="tj-ribbon"><span></span><span></span><span></span></div>
 
 <div class="login-page">
     <!-- ═══════════════════════════════════════
@@ -528,9 +572,24 @@
         <div class="girih-pattern"></div>
         <div class="girih-pattern-gold"></div>
 
+        <!-- Pamir mountains — "Bomi Dunyo" (Roof of the World) -->
+        <svg class="hero-mountains" viewBox="0 0 800 130" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 130 L90 55 L150 90 L230 30 L300 85 L360 50 L430 100 L500 40 L580 95 L650 60 L720 105 L800 65 L800 130 Z" fill="#20060a" opacity="0.55"/>
+            <path d="M0 130 L60 95 L130 115 L200 70 L270 110 L340 80 L420 120 L490 75 L570 118 L640 90 L720 125 L800 100 L800 130 Z" fill="#150307" opacity="0.75"/>
+        </svg>
+
         <div class="hero-content">
             <!-- Brand -->
             <div class="hero-brand">
+                <div class="hero-brand-stars">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                </div>
                 <div class="hero-brand-icon">
                     <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M20 4C14 4 8 6 8 10V32C8 32 12 28 20 28C28 28 32 32 32 32V10C32 6 26 4 20 4Z" stroke="#d4a843" stroke-width="1.8" fill="none"/>
@@ -559,7 +618,7 @@
                     <span class="hero-feature-label">{% trans "Centralized Accounting" %}</span>
                 </div>
                 <div class="hero-feature">
-                    <div class="hero-feature-icon">
+                    <div class="hero-feature-icon accent-green">
                         <i class="bi bi-upc-scan"></i>
                     </div>
                     <span class="hero-feature-label">{% trans "Barcode & QR" %}</span>

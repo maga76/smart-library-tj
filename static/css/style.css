@@ -861,12 +861,14 @@ a:hover {
     background: var(--warning-dot);
 }
 
-.status-ISSUED_TO_STUDENT {
+.status-ISSUED_TO_STUDENT,
+.status-REVIEWED {
     background: var(--primary-50);
     color: var(--primary-700);
     border-color: var(--primary-200);
 }
-.status-ISSUED_TO_STUDENT .dot {
+.status-ISSUED_TO_STUDENT .dot,
+.status-REVIEWED .dot {
     background: var(--primary-600);
 }
 

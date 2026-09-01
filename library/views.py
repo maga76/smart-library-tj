@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from django.http import HttpResponseForbidden, JsonResponse
+from django.http import HttpResponseForbidden
 from django.core.paginator import Paginator
 from django.db.models import Q, Count
 from django.utils import timezone
@@ -19,23 +19,7 @@ from transactions.models import BookTransaction
 from audit.utils import log_audit
 from notifications.utils import create_notification
 from notifications.models import Notification
-
-
-def _copies_currently_held_by(base_qs, user, status, tx_type, holder_field):
-    """Restrict a BookCopy queryset to copies whose most recent hand-off
-    transaction of the given type has `holder_field` equal to user.
-
-    Filtering on status plus any historical transaction match is not enough:
-    a copy keeps matching an old holder even after it has since been
-    reassigned to someone else. So we check each copy's latest matching
-    transaction one by one and keep only the ones that match.
-    """
-    matching_ids = []
-    for copy in base_qs.filter(status=status):
-        last_tx = copy.transactions.filter(transaction_type=tx_type).order_by('-created_at').first()
-        if last_tx and getattr(last_tx, holder_field) == user.pk:
-            matching_ids.append(copy.pk)
-    return base_qs.filter(pk__in=matching_ids)
+from .utils import copies_currently_held_by
 
 
 # ==============================
@@ -54,7 +38,7 @@ class BookListView(LoginRequiredMixin, View):
                 books = Book.objects.none()
         elif user.role == 'CLASS_TEACHER':
             if user.school:
-                my_copy_ids = _copies_currently_held_by(
+                my_copy_ids = copies_currently_held_by(
                     BookCopy.objects.filter(school=user.school), user,
                     BookCopy.Status.ISSUED_TO_TEACHER,
                     BookTransaction.TransactionType.LIBRARIAN_TO_TEACHER,
@@ -64,7 +48,7 @@ class BookListView(LoginRequiredMixin, View):
             else:
                 books = Book.objects.none()
         elif user.role == 'STUDENT':
-            my_copy_ids = _copies_currently_held_by(
+            my_copy_ids = copies_currently_held_by(
                 BookCopy.objects.all(), user,
                 BookCopy.Status.ISSUED_TO_STUDENT,
                 BookTransaction.TransactionType.TEACHER_TO_STUDENT,
@@ -228,14 +212,14 @@ class CopyListView(LoginRequiredMixin, View):
         elif user.role in ['SCHOOL_DIRECTOR', 'LIBRARIAN']:
             copies = copies.filter(school=user.school)
         elif user.role == 'CLASS_TEACHER':
-            copies = _copies_currently_held_by(
+            copies = copies_currently_held_by(
                 copies.filter(school=user.school), user,
                 BookCopy.Status.ISSUED_TO_TEACHER,
                 BookTransaction.TransactionType.LIBRARIAN_TO_TEACHER,
                 'to_user_id'
             )
         elif user.role == 'STUDENT':
-            copies = _copies_currently_held_by(
+            copies = copies_currently_held_by(
                 copies, user,
                 BookCopy.Status.ISSUED_TO_STUDENT,
                 BookTransaction.TransactionType.TEACHER_TO_STUDENT,
@@ -718,7 +702,7 @@ class BookIssueCreateView(RoleRequiredMixin, View):
                 is_active=True
             ).distinct()
 
-            copies = _copies_currently_held_by(
+            copies = copies_currently_held_by(
                 BookCopy.objects.filter(school=request.user.school), request.user,
                 BookCopy.Status.ISSUED_TO_STUDENT,
                 BookTransaction.TransactionType.TEACHER_TO_STUDENT,
@@ -895,39 +879,23 @@ class StudentBookRequestCreateView(RoleRequiredMixin, View):
             reason=reason,
         )
 
-        # Notify class teacher
+        # Notify the class teacher and the school librarian
+        recipients = list(User.objects.filter(
+            role='LIBRARIAN', school=request.user.school, is_active=True
+        ))
         my_enrollment = request.user.enrollments.filter(is_active=True).first()
         if my_enrollment:
-            teachers = User.objects.filter(
+            recipients += User.objects.filter(
                 role='CLASS_TEACHER',
                 school=request.user.school,
                 class_assignments__classroom=my_enrollment.classroom,
                 class_assignments__is_class_teacher=True,
                 is_active=True
             ).distinct()
-            for teacher in teachers:
-                create_notification(
-                    recipient=teacher,
-                    sender=request.user,
-                    notification_type=Notification.NotificationType.BOOK_REQUEST,
-                    title=_('New book request from student'),
-                    message=_('%(student)s requests textbook "%(book)s". Reason: %(reason)s') % {
-                        'student': request.user.get_full_name(),
-                        'book': book.title,
-                        'reason': reason or _('Not specified'),
-                    },
-                    related_url='/library/student-requests/',
-                )
 
-        # Notify librarian
-        librarian = User.objects.filter(
-            role='LIBRARIAN',
-            school=request.user.school,
-            is_active=True
-        ).first()
-        if librarian:
+        for recipient in recipients:
             create_notification(
-                recipient=librarian,
+                recipient=recipient,
                 sender=request.user,
                 notification_type=Notification.NotificationType.BOOK_REQUEST,
                 title=_('New book request from student'),

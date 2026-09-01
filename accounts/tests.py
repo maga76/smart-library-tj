@@ -1,5 +1,4 @@
 from django.test import TestCase, Client
-from django.urls import reverse
 from accounts.models import User
 from geography.models import Region, District, Jamoat
 from schools.models import School

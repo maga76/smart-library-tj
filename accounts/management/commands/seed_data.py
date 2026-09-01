@@ -1,14 +1,43 @@
 import datetime
+import random
 from django.core.management.base import BaseCommand
 from accounts.models import User
 from geography.models import Region, District, Jamoat
 from schools.models import School
 from library.models import (
     AcademicYear, Classroom, StudentEnrollment, TeacherClassAssignment,
-    Book, BookCopy, BookRequest, BookIssue
+    Book, BookCopy, BookRequest
 )
 from transactions.models import BookTransaction
 from audit.utils import log_audit
+
+# Fixed seed so re-running the command always generates the same demo names.
+random.seed(20260901)
+
+MALE_FIRST_NAMES = [
+    'Алишер', 'Фаридун', 'Шерали', 'Хуршед', 'Далер', 'Умарали', 'Ҷасур', 'Некрӯз',
+    'Парвиз', 'Бахтиёр', 'Файзали', 'Саидҷон', 'Абдуҷаббор', 'Исмоил', 'Раҳматулло',
+    'Наимҷон', 'Шамсиддин', 'Нуриддин', 'Хусрав', 'Собир', 'Ориф', 'Кароматулло',
+    'Зафар', 'Иброҳим',
+]
+FEMALE_FIRST_NAMES = [
+    'Гулнора', 'Мунира', 'Шаҳноза', 'Дилрабо', 'Нигина', 'Мадина', 'Замира', 'Сабоҳат',
+    'Фарзона', 'Ойгул', 'Рухшона', 'Сабрина', 'Зулфия', 'Гулбаҳор', 'Малоҳат', 'Насиба',
+    'Тахмина', 'Шоира', 'Дилноза', 'Меҳрубон', 'Нозанин', 'Саодат', 'Фирӯза', 'Ҳилола',
+]
+SURNAME_STEMS = [
+    'Раҷаб', 'Карим', 'Назар', 'Юсуф', 'Саид', 'Ҳайдар', 'Раҳим', 'Сафар', 'Эргаш',
+    'Холиқ', 'Мирзо', 'Вали', 'Абдулло', 'Исмоил', 'Шариф', 'Файзулло', 'Комил',
+    'Ҳаким', 'Бобо', 'Ғаффор', 'Латиф', 'Наврӯз', 'Пирмуҳаммад', 'Қурбон',
+]
+
+
+def _random_person(gender):
+    """Return (first_name, last_name) for a demo user of the given gender ('M'/'F')."""
+    stem = random.choice(SURNAME_STEMS)
+    if gender == 'M':
+        return random.choice(MALE_FIRST_NAMES), stem + 'ов'
+    return random.choice(FEMALE_FIRST_NAMES), stem + 'ова'
 
 
 class Command(BaseCommand):
@@ -63,6 +92,34 @@ class Command(BaseCommand):
             code='KHUJAND',
             defaults={'region': reg_sughd, 'name_tj': 'Шаҳри Хуҷанд', 'name_ru': 'город Худжанд', 'is_active': True}
         )
+        dist_isfara, _ = District.objects.get_or_create(
+            code='ISFARA',
+            defaults={'region': reg_sughd, 'name_tj': 'Шаҳри Исфара', 'name_ru': 'город Исфара', 'is_active': True}
+        )
+        dist_firdavsi, _ = District.objects.get_or_create(
+            code='FIRDAVSI',
+            defaults={'region': reg_dushanbe, 'name_tj': 'Ноҳияи Фирдавсӣ', 'name_ru': 'Район Фирдавси', 'is_active': True}
+        )
+        dist_bokhtar, _ = District.objects.get_or_create(
+            code='BOKHTAR',
+            defaults={'region': reg_khatlon, 'name_tj': 'Шаҳри Бохтар', 'name_ru': 'город Бохтар', 'is_active': True}
+        )
+        dist_kulob, _ = District.objects.get_or_create(
+            code='KULOB',
+            defaults={'region': reg_khatlon, 'name_tj': 'Шаҳри Кӯлоб', 'name_ru': 'город Куляб', 'is_active': True}
+        )
+        dist_khorugh, _ = District.objects.get_or_create(
+            code='KHORUGH',
+            defaults={'region': reg_gbao, 'name_tj': 'Шаҳри Хоруғ', 'name_ru': 'город Хорог', 'is_active': True}
+        )
+        dist_vahdat, _ = District.objects.get_or_create(
+            code='VAHDAT',
+            defaults={'region': reg_rrs, 'name_tj': 'Шаҳри Ваҳдат', 'name_ru': 'город Вахдат', 'is_active': True}
+        )
+        dist_hisor, _ = District.objects.get_or_create(
+            code='HISOR',
+            defaults={'region': reg_rrs, 'name_tj': 'Ноҳияи Ҳисор', 'name_ru': 'Гиссарский район', 'is_active': True}
+        )
 
         # Jamoats
         jam_sino1, _ = Jamoat.objects.get_or_create(
@@ -79,6 +136,34 @@ class Command(BaseCommand):
             district=dist_khujand,
             name_ru='Маҳаллаи Марказӣ (Хуҷанд)',
             defaults={'name_tj': 'Маҳаллаи Марказӣ (Хуҷанд)', 'is_active': True}
+        )
+        jam_isfara1, _ = Jamoat.objects.get_or_create(
+            district=dist_isfara, name_ru='Маҳаллаи Марказӣ (Исфара)',
+            defaults={'name_tj': 'Маҳаллаи Марказӣ (Исфара)', 'is_active': True}
+        )
+        jam_firdavsi1, _ = Jamoat.objects.get_or_create(
+            district=dist_firdavsi, name_ru='Маҳаллаи Фирдавсӣ-1',
+            defaults={'name_tj': 'Маҳаллаи Фирдавсӣ-1', 'is_active': True}
+        )
+        jam_bokhtar1, _ = Jamoat.objects.get_or_create(
+            district=dist_bokhtar, name_ru='Маҳаллаи Марказӣ (Бохтар)',
+            defaults={'name_tj': 'Маҳаллаи Марказӣ (Бохтар)', 'is_active': True}
+        )
+        jam_kulob1, _ = Jamoat.objects.get_or_create(
+            district=dist_kulob, name_ru='Маҳаллаи Марказӣ (Кӯлоб)',
+            defaults={'name_tj': 'Маҳаллаи Марказӣ (Кӯлоб)', 'is_active': True}
+        )
+        jam_khorugh1, _ = Jamoat.objects.get_or_create(
+            district=dist_khorugh, name_ru='Маҳаллаи Марказӣ (Хоруғ)',
+            defaults={'name_tj': 'Маҳаллаи Марказӣ (Хоруғ)', 'is_active': True}
+        )
+        jam_vahdat1, _ = Jamoat.objects.get_or_create(
+            district=dist_vahdat, name_ru='Маҳаллаи Марказӣ (Ваҳдат)',
+            defaults={'name_tj': 'Маҳаллаи Марказӣ (Ваҳдат)', 'is_active': True}
+        )
+        jam_hisor1, _ = Jamoat.objects.get_or_create(
+            district=dist_hisor, name_ru='Ҷамоати деҳоти Ҳисор',
+            defaults={'name_tj': 'Ҷамоати деҳоти Ҳисор', 'is_active': True}
         )
 
         # 3. Schools
@@ -126,6 +211,41 @@ class Command(BaseCommand):
                 'is_active': True,
             }
         )
+
+        # 3b. Additional schools spread across every region, so district/jamoat
+        # chairman dashboards and the national analytics have real coverage.
+        new_schools_specs = [
+            {'number': '1', 'name': 'Мактаби таҳсилоти миёнаи умумии №1', 'region': reg_khatlon, 'district': dist_bokhtar, 'jamoat': jam_bokhtar1, 'city': 'ш. Бохтар', 'cap': 700},
+            {'number': '2', 'name': 'Мактаби таҳсилоти миёнаи умумии №2', 'region': reg_khatlon, 'district': dist_bokhtar, 'jamoat': jam_bokhtar1, 'city': 'ш. Бохтар', 'cap': 650},
+            {'number': '3', 'name': 'Мактаби таҳсилоти миёнаи умумии №3', 'region': reg_khatlon, 'district': dist_kulob, 'jamoat': jam_kulob1, 'city': 'ш. Кӯлоб', 'cap': 750},
+            {'number': '4', 'name': 'Гимназияи №4 ба номи Абӯалӣ ибни Сино', 'region': reg_gbao, 'district': dist_khorugh, 'jamoat': jam_khorugh1, 'city': 'ш. Хоруғ', 'cap': 500},
+            {'number': '8', 'name': 'Мактаби таҳсилоти миёнаи умумии №8', 'region': reg_rrs, 'district': dist_vahdat, 'jamoat': jam_vahdat1, 'city': 'ш. Ваҳдат', 'cap': 680},
+            {'number': '9', 'name': 'Мактаби таҳсилоти миёнаи умумии №9', 'region': reg_rrs, 'district': dist_hisor, 'jamoat': jam_hisor1, 'city': 'н. Ҳисор', 'cap': 620},
+            {'number': '12', 'name': 'Мактаби таҳсилоти миёнаи умумии №12', 'region': reg_sughd, 'district': dist_isfara, 'jamoat': jam_isfara1, 'city': 'ш. Исфара', 'cap': 700},
+            {'number': '13', 'name': 'Литсейи ихтисоси №13', 'region': reg_sughd, 'district': dist_isfara, 'jamoat': jam_isfara1, 'city': 'ш. Исфара', 'cap': 450},
+            {'number': '17', 'name': 'Мактаби таҳсилоти миёнаи умумии №17', 'region': reg_dushanbe, 'district': dist_firdavsi, 'jamoat': jam_firdavsi1, 'city': 'ш. Душанбе', 'cap': 900},
+            {'number': '21', 'name': 'Мактаби таҳсилоти миёнаи умумии №21', 'region': reg_dushanbe, 'district': dist_sino, 'jamoat': jam_sino1, 'city': 'ш. Душанбе', 'cap': 850},
+            {'number': '34', 'name': 'Мактаби таҳсилоти миёнаи умумии №34', 'region': reg_sughd, 'district': dist_khujand, 'jamoat': jam_khujand1, 'city': 'ш. Хуҷанд', 'cap': 780},
+            {'number': '40', 'name': 'Гимназияи №40 ба номи Рӯдакӣ', 'region': reg_dushanbe, 'district': dist_somoni, 'jamoat': jam_somoni1, 'city': 'ш. Душанбе', 'cap': 950},
+        ]
+        new_schools = []
+        for spec in new_schools_specs:
+            school_obj, _ = School.objects.get_or_create(
+                school_number=spec['number'],
+                defaults={
+                    'name': spec['name'],
+                    'region': spec['region'],
+                    'district': spec['district'],
+                    'jamoat': spec['jamoat'],
+                    'address': f"{spec['city']}, мактаби №{spec['number']}",
+                    'phone': f"+992 37 {int(spec['number']):03d}-00-00",
+                    'email': f"school{spec['number']}@smartlib.tj",
+                    'student_capacity': spec['cap'],
+                    'is_active': True,
+                }
+            )
+            new_schools.append(school_obj)
+        self.stdout.write(self.style.SUCCESS(f'Additional schools: {len(new_schools)}'))
 
         # 4. Users for all 7 roles
         # Super Admin
@@ -451,6 +571,88 @@ class Command(BaseCommand):
             defaults={'classroom': class_5_10a, 'is_active': True}
         )
 
+        # 5b. Staff & students for the additional schools — generated from name
+        # pools so every region gets a realistic amount of teachers, librarians
+        # and students without hand-typing each one.
+        GRADES_PER_SCHOOL = [1, 3, 5, 7, 9, 11]
+        STUDENTS_PER_CLASS = 15
+        new_school_users = 0
+        school_librarians = {}
+
+        for school_obj in new_schools:
+            num = school_obj.school_number
+            common = {
+                'region': school_obj.region, 'district': school_obj.district,
+                'jamoat': school_obj.jamoat, 'school': school_obj, 'is_active': True,
+            }
+
+            d_first, d_last = _random_person(random.choice('MF'))
+            director_obj, created = User.objects.get_or_create(
+                username=f'director_s{num}',
+                defaults={**common, 'first_name': d_first, 'last_name': d_last,
+                          'email': f'director.s{num}@smartlib.tj', 'role': User.Role.SCHOOL_DIRECTOR}
+            )
+            if created:
+                director_obj.set_password('admin123')
+                director_obj.save()
+                new_school_users += 1
+
+            librarian_count = 2 if school_obj.student_capacity >= 800 else 1
+            for i in range(1, librarian_count + 1):
+                first, last = _random_person(random.choice('FFM'))
+                lib, created = User.objects.get_or_create(
+                    username=f'librarian_s{num}_{i}',
+                    defaults={**common, 'first_name': first, 'last_name': last,
+                              'email': f'librarian.s{num}.{i}@smartlib.tj', 'role': User.Role.LIBRARIAN}
+                )
+                if created:
+                    lib.set_password('admin123')
+                    lib.save()
+                    new_school_users += 1
+                if i == 1:
+                    school_librarians[school_obj.pk] = lib
+
+            for ci, grade in enumerate(GRADES_PER_SCHOOL, start=1):
+                classroom, _ = Classroom.objects.get_or_create(
+                    school=school_obj, name=f'{grade}-А', academic_year=year,
+                    defaults={'grade': grade}
+                )
+
+                t_first, t_last = _random_person(random.choice('MF'))
+                teacher_obj, created = User.objects.get_or_create(
+                    username=f'teacher_s{num}_{ci}',
+                    defaults={**common, 'first_name': t_first, 'last_name': t_last,
+                              'email': f'teacher.s{num}.{ci}@smartlib.tj', 'role': User.Role.CLASS_TEACHER}
+                )
+                if created:
+                    teacher_obj.set_password('admin123')
+                    teacher_obj.save()
+                    new_school_users += 1
+
+                TeacherClassAssignment.objects.get_or_create(
+                    teacher=teacher_obj, classroom=classroom, academic_year=year,
+                    defaults={'is_class_teacher': True}
+                )
+
+                for si in range(1, STUDENTS_PER_CLASS + 1):
+                    s_first, s_last = _random_person(random.choice('MF'))
+                    student_obj, created = User.objects.get_or_create(
+                        username=f'student_s{num}_{ci}_{si}',
+                        defaults={**common, 'first_name': s_first, 'last_name': s_last,
+                                  'email': f'student.s{num}.{ci}.{si}@smartlib.tj', 'role': User.Role.STUDENT}
+                    )
+                    if created:
+                        student_obj.set_password('admin123')
+                        student_obj.save()
+                        new_school_users += 1
+
+                    StudentEnrollment.objects.get_or_create(
+                        student=student_obj, academic_year=year,
+                        defaults={'classroom': classroom, 'is_active': True}
+                    )
+
+        self.stdout.write(self.style.SUCCESS(f'Additional staff & students created: {new_school_users}'))
+
         # 6. Book Catalog
         books_data = [
             {'title': 'Алгебра ва ибтидои таҳлил (10 синф)', 'author': 'Ш. Алимов, Ю. Колягин', 'subject': 'Алгебра', 'grade': 10, 'lang': 'tj', 'isbn': '978-99947-1-101-1'},
@@ -753,6 +955,52 @@ class Command(BaseCommand):
                         created_by=tch_user,
                         note='Бозгардонидани китоб ба роҳбари синф'
                     )
+
+        # 7c. Bulk book copies for the additional schools. Uses bulk_create
+        # instead of the one-by-one get_or_create above, since this generates
+        # thousands of rows across 12 schools and needs to stay fast.
+        COPIES_PER_BOOK = 4
+        total_new_copies = 0
+        for school_obj in new_schools:
+            code = f'S{school_obj.school_number}'
+            lib_user = school_librarians.get(school_obj.pk, super_admin)
+            existing_invs = set(
+                BookCopy.objects.filter(school=school_obj).values_list('inventory_number', flat=True)
+            )
+            copies_to_create = []
+            for book in created_books:
+                for copy_i in range(1, COPIES_PER_BOOK + 1):
+                    inv = f'TJ-{code}-B{book.pk:04d}-{copy_i:05d}'
+                    if inv in existing_invs:
+                        continue
+                    copies_to_create.append(BookCopy(
+                        book=book,
+                        inventory_number=inv,
+                        barcode=f'BC{code}{book.pk:04d}{copy_i:05d}',
+                        school=school_obj,
+                        status=BookCopy.Status.AT_LIBRARY,
+                    ))
+
+            if not copies_to_create:
+                continue
+
+            created_copies = BookCopy.objects.bulk_create(copies_to_create, batch_size=500)
+            BookTransaction.objects.bulk_create([
+                BookTransaction(
+                    book_copy=copy,
+                    from_user=None,
+                    to_user=lib_user,
+                    from_location='Маркази тақсимоти Вазорати маориф',
+                    to_location=f'Китобхонаи мактаби №{school_obj.school_number}',
+                    transaction_type=BookTransaction.TransactionType.WAREHOUSE_TO_SCHOOL,
+                    created_by=super_admin,
+                    note='Оприходование тиража 2024 года',
+                )
+                for copy in created_copies
+            ], batch_size=500)
+            total_new_copies += len(created_copies)
+
+        self.stdout.write(self.style.SUCCESS(f'Additional book copies created: {total_new_copies}'))
 
         # 8. Demo Book Request & Issue
         if created_books:

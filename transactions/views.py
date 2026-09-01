@@ -7,24 +7,12 @@ from django.utils.translation import gettext_lazy as _
 from django.views import View
 from core.mixins import RoleRequiredMixin
 from .models import BookTransaction
-from library.models import BookCopy, Classroom, StudentEnrollment, TeacherClassAssignment
+from library.models import BookCopy, Classroom
+from library.utils import copies_currently_held_by
 from accounts.models import User
 from audit.utils import log_audit
 from notifications.utils import create_notification
 from notifications.models import Notification
-
-
-def _copies_currently_held_by(base_qs, user, status, tx_type, holder_field):
-    """Restrict a BookCopy queryset to copies whose most recent hand-off
-    transaction of the given type has `holder_field` equal to user, rather
-    than matching any historical transaction for that copy.
-    """
-    matching_ids = []
-    for copy in base_qs.filter(status=status):
-        last_tx = copy.transactions.filter(transaction_type=tx_type).order_by('-created_at').first()
-        if last_tx and getattr(last_tx, holder_field) == user.pk:
-            matching_ids.append(copy.pk)
-    return base_qs.filter(pk__in=matching_ids)
 
 
 class TransactionListView(RoleRequiredMixin, View):
@@ -173,7 +161,7 @@ class IssueToStudentView(RoleRequiredMixin, View):
             return no_school
 
         # Available copies currently held by this teacher (based on the latest hand-off, not any historical one)
-        my_copies = _copies_currently_held_by(
+        my_copies = copies_currently_held_by(
             BookCopy.objects.filter(school=request.user.school), request.user,
             BookCopy.Status.ISSUED_TO_TEACHER,
             BookTransaction.TransactionType.LIBRARIAN_TO_TEACHER,
@@ -268,7 +256,7 @@ class ReturnFromStudentView(RoleRequiredMixin, View):
 
     def get(self, request):
         # Copies currently held by a student this teacher issued to (based on the latest hand-off)
-        my_issued_copies = _copies_currently_held_by(
+        my_issued_copies = copies_currently_held_by(
             BookCopy.objects.filter(school=request.user.school), request.user,
             BookCopy.Status.ISSUED_TO_STUDENT,
             BookTransaction.TransactionType.TEACHER_TO_STUDENT,
@@ -496,7 +484,7 @@ class StudentReturnRequestView(RoleRequiredMixin, View):
     allowed_roles = ['STUDENT']
 
     def get(self, request):
-        my_books = _copies_currently_held_by(
+        my_books = copies_currently_held_by(
             BookCopy.objects.all(), request.user,
             BookCopy.Status.ISSUED_TO_STUDENT,
             BookTransaction.TransactionType.TEACHER_TO_STUDENT,

@@ -219,8 +219,7 @@ class SchoolToggleActiveView(RoleRequiredMixin, View):
         school.save()
         status_text = _('activated') if school.is_active else _('deactivated')
         log_audit(request.user, 'SCHOOL_TOGGLE_ACTIVE', 'School', school.pk, f'School {school.name} is now {status_text}')
-        status_text_en = _('activated') if school.is_active else _('deactivated')
-        messages.success(request, _('School "%(name)s" %(status)s.') % {'name': school.name, 'status': status_text_en})
+        messages.success(request, _('School "%(name)s" %(status)s.') % {'name': school.name, 'status': status_text})
         return redirect('schools:school_list')
 
     def get(self, request, pk):

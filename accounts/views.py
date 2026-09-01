@@ -172,8 +172,7 @@ class UserToggleActiveView(RoleRequiredMixin, View):
             user_obj.pk,
             f'User {user_obj.username} is now {status_text}.'
         )
-        status_text_en = _('activated') if user_obj.is_active else _('deactivated')
-        messages.success(request, _('User %(username)s %(status)s.') % {'username': user_obj.username, 'status': status_text_en})
+        messages.success(request, _('User %(username)s %(status)s.') % {'username': user_obj.username, 'status': status_text})
         return redirect('accounts:user_list')
 
     def get(self, request, pk):

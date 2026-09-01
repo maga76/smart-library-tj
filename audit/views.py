@@ -1,18 +1,15 @@
 from django.shortcuts import render
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseForbidden
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.utils.translation import gettext_lazy as _
 from django.views import View
+from core.mixins import RoleRequiredMixin
 from .models import AuditLog
 
 
-class AuditLogListView(LoginRequiredMixin, View):
-    def get(self, request):
-        if request.user.role != 'SUPER_ADMIN':
-            return HttpResponseForbidden(_('Access denied.'))
+class AuditLogListView(RoleRequiredMixin, View):
+    allowed_roles = ['SUPER_ADMIN']
 
+    def get(self, request):
         logs = AuditLog.objects.select_related('user').all().order_by('-created_at')
 
         action_filter = request.GET.get('action', '')

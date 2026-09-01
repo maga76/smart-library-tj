@@ -83,8 +83,7 @@ class RegionToggleActiveView(RoleRequiredMixin, View):
         region.save()
         status_text = _('activated') if region.is_active else _('deactivated')
         log_audit(request.user, 'REGION_TOGGLE_ACTIVE', 'Region', region.pk, f'Region {region.name_ru} is now {status_text}')
-        status_text_en = _('activated') if region.is_active else _('deactivated')
-        messages.success(request, _('Region "%(name)s" %(status)s.') % {'name': region.name_ru, 'status': status_text_en})
+        messages.success(request, _('Region "%(name)s" %(status)s.') % {'name': region.name_ru, 'status': status_text})
         return redirect('geography:region_list')
 
     def get(self, request, pk):
@@ -187,8 +186,7 @@ class DistrictToggleActiveView(RoleRequiredMixin, View):
         district.save()
         status_text = _('activated') if district.is_active else _('deactivated')
         log_audit(request.user, 'DISTRICT_TOGGLE_ACTIVE', 'District', district.pk, f'District {district.name_ru} is now {status_text}')
-        status_text_en = _('activated') if district.is_active else _('deactivated')
-        messages.success(request, _('District "%(name)s" %(status)s.') % {'name': district.name_ru, 'status': status_text_en})
+        messages.success(request, _('District "%(name)s" %(status)s.') % {'name': district.name_ru, 'status': status_text})
         return redirect('geography:district_list')
 
     def get(self, request, pk):
@@ -287,8 +285,7 @@ class JamoatToggleActiveView(RoleRequiredMixin, View):
         jamoat.save()
         status_text = _('activated') if jamoat.is_active else _('deactivated')
         log_audit(request.user, 'JAMOAT_TOGGLE_ACTIVE', 'Jamoat', jamoat.pk, f'Jamoat {jamoat.name_ru} is now {status_text}')
-        status_text_en = _('activated') if jamoat.is_active else _('deactivated')
-        messages.success(request, _('Jamoat "%(name)s" %(status)s.') % {'name': jamoat.name_ru, 'status': status_text_en})
+        messages.success(request, _('Jamoat "%(name)s" %(status)s.') % {'name': jamoat.name_ru, 'status': status_text})
         return redirect('geography:jamoat_list')
 
     def get(self, request, pk):

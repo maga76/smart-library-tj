@@ -9,25 +9,25 @@
 {% endblock %}
 {% block content %}
 
-{% ifequal user.role "CLASS_TEACHER" %}
+{% if user.role != "STUDENT" %}
 <div class="card-pro mb-4">
     <div class="card-pro-header">
         <h5><i class="bi bi-funnel text-muted"></i> {% trans "Filter by Status" %}</h5>
     </div>
     <div class="card-pro-body">
         <div class="d-flex gap-2 flex-wrap">
-            <a href="{% url 'library:student_book_request_list' %}" class="btn-pro btn-pro-sm {% if not status_filter %}btn-pro-primary{% else %}btn-pro-outline{% endif %}">
+            <a href="{% url 'library:student_book_request_list' %}" class="btn-pro {% if not status_filter %}btn-pro-primary{% else %}btn-pro-outline{% endif %}" style="padding: 6px 14px; font-size: 12.5px;">
                 {% trans "All" %}
             </a>
             {% for s_val, s_label in statuses %}
-            <a href="?status={{ s_val }}" class="btn-pro btn-pro-sm {% if status_filter == s_val %}btn-pro-primary{% else %}btn-pro-outline{% endif %}">
+            <a href="?status={{ s_val }}" class="btn-pro {% if status_filter == s_val %}btn-pro-primary{% else %}btn-pro-outline{% endif %}" style="padding: 6px 14px; font-size: 12.5px;">
                 {{ s_label }}
             </a>
             {% endfor %}
         </div>
     </div>
 </div>
-{% endifequal %}
+{% endif %}
 
 <div class="card-pro">
     <div class="card-pro-body p-0">
@@ -35,63 +35,50 @@
             <table class="table-pro">
                 <thead>
                     <tr>
-                        {% ifnotequal user.role "STUDENT" %}
+                        {% if user.role != "STUDENT" %}
                         <th>{% trans "Student" %}</th>
-                        {% endifnotequal %}
+                        {% endif %}
                         <th>{% trans "Textbook" %}</th>
                         <th>{% trans "Grade" %}</th>
                         <th>{% trans "Reason" %}</th>
                         <th>{% trans "Status" %}</th>
                         <th>{% trans "Date" %}</th>
-                        {% ifnotequal user.role "STUDENT" %}
+                        {% if user.role != "STUDENT" %}
                         <th>{% trans "Actions" %}</th>
-                        {% endifnotequal %}
+                        {% endif %}
                     </tr>
                 </thead>
                 <tbody>
                     {% for req in student_requests %}
                     <tr>
-                        {% ifnotequal user.role "STUDENT" %}
+                        {% if user.role != "STUDENT" %}
                         <td class="fw-bold">{{ req.student.get_full_name }}</td>
-                        {% endifnotequal %}
+                        {% endif %}
                         <td>
-                            <div>{{ req.book.title }}</div>
+                            <div class="fw-bold">{{ req.book.title }}</div>
                             <small class="text-muted">{{ req.book.author }}</small>
                         </td>
                         <td>{{ req.book.grade }}</td>
-                        <td>{{ req.reason|truncatewords:10|default:"-" }}</td>
-                        <td>
-                            {% if req.status == 'PENDING' %}
-                            <span class="badge bg-warning text-dark">{% trans "Pending" %}</span>
-                            {% elif req.status == 'REVIEWED' %}
-                            <span class="badge bg-info">{% trans "Reviewed" %}</span>
-                            {% elif req.status == 'APPROVED' %}
-                            <span class="badge bg-success">{% trans "Approved" %}</span>
-                            {% elif req.status == 'REJECTED' %}
-                            <span class="badge bg-danger">{% trans "Rejected" %}</span>
-                            {% endif %}
-                        </td>
+                        <td>{{ req.reason|truncatewords:10|default:"—" }}</td>
+                        <td>{% include "components/status_badge.html" with status_code=req.status status_display=req.get_status_display %}</td>
                         <td class="text-muted">{{ req.created_at|date:"d.m.Y H:i" }}</td>
-                        {% ifnotequal user.role "STUDENT" %}
+                        {% if user.role != "STUDENT" %}
                         <td>
                             {% if req.status == 'PENDING' or req.status == 'REVIEWED' %}
-                            <form method="post" action="{% url 'library:student_book_request_review' req.pk %}" class="d-inline">
+                            <form method="post" action="{% url 'library:student_book_request_review' req.pk %}" class="d-inline-flex gap-1">
                                 {% csrf_token %}
-                                <input type="hidden" name="action" value="approve">
-                                <button type="submit" class="btn btn-sm btn-success" title="{% trans "Approve" %}">
+                                <button name="action" value="approve" class="btn-pro btn-pro-success" style="padding: 6px 10px;" title="{% trans "Approve" %}">
                                     <i class="bi bi-check-lg"></i>
                                 </button>
-                            </form>
-                            <form method="post" action="{% url 'library:student_book_request_review' req.pk %}" class="d-inline">
-                                {% csrf_token %}
-                                <input type="hidden" name="action" value="reject">
-                                <button type="submit" class="btn btn-sm btn-danger" title="{% trans "Reject" %}">
+                                <button name="action" value="reject" class="btn-pro btn-pro-danger" style="padding: 6px 10px;" title="{% trans "Reject" %}">
                                     <i class="bi bi-x-lg"></i>
                                 </button>
                             </form>
+                            {% else %}
+                            <span class="text-muted">—</span>
                             {% endif %}
                         </td>
-                        {% endifnotequal %}
+                        {% endif %}
                     </tr>
                     {% empty %}
                     <tr>
