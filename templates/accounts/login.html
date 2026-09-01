@@ -31,10 +31,9 @@
             font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
             min-height: 100vh;
             overflow: hidden;
-            background: #1a0708;
+            background: #0a0e1a;
         }
 
-        /* ── National tricolour ribbon (flag: red / white / green) ── */
         .tj-ribbon {
             position: fixed;
             top: 0; left: 0; right: 0;
@@ -47,39 +46,32 @@
         .tj-ribbon span:nth-child(2) { background: #f8f8f8; }
         .tj-ribbon span:nth-child(3) { background: #006600; }
 
-        /* ══════════════════════════════════════════
-           GIRIH SVG PATTERN
-           ══════════════════════════════════════════ */
         .girih-pattern {
             position: absolute;
             inset: 0;
             pointer-events: none;
-            opacity: 0.06;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23c8a84e' stroke-width='0.8'%3E%3Cpath d='M60 0 L120 30 L120 90 L60 120 L0 90 L0 30 Z'/%3E%3Cpath d='M60 20 L100 40 L100 80 L60 100 L20 80 L20 40 Z'/%3E%3Cpath d='M60 40 L80 50 L80 70 L60 80 L40 70 L40 50 Z'/%3E%3Cpath d='M0 30 L60 0 L120 30'/%3E%3Cpath d='M0 90 L60 120 L120 90'/%3E%3Cpath d='M60 0 L60 120'/%3E%3Cpath d='M0 30 L60 60 L120 30'/%3E%3Cpath d='M0 90 L60 60 L120 90'/%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%2360a5fa' stroke-width='0.8'%3E%3Cpath d='M60 0 L120 30 L120 90 L60 120 L0 90 L0 30 Z'/%3E%3Cpath d='M60 20 L100 40 L100 80 L60 100 L20 80 L20 40 Z'/%3E%3Cpath d='M60 40 L80 50 L80 70 L60 80 L40 70 L40 50 Z'/%3E%3Cpath d='M0 30 L60 0 L120 30'/%3E%3Cpath d='M0 90 L60 120 L120 90'/%3E%3Cpath d='M60 0 L60 120'/%3E%3Cpath d='M0 30 L60 60 L120 30'/%3E%3Cpath d='M0 90 L60 60 L120 90'/%3E%3C/g%3E%3C/svg%3E");
             background-size: 120px 120px;
         }
 
-        .girih-pattern-gold {
+        .girih-pattern-blue {
             position: absolute;
             inset: 0;
             pointer-events: none;
             opacity: 0.04;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%23d4a843' stroke-width='0.5'%3E%3Cpolygon points='40,0 80,20 80,60 40,80 0,60 0,20'/%3E%3Cpolygon points='40,10 70,25 70,55 40,70 10,55 10,25'/%3E%3Cline x1='40' y1='0' x2='40' y2='80'/%3E%3Cline x1='0' y1='20' x2='80' y2='60'/%3E%3Cline x1='0' y1='60' x2='80' y2='20'/%3E%3C/g%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%233b82f6' stroke-width='0.5'%3E%3Cpolygon points='40,0 80,20 80,60 40,80 0,60 0,20'/%3E%3Cpolygon points='40,10 70,25 70,55 40,70 10,55 10,25'/%3E%3Cline x1='40' y1='0' x2='40' y2='80'/%3E%3Cline x1='0' y1='20' x2='80' y2='60'/%3E%3Cline x1='0' y1='60' x2='80' y2='20'/%3E%3C/g%3E%3C/svg%3E");
             background-size: 80px 80px;
         }
 
-        /* ══════════════════════════════════════════
-           LOGIN PAGE LAYOUT
-           ══════════════════════════════════════════ */
         .login-page {
             display: flex;
             min-height: 100vh;
         }
 
-        /* ── Left Hero Panel ── */
         .login-hero {
             flex: 1;
-            background: linear-gradient(165deg, #3b0a10 0%, #5c0f17 25%, #7a1420 50%, #57101a 75%, #300810 100%);
+            background: linear-gradient(165deg, #0c1a3d 0%, #102a6e 25%, #1e3a8a 50%, #0f2460 75%, #070e24 100%);
             position: relative;
             display: flex;
             flex-direction: column;
@@ -93,7 +85,7 @@
             content: '';
             position: absolute;
             width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(212,168,67,0.10) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(96,165,250,0.12) 0%, transparent 70%);
             top: -200px; right: -150px;
             pointer-events: none;
         }
@@ -102,12 +94,11 @@
             content: '';
             position: absolute;
             width: 400px; height: 400px;
-            background: radial-gradient(circle, rgba(0,102,51,0.14) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(59,130,246,0.10) 0%, transparent 70%);
             bottom: -100px; left: -80px;
             pointer-events: none;
         }
 
-        /* Pamir mountain silhouette — "Roof of the World" */
         .hero-mountains {
             position: absolute;
             left: 0; right: 0; bottom: 0;
@@ -128,7 +119,6 @@
             justify-content: center;
         }
 
-        /* Brand */
         .hero-brand {
             display: flex;
             flex-direction: column;
@@ -145,7 +135,7 @@
             margin-bottom: 2px;
         }
         .hero-brand-stars i {
-            color: #d4a843;
+            color: #60a5fa;
             font-size: 9px;
             opacity: 0.85;
         }
@@ -154,8 +144,8 @@
         .hero-brand-icon {
             width: 72px; height: 72px;
             border-radius: 20px;
-            background: rgba(212,168,67,0.15);
-            border: 1px solid rgba(212,168,67,0.3);
+            background: rgba(59,130,246,0.15);
+            border: 1px solid rgba(96,165,250,0.3);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -175,12 +165,11 @@
             font-size: 10.5px;
             text-transform: uppercase;
             letter-spacing: 2.5px;
-            color: rgba(212,168,67,0.7);
+            color: rgba(96,165,250,0.7);
             font-weight: 700;
             margin-top: -4px;
         }
 
-        /* Headline */
         .hero-headline {
             font-size: 20px;
             font-weight: 600;
@@ -190,7 +179,6 @@
             margin-bottom: 48px;
         }
 
-        /* Feature Icons */
         .hero-features {
             display: flex;
             gap: 32px;
@@ -207,18 +195,18 @@
         .hero-feature-icon {
             width: 52px; height: 52px;
             border-radius: 14px;
-            background: rgba(212,168,67,0.12);
-            border: 1px solid rgba(212,168,67,0.2);
+            background: rgba(59,130,246,0.12);
+            border: 1px solid rgba(96,165,250,0.2);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #d4a843;
+            color: #60a5fa;
             font-size: 22px;
         }
         .hero-feature-icon.accent-green {
-            background: rgba(0,102,51,0.18);
-            border-color: rgba(0,153,76,0.35);
-            color: #4ade80;
+            background: rgba(16,185,129,0.18);
+            border-color: rgba(52,211,153,0.35);
+            color: #34d399;
         }
         .hero-feature-label {
             font-size: 12px;
@@ -227,7 +215,6 @@
             line-height: 1.3;
         }
 
-        /* Demo pills */
         .hero-footer {
             position: relative;
             z-index: 2;
@@ -264,14 +251,13 @@
             transition: all 0.2s ease;
         }
         .demo-pill:hover {
-            background: rgba(212,168,67,0.15);
-            border-color: rgba(212,168,67,0.3);
-            color: #d4a843;
+            background: rgba(59,130,246,0.2);
+            border-color: rgba(96,165,250,0.4);
+            color: #60a5fa;
             transform: translateY(-1px);
         }
         .demo-pill i { font-size: 11px; }
 
-        /* ── Right Login Panel ── */
         .login-panel {
             width: 520px;
             min-height: 100vh;
@@ -279,7 +265,7 @@
             flex-direction: column;
             justify-content: center;
             padding: 48px 56px;
-            background: #201317;
+            background: #0d1326;
             position: relative;
             overflow: hidden;
         }
@@ -330,7 +316,7 @@
             top: 100%;
             right: 0;
             margin-top: 6px;
-            background: #252a3a;
+            background: #1a2240;
             border: 1px solid rgba(255,255,255,0.08);
             border-radius: 12px;
             padding: 6px;
@@ -357,11 +343,10 @@
             font-family: inherit;
         }
         .lang-option:hover { background: rgba(255,255,255,0.06); color: #fff; }
-        .lang-option.active { background: rgba(212,168,67,0.12); color: #d4a843; font-weight: 600; }
+        .lang-option.active { background: rgba(59,130,246,0.15); color: #60a5fa; font-weight: 600; }
 
         .lang-wrapper { position: relative; }
 
-        /* Panel Header */
         .panel-header {
             margin-bottom: 36px;
             position: relative;
@@ -380,7 +365,6 @@
             line-height: 1.5;
         }
 
-        /* Form */
         .form-group { margin-bottom: 20px; }
         .form-group label {
             display: block;
@@ -418,22 +402,21 @@
         }
         .input-wrapper input::placeholder { color: #475569; }
         .input-wrapper input:focus {
-            border-color: rgba(212,168,67,0.5);
+            border-color: rgba(59,130,246,0.5);
             background: rgba(255,255,255,0.06);
-            box-shadow: 0 0 0 4px rgba(212,168,67,0.08);
+            box-shadow: 0 0 0 4px rgba(59,130,246,0.1);
         }
         .input-wrapper input:focus ~ .input-icon {
-            color: #d4a843;
+            color: #60a5fa;
         }
 
-        /* Login Button - Gold Gradient */
         .login-btn {
             width: 100%;
             padding: 15px;
             border: none;
             border-radius: 12px;
-            background: linear-gradient(135deg, #b8942d 0%, #d4a843 40%, #e6be5a 70%, #d4a843 100%);
-            color: #1a1f2e;
+            background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 40%, #3b82f6 70%, #2563eb 100%);
+            color: #fff;
             font-size: 15px;
             font-weight: 700;
             font-family: inherit;
@@ -443,18 +426,17 @@
             justify-content: center;
             gap: 10px;
             transition: all 0.25s;
-            box-shadow: 0 4px 16px rgba(212,168,67,0.25);
+            box-shadow: 0 4px 16px rgba(37,99,235,0.3);
             margin-top: 8px;
             letter-spacing: 0.3px;
         }
         .login-btn:hover {
             transform: translateY(-1px);
-            box-shadow: 0 8px 28px rgba(212,168,67,0.35);
-            background: linear-gradient(135deg, #c9a234 0%, #e0b84e 40%, #f0cc66 70%, #e0b84e 100%);
+            box-shadow: 0 8px 28px rgba(37,99,235,0.4);
+            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 40%, #60a5fa 70%, #3b82f6 100%);
         }
         .login-btn:active { transform: translateY(0); }
 
-        /* Error Alert */
         .error-alert {
             background: rgba(239,68,68,0.1);
             border: 1px solid rgba(239,68,68,0.2);
@@ -479,7 +461,6 @@
             75% { transform: translateX(5px); }
         }
 
-        /* Panel Footer */
         .panel-footer {
             text-align: center;
             margin-top: 48px;
@@ -493,9 +474,6 @@
             display: block;
         }
 
-        /* ══════════════════════════════════════════
-           MOBILE
-           ══════════════════════════════════════════ */
         @media (max-width: 991.98px) {
             body { overflow: auto; }
             .login-hero { display: none; }
@@ -514,36 +492,33 @@
             .login-panel { padding: 72px 16px 24px; }
         }
 
-        /* ══════════════════════════════════════════
-           DARK THEME (when data-theme="dark")
-           ══════════════════════════════════════════ */
         :root[data-theme="light"] .login-panel {
-            background: #fdfaf4;
+            background: #f0f4ff;
         }
-        :root[data-theme="light"] .panel-header h2 { color: #3b0a10; }
-        :root[data-theme="light"] .panel-header p { color: #9a7d6b; }
-        :root[data-theme="light"] .form-group label { color: #8a6a5a; }
+        :root[data-theme="light"] .panel-header h2 { color: #0f172a; }
+        :root[data-theme="light"] .panel-header p { color: #64748b; }
+        :root[data-theme="light"] .form-group label { color: #475569; }
         :root[data-theme="light"] .input-wrapper input {
-            background: #f6efe4;
-            border-color: #ecdfcc;
-            color: #3b0a10;
+            background: #e2e8f0;
+            border-color: #cbd5e1;
+            color: #0f172a;
         }
-        :root[data-theme="light"] .input-wrapper input::placeholder { color: #b3a08f; }
+        :root[data-theme="light"] .input-wrapper input::placeholder { color: #94a3b8; }
         :root[data-theme="light"] .input-wrapper input:focus {
             background: #fff;
-            border-color: rgba(212,168,67,0.5);
+            border-color: rgba(59,130,246,0.5);
         }
         :root[data-theme="light"] .theme-btn {
-            background: #f6efe4;
-            border-color: #ecdfcc;
-            color: #8a6a5a;
+            background: #e2e8f0;
+            border-color: #cbd5e1;
+            color: #475569;
         }
         :root[data-theme="light"] .lang-btn {
-            background: #f6efe4;
-            border-color: #ecdfcc;
-            color: #8a6a5a;
+            background: #e2e8f0;
+            border-color: #cbd5e1;
+            color: #475569;
         }
-        :root[data-theme="light"] .panel-footer { color: #b3a08f; }
+        :root[data-theme="light"] .panel-footer { color: #94a3b8; }
         :root[data-theme="light"] .error-alert {
             background: #fef2f2;
             border-color: #fecaca;
@@ -551,12 +526,12 @@
         }
         :root[data-theme="light"] .lang-dropdown-menu {
             background: #fff;
-            border-color: #ecdfcc;
+            border-color: #e2e8f0;
         }
-        :root[data-theme="light"] .lang-option { color: #8a6a5a; }
-        :root[data-theme="light"] .lang-option:hover { background: #f6efe4; color: #3b0a10; }
+        :root[data-theme="light"] .lang-option { color: #475569; }
+        :root[data-theme="light"] .lang-option:hover { background: #f1f5f9; color: #0f172a; }
         :root[data-theme="light"] .login-btn {
-            color: #1a1f2e;
+            color: #fff;
         }
     </style>
 </head>
@@ -565,21 +540,16 @@
 <div class="tj-ribbon"><span></span><span></span><span></span></div>
 
 <div class="login-page">
-    <!-- ═══════════════════════════════════════
-         LEFT HERO PANEL
-         ═══════════════════════════════════════ -->
     <div class="login-hero">
         <div class="girih-pattern"></div>
-        <div class="girih-pattern-gold"></div>
+        <div class="girih-pattern-blue"></div>
 
-        <!-- Pamir mountains — "Bomi Dunyo" (Roof of the World) -->
         <svg class="hero-mountains" viewBox="0 0 800 130" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 130 L90 55 L150 90 L230 30 L300 85 L360 50 L430 100 L500 40 L580 95 L650 60 L720 105 L800 65 L800 130 Z" fill="#20060a" opacity="0.55"/>
-            <path d="M0 130 L60 95 L130 115 L200 70 L270 110 L340 80 L420 120 L490 75 L570 118 L640 90 L720 125 L800 100 L800 130 Z" fill="#150307" opacity="0.75"/>
+            <path d="M0 130 L90 55 L150 90 L230 30 L300 85 L360 50 L430 100 L500 40 L580 95 L650 60 L720 105 L800 65 L800 130 Z" fill="#0a0e1a" opacity="0.55"/>
+            <path d="M0 130 L60 95 L130 115 L200 70 L270 110 L340 80 L420 120 L490 75 L570 118 L640 90 L720 125 L800 100 L800 130 Z" fill="#060a14" opacity="0.75"/>
         </svg>
 
         <div class="hero-content">
-            <!-- Brand -->
             <div class="hero-brand">
                 <div class="hero-brand-stars">
                     <i class="bi bi-star-fill"></i>
@@ -592,24 +562,22 @@
                 </div>
                 <div class="hero-brand-icon">
                     <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M20 4C14 4 8 6 8 10V32C8 32 12 28 20 28C28 28 32 32 32 32V10C32 6 26 4 20 4Z" stroke="#d4a843" stroke-width="1.8" fill="none"/>
-                        <path d="M20 4V28" stroke="#d4a843" stroke-width="1.2"/>
-                        <path d="M12 10H17" stroke="#d4a843" stroke-width="1" opacity="0.6"/>
-                        <path d="M12 14H16" stroke="#d4a843" stroke-width="1" opacity="0.4"/>
-                        <path d="M23 10H28" stroke="#d4a843" stroke-width="1" opacity="0.6"/>
-                        <path d="M24 14H28" stroke="#d4a843" stroke-width="1" opacity="0.4"/>
+                        <path d="M20 4C14 4 8 6 8 10V32C8 32 12 28 20 28C28 28 32 32 32 32V10C32 6 26 4 20 4Z" stroke="#60a5fa" stroke-width="1.8" fill="none"/>
+                        <path d="M20 4V28" stroke="#60a5fa" stroke-width="1.2"/>
+                        <path d="M12 10H17" stroke="#60a5fa" stroke-width="1" opacity="0.6"/>
+                        <path d="M12 14H16" stroke="#60a5fa" stroke-width="1" opacity="0.4"/>
+                        <path d="M23 10H28" stroke="#60a5fa" stroke-width="1" opacity="0.6"/>
+                        <path d="M24 14H28" stroke="#60a5fa" stroke-width="1" opacity="0.4"/>
                     </svg>
                 </div>
                 <div class="hero-brand-name">Smart Library TJ</div>
                 <div class="hero-brand-sub">{% trans "DIGITAL EDUCATION SYSTEM" %}</div>
             </div>
 
-            <!-- Headline -->
             <div class="hero-headline">
                 {% trans "Unified digital ecosystem of school libraries in Tajikistan" %}
             </div>
 
-            <!-- Three Feature Icons -->
             <div class="hero-features">
                 <div class="hero-feature">
                     <div class="hero-feature-icon">
@@ -632,7 +600,6 @@
             </div>
         </div>
 
-        <!-- Demo Quick Login -->
         <div class="hero-footer">
             <div class="demo-label">{% trans "Quick demo login" %}</div>
             <div class="demo-pills">
@@ -658,13 +625,9 @@
         </div>
     </div>
 
-    <!-- ═══════════════════════════════════════
-         RIGHT LOGIN PANEL
-         ═══════════════════════════════════════ -->
     <div class="login-panel">
-        <div class="girih-pattern-gold"></div>
+        <div class="girih-pattern-blue"></div>
 
-        <!-- Top Bar: Theme + Language -->
         <div class="panel-topbar">
             <button type="button" id="theme-toggle-btn" class="theme-btn" title="{% trans "Toggle theme" %}">
                 <i class="bi bi-moon-stars theme-toggle-icon"></i>
@@ -705,13 +668,11 @@
             </div>
         </div>
 
-        <!-- Header -->
         <div class="panel-header">
             <h2>{% trans "Welcome to Smart Library" %}</h2>
             <p>{% trans "Sign in to access your dashboard and library records." %}</p>
         </div>
 
-        <!-- Error -->
         {% if form.errors %}
         <div class="error-alert">
             <i class="bi bi-exclamation-circle-fill"></i>
@@ -719,7 +680,6 @@
         </div>
         {% endif %}
 
-        <!-- Login Form -->
         <form method="post">
             {% csrf_token %}
 
@@ -745,7 +705,6 @@
             </button>
         </form>
 
-        <!-- Footer -->
         <div class="panel-footer">
             <span class="lang-line">{% trans "Republic of Tajikistan" %} &copy; 2026 Smart Library TJ</span>
             <span class="lang-line">Ҷумҳурии Тоҷикистон &copy; 2026 Smart Library TJ</span>
@@ -753,7 +712,6 @@
     </div>
 </div>
 
-<!-- Scripts -->
 <script>
 function fillCreds(u, p) {
     var uf = document.getElementById('username_field');
@@ -763,7 +721,6 @@ function fillCreds(u, p) {
     uf.focus();
 }
 
-// Language dropdown toggle
 document.getElementById('lang-toggle-btn').addEventListener('click', function(e) {
     e.stopPropagation();
     document.getElementById('lang-dropdown').classList.toggle('show');
